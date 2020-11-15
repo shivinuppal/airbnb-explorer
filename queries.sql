@@ -51,3 +51,14 @@ WHERE host_id = (SELECT host_id FROM Listing WHERE listing_id = X))
 SELECT p.price, d.summary
 FROM ListingPolicy p JOIN Descriptions d ON p.listing_id = d.listing_id
 WHERE listing_id IN (SELECT * FROM HostsListing);
+
+
+/*
+* What are the listings that are available for all days in a given period of
+* dates X - Y
+*/
+SELECT *
+FROM Calendar
+WHERE calendar_date >= X AND calendar_date <= Y
+GROUP BY listing_id
+HAVING SUM(available::INT) = (Y - X)::INT;
