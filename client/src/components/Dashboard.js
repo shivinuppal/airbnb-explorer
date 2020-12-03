@@ -52,7 +52,7 @@ export default class Dashboard extends React.Component {
 		})
 			.then(res => res.json())
 			.then(movieList => {
-				console.log(movieList); 
+				console.log(movieList);
 				let movieDivs = movieList.map((movie, i) =>
         <DashboardMovieRow key={i} title={movie.title} rating={movie.rating} votes={movie.vote_count}/>
         );
@@ -63,7 +63,7 @@ export default class Dashboard extends React.Component {
         .catch(err => console.log(err))
     }
 
-  render() {    
+  render() {
     return (
       <div className="Dashboard">
 

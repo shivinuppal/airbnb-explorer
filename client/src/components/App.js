@@ -7,6 +7,7 @@ import {
 import Dashboard from './Dashboard';
 import Recommendations from './Recommendations';
 import BestGenres from './BestGenres';
+import IndividualListing from './IndividualListing';
 
 export default class App extends React.Component {
 
@@ -33,6 +34,12 @@ export default class App extends React.Component {
 							path="/recommendations"
 							render={() => (
 								<Recommendations />
+							)}
+						/>
+						<Route
+							path="/listing"
+							render={() => (
+								<IndividualListing />
 							)}
 						/>
 						<Route
