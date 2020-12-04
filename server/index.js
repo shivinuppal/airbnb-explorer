@@ -34,6 +34,8 @@ app.get('/zipcodes', routes.zipcodes);
 app.get('/getHost/:zipcode', routes.getHostListings);
 app.get('/getHost', routes.hosts);
 
+app.get('/getNearby/:zipcode', routes.getHostListings);
+
 
 
 
