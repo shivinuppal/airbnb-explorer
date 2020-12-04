@@ -11,6 +11,7 @@ export default class ZipcodeRow extends React.Component {
 			<div className="movieResults">
 				
 				<div className="listing_id">{this.props.listing_id}</div>
+				<div className="neighbor">{this.props.neighbor}</div>
                 <div className="zipcode">{this.props.zipcode}</div>
             </div>
 		);

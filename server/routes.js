@@ -50,7 +50,8 @@ function getZipcode(req, res) {
   zipcode = req.params.zipcode;
   
   var query = `
-    Select listing_id, street as zipcode from Locations where street = "${zipcode}"
+    Select listing_id, street as zipcode, neighborhood_group_cleansed as neighbor
+     from Locations where street = "${zipcode}"
   `;
   console.log(query);
   connection.query(query, function(err, rows, fields) {
@@ -85,9 +86,9 @@ function getHostListings(req, res) {
   WITH HostsListing AS (SELECT listing_id
     FROM Listing
     WHERE host_id = ${zipcode})
-    SELECT p.price as listing_id, d.summary as zipcode
+    SELECT p.listing_id as listing_id, p.price as neighbor, d.summary as zipcode
     FROM listing_policy p JOIN Descriptions d ON p.listing_id = d.listing_id
-    WHERE listing_id IN (SELECT * FROM HostsListing);
+    WHERE p.listing_id IN (SELECT * FROM HostsListing);
     
   `;
   console.log(query);
