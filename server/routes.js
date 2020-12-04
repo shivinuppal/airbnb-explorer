@@ -10,9 +10,9 @@ var connection = mysql.createPool(config);
 
 
 function getHostInfo(req, res) {
-  var listingId = req.params.listingId; 
+  var listingId = req.params.listingId;
   var query = `
-    SELECT id, host_about, host_response_time, host_response_rate, host_acceptance_rate, host_is_superhost, host_neighborhood, 
+    SELECT id, host_about, host_response_time, host_response_rate, host_acceptance_rate, host_is_superhost, host_neighborhood,
     host_total_listings_count, host_identity_verified
     FROM Host
     WHERE id = (SELECT host_id FROM Listing WHERE listing_id = '${listingId}')
@@ -23,13 +23,13 @@ function getHostInfo(req, res) {
     if (err) console.log(err);
     else {
       res.json(rows);
-      
+
     }
   });
 };
 
 function getAmenityInfo(req, res) {
-  var listingId = req.params.listingId; 
+  var listingId = req.params.listingId;
   var query = `
     SELECT *
     FROM Amenity
@@ -41,10 +41,28 @@ function getAmenityInfo(req, res) {
     if (err) console.log(err);
     else {
       res.json(rows);
-      
+
     }
   });
 };
+
+function searchListing(req, res) {
+    var guests = req.params.guests;
+    var query = `
+    SELECT listing_id
+    FROM Amenity
+    WHERE accommodates >= '${guests}
+    ORDER BY accommodates ASC'
+    ;
+    `;
+
+    connection.query(query, function(err, rows, fields) {
+      if (err) console.log(err);
+      else {
+        res.json(rows);
+      }
+    });
+}
 
 // The exported functions, which can be accessed in index.js.
 module.exports = {
