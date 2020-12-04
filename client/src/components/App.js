@@ -8,6 +8,7 @@ import Dashboard from './Dashboard';
 import Recommendations from './Recommendations';
 import BestGenres from './BestGenres';
 import IndividualListing from './IndividualListing';
+import Zipcode from './Zipcode';
 
 export default class App extends React.Component {
 
@@ -28,6 +29,13 @@ export default class App extends React.Component {
 							path="/dashboard"
 							render={() => (
 								<Dashboard />
+							)}
+						/>
+						<Route
+							exact
+							path="/zipcode"
+							render={() => (
+								<Zipcode />
 							)}
 						/>
 						<Route

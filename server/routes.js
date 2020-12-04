@@ -46,8 +46,41 @@ function getAmenityInfo(req, res) {
   });
 };
 
+function getZipcode(req, res) {
+  zipcode = req.params.zipcode;
+  
+  var query = `
+    Select listing_id,street,zipcode from Locations where zipcode = ${zipcode}
+  `;
+  console.log(query);
+  connection.query(query, function(err, rows, fields) {
+    if (err) console.log(err);
+    else {
+      res.json(rows);
+    }
+  });
+};
+
+function zipcodes(req, res) {
+  
+  var query = `
+    SELECT DISTINCT zipcode
+    FROM Locations
+  `;
+  console.log(query);
+  connection.query(query, function(err, rows, fields) {
+    if (err) console.log(err);
+    else {
+      console.log(rows);
+      res.json(rows);
+    }
+  });
+}
+
 // The exported functions, which can be accessed in index.js.
 module.exports = {
   getHostInfo: getHostInfo,
-  getAmenityInfo: getAmenityInfo
+  getAmenityInfo: getAmenityInfo,
+  getZipcode: getZipcode,
+  zipcodes: zipcodes
 }
