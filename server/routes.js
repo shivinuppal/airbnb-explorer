@@ -62,6 +62,31 @@ function getZipcode(req, res) {
   });
 };
 
+function getNearby(req, res) {
+  zipcode = req.params.zipcode;
+  
+  var query = `
+  WITH CloseByListings AS (
+    SELECT listing_id
+    FROM Location
+    WHERE SQRT((la - latitude) * (la - latitude) * 4761 + (lo - longitude) * (lo - longitude) * 2981.16) < X),
+    VFM AS (
+    SELECT p.listing_id, p.price / r.review_scores_rating AS vfm
+    FROM listing_policy p JOIN ListingReview r ON p.listing_id = r.listing_id)
+    SELECT listing_id
+    FROM CloseByListings c JOIN VFM v ON c.listing_id = v.listing_id
+    ORDER BY v.vfm
+    LIMIT 10;
+  `;
+  console.log(query);
+  connection.query(query, function(err, rows, fields) {
+    if (err) console.log(err);
+    else {
+      res.json(rows);
+    }
+  });
+};
+
 function zipcodes(req, res) {
   
   var query = `

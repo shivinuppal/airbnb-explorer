@@ -10,6 +10,7 @@ import BestGenres from './BestGenres';
 import IndividualListing from './IndividualListing';
 import Zipcode from './Zipcode';
 import Host from './Host';
+import BestNearby from './BestNearby';
 
 export default class App extends React.Component {
 
@@ -32,6 +33,14 @@ export default class App extends React.Component {
 								<Dashboard />
 							)}
 						/>
+								<Route
+							exact
+							path="/bestNearby"
+							render={() => (
+								<BestNearby />
+							)}
+						/>
+				
 						<Route
 							exact
 							path="/host"
