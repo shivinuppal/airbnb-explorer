@@ -4,7 +4,7 @@ import ZipcodeRow from './ZipcodeRow';
 import '../style/Zipcode.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-export default class Zipcode extends React.Component {
+export default class Host extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -20,7 +20,7 @@ export default class Zipcode extends React.Component {
 
 	/* ---- Q3a (Best Genres) ---- */
 	componentDidMount() {
-		fetch("http://localhost:8081/zipcodes", {
+		fetch("http://localhost:8081/getHost", {
       method: 'GET' // The type of HTTP request.
     })
       .then(res => res.json()) // Convert the response data to a JSON.
@@ -51,7 +51,7 @@ export default class Zipcode extends React.Component {
 
 	/* ---- Q3b (Best Genres) ---- */
 	submitZipcode() {
-		fetch("http://localhost:8081/getZipcodes/"+this.state.selectedZipcode, {
+		fetch("http://localhost:8081/getHost/"+this.state.selectedZipcode, {
       method: 'GET' // The type of HTTP request.
     })
       .then(res => res.json()) // Convert the response data to a JSON.
