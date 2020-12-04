@@ -50,7 +50,7 @@ function getZipcode(req, res) {
   zipcode = req.params.zipcode;
   
   var query = `
-    Select listing_id,street,zipcode from Locations where zipcode = ${zipcode}
+    Select listing_id, street as zipcode from Locations where street = "${zipcode}"
   `;
   console.log(query);
   connection.query(query, function(err, rows, fields) {
@@ -64,7 +64,7 @@ function getZipcode(req, res) {
 function zipcodes(req, res) {
   
   var query = `
-    SELECT DISTINCT zipcode
+    SELECT DISTINCT street as zipcode
     FROM Locations
   `;
   console.log(query);
@@ -77,10 +77,53 @@ function zipcodes(req, res) {
   });
 }
 
+
+function getHostListings(req, res) {
+  zipcode = req.params.zipcode;
+  
+  var query = `
+  WITH HostsListing AS (SELECT listing_id
+    FROM Listing
+    WHERE host_id = ${zipcode})
+    SELECT p.price as listing_id, d.summary as zipcode
+    FROM listing_policy p JOIN Descriptions d ON p.listing_id = d.listing_id
+    WHERE listing_id IN (SELECT * FROM HostsListing);
+    
+  `;
+  console.log(query);
+  connection.query(query, function(err, rows, fields) {
+    if (err) console.log(err);
+    else {
+      res.json(rows);
+      console.log(rows);
+    }
+  });
+};
+
+function hosts(req, res) {
+  
+  var query = `
+    SELECT DISTINCT id as zipcode
+    FROM Host
+  `;
+  console.log(query);
+  connection.query(query, function(err, rows, fields) {
+    if (err) console.log(err);
+    else {
+      console.log(rows);
+      res.json(rows);
+    }
+  });
+}
+
+
+
 // The exported functions, which can be accessed in index.js.
 module.exports = {
   getHostInfo: getHostInfo,
   getAmenityInfo: getAmenityInfo,
   getZipcode: getZipcode,
-  zipcodes: zipcodes
+  zipcodes: zipcodes,
+  hosts: hosts,
+  getHostListings: getHostListings
 }

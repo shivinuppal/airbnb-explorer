@@ -30,6 +30,11 @@ app.get('/listing/amenity/:listingId', routes.getAmenityInfo);
 app.get('/getZipcodes/:zipcode', routes.getZipcode);
 app.get('/zipcodes', routes.zipcodes);
 
+//Host's Listings
+app.get('/getHost/:zipcode', routes.getHostListings);
+app.get('/getHost', routes.hosts);
+
+
 
 
 
