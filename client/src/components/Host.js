@@ -1,6 +1,6 @@
 import React from 'react';
 import PageNavbar from './PageNavbar';
-import ZipcodeRow from './ZipcodeRow';
+import ListingRow from './ListingRow';
 import '../style/Zipcode.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -9,12 +9,12 @@ export default class Host extends React.Component {
 		super(props);
 
 		this.state = {
-			selectedZipcode: "0",
-			zipcodeList: [<option value={2}>"l"</option>],
-			genres: []
+			hostId: "",
+			allHosts: [<option value={2}>"l"</option>],
+			listings: []
 		};
 
-		this.submitZipcode = this.submitZipcode.bind(this);
+		this.submitHostId = this.submitHostId.bind(this);
 		this.handleChange = this.handleChange.bind(this);
 	}
 
@@ -24,18 +24,16 @@ export default class Host extends React.Component {
       method: 'GET' // The type of HTTP request.
     })
       .then(res => res.json()) // Convert the response data to a JSON.
-      .then(zipcodeList => {
-        console.log("a");
-
+      .then(hostList => {
 
         // Map each attribute of a person in this.state.people to an HTML element
-        let zipcodeDivs = zipcodeList.map((zipcode, i) => 
-		[<option value={zipcode.zipcode}>{zipcode.zipcode}</option>]
+        let hostDivs = hostList.map((host, i) => 
+		[<option key={i} value={host.id}>{host.id}</option>]
 
         );
         // Set the state of the person list to the value returned by the HTTP response from the server.
         this.setState({
-          zipcodeList: zipcodeDivs,
+          allHosts: hostDivs,
         })
       
       })
@@ -45,31 +43,30 @@ export default class Host extends React.Component {
 
 	handleChange(e) {
 		this.setState({
-			selectedZipcode: e.target.value
+			hostId: e.target.value
 		});
 	}
 
-	/* ---- Q3b (Best Genres) ---- */
-	submitZipcode() {
-		fetch("http://localhost:8081/getHost/"+this.state.selectedZipcode, {
+	submitHostId() {
+		fetch("http://localhost:8081/getHost/"+this.state.hostId, {
       method: 'GET' // The type of HTTP request.
     })
       .then(res => res.json()) // Convert the response data to a JSON.
-      .then(zipcodeList => {
+      .then(hostList => {
         console.log("a");
 
 
         // Map each attribute of a person in this.state.people to an HTML element
-        let zipcodeDivs = zipcodeList.map((zipcode, i) => 
-          <ZipcodeRow id={"row-" + zipcode.listing_id + zipcode.zipcode} listing_id={zipcode.listing_id} zipcode={zipcode.zipcode}
-          neighbor={zipcode.neighbor + "--------."}
+        let hostDivs = hostList.map((host, i) => 
+          <ListingRow id={"row-" + host.listing_id + host.id} listing_id={host.listing_id} summary={host.id}
+          price={host.price}
           />
 
         );
-        console.log(zipcodeDivs);
+        console.log(hostDivs);
         // Set the state of the person list to the value returned by the HTTP response from the server.
         this.setState({
-          genres: zipcodeDivs,
+          listings: hostDivs,
         })
       
       })
@@ -81,7 +78,7 @@ export default class Host extends React.Component {
 
 		return (
 			<div className="Zipcode">
-				<PageNavbar active="zipcode" />
+				<PageNavbar active="host" />
 
 				<div className="container bestgenres-container">
 			      <div className="jumbotron">
@@ -105,7 +102,7 @@ export default class Host extends React.Component {
 			            <div className="header"><strong>Summary</strong></div>
 			          </div>
 			          <div className="movies-container" id="results">
-			            {this.state.genres}
+			            {this.state.listings}
 			          </div>
 			        </div>
 			      </div>
