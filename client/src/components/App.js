@@ -5,8 +5,6 @@ import {
 	Switch
 } from 'react-router-dom';
 import Dashboard from './Dashboard';
-import Recommendations from './Recommendations';
-import BestGenres from './BestGenres';
 import IndividualListing from './IndividualListing';
 import Zipcode from './Zipcode';
 import Host from './Host';
@@ -56,21 +54,9 @@ export default class App extends React.Component {
 							)}
 						/>
 						<Route
-							path="/recommendations"
-							render={() => (
-								<Recommendations />
-							)}
-						/>
-						<Route
 							path="/listing"
 							render={() => (
 								<IndividualListing />
-							)}
-						/>
-						<Route
-							path="/bestgenres"
-							render={() => (
-								<BestGenres />
 							)}
 						/>
 					</Switch>

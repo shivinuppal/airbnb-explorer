@@ -46,6 +46,97 @@ function getAmenityInfo(req, res) {
   });
 };
 
+function getPolicyInfo(req, res) {
+  var listingId = req.params.listingId; 
+  var query = `
+    SELECT cancellation_policy, price, weekly_price, monthly_price, security_deposit, cleaning_fee, extra_people,
+    min_nights, max_nights
+    FROM ListingPolicy
+    WHERE listing_id = '${listingId}'
+    ;
+  `;
+
+  connection.query(query, function(err, rows, fields) {
+    if (err) console.log(err);
+    else {
+      res.json(rows);
+      
+    }
+  });
+};
+
+function getListingReviewInfo(req, res) {
+  var listingId = req.params.listingId; 
+  var query = `
+    SELECT l.number_of_reviews, l.reviews_per_month, r.comments
+    FROM ListingReview l JOIN Reviews r ON l.listing_id = r.listing_id
+    WHERE l.listing_id = '${listingId}'
+    ;
+  `;
+
+  connection.query(query, function(err, rows, fields) {
+    if (err) console.log(err);
+    else {
+      res.json(rows);
+      
+    }
+  });
+};
+
+function getURLInfo(req, res) {
+  var listingId = req.params.listingId; 
+  var query = `
+    SELECT listing_url, picture_url
+    FROM Url
+    WHERE listing_id = '${listingId}'
+    ;
+  `;
+
+  connection.query(query, function(err, rows, fields) {
+    if (err) console.log(err);
+    else {
+      res.json(rows);
+      
+    }
+  });
+};
+
+function getLocationInfo(req, res) {
+  var listingId = req.params.listingId; 
+  var query = `
+    SELECT *
+    FROM Locations
+    WHERE listing_id = '${listingId}'
+    ;
+  `;
+
+  connection.query(query, function(err, rows, fields) {
+    if (err) console.log(err);
+    else {
+      res.json(rows);
+      
+    }
+  });
+};
+
+function getDescriptionInfo(req, res) {
+  var listingId = req.params.listingId; 
+  var query = `
+    SELECT *
+    FROM Descriptions
+    WHERE listing_id = '${listingId}'
+    ;
+  `;
+
+  connection.query(query, function(err, rows, fields) {
+    if (err) console.log(err);
+    else {
+      res.json(rows);
+      
+    }
+  });
+};
+
 function getZipcode(req, res) {
   zipcode = req.params.zipcode;
   
@@ -148,6 +239,11 @@ function hosts(req, res) {
 module.exports = {
   getHostInfo: getHostInfo,
   getAmenityInfo: getAmenityInfo,
+  getPolicyInfo: getPolicyInfo,
+  getListingReviewInfo: getListingReviewInfo,
+  getURLInfo: getURLInfo,
+  getLocationInfo: getLocationInfo,
+  getDescriptionInfo: getDescriptionInfo,
   getZipcode: getZipcode,
   zipcodes: zipcodes,
   hosts: hosts,

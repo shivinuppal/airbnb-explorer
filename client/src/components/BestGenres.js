@@ -75,6 +75,7 @@ export default class BestGenre extends React.Component {
 
 				<div className="container bestgenres-container">
 			      <div className="jumbotron">
+
 			        <div className="h5">Best Genres</div>
 
 			        <div className="years-container">

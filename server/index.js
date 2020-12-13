@@ -25,6 +25,16 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.get('/listing/host/:listingId', routes.getHostInfo);
 //amenity information 
 app.get('/listing/amenity/:listingId', routes.getAmenityInfo);
+//listing policy
+app.get('/listing/listing_policy/:listingId', routes.getPolicyInfo);
+//listing review
+app.get('/listing/listing_review/:listingId', routes.getListingReviewInfo);
+//url
+app.get('/listing/url/:listingId', routes.getURLInfo);
+//location
+app.get('/listing/location/:listingId', routes.getLocationInfo);
+//description
+app.get('/listing/description/:listingId', routes.getDescriptionInfo);
 
 //Zipcode
 app.get('/getZipcodes/:zipcode', routes.getZipcode);
