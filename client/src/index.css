@@ -11,3 +11,10 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+#jumbo {
+  /* all other browsers */
+  background: rgba(200, 54, 54, 0.5);
+}
+#white {
+  background: rgb(255, 255, 255);
+}
