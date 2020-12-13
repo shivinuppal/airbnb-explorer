@@ -71,12 +71,14 @@ function getListingReviewInfo(req, res) {
     SELECT l.number_of_reviews, l.reviews_per_month, r.comments
     FROM ListingReview l JOIN Reviews r ON l.listing_id = r.listing_id
     WHERE l.listing_id = '${listingId}'
+    LIMIT 5
     ;
   `;
 
   connection.query(query, function(err, rows, fields) {
     if (err) console.log(err);
     else {
+      console.log(rows);
       res.json(rows);
       
     }
