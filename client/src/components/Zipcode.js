@@ -1,6 +1,6 @@
 import React from 'react';
 import PageNavbar from './PageNavbar';
-import ZipcodeRow from './ZipcodeRow';
+import ZipcodeRow from './ListingRow';
 import '../style/Zipcode.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 

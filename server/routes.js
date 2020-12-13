@@ -198,13 +198,13 @@ function zipcodes(req, res) {
 
 
 function getHostListings(req, res) {
-  zipcode = req.params.zipcode;
+  hostId = req.params.hostId;
   
   var query = `
   WITH HostsListing AS (SELECT listing_id
     FROM Listing
-    WHERE host_id = ${zipcode})
-    SELECT p.listing_id as listing_id, p.price as neighbor, d.summary as zipcode
+    WHERE host_id = ${hostId})
+    SELECT p.listing_id as listing_id, p.price as price, d.summary as summary
     FROM listing_policy p JOIN Descriptions d ON p.listing_id = d.listing_id
     WHERE p.listing_id IN (SELECT * FROM HostsListing);
     
@@ -222,7 +222,7 @@ function getHostListings(req, res) {
 function hosts(req, res) {
   
   var query = `
-    SELECT DISTINCT id as zipcode
+    SELECT DISTINCT id
     FROM Host
   `;
   console.log(query);

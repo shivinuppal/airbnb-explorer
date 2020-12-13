@@ -1,6 +1,6 @@
 import React from 'react';
 import PageNavbar from './PageNavbar';
-import ZipcodeRow from './ZipcodeRow';
+import ListingRow from './ListingRow';
 import '../style/Zipcode.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -61,7 +61,7 @@ export default class Host extends React.Component {
 
         // Map each attribute of a person in this.state.people to an HTML element
         let zipcodeDivs = zipcodeList.map((zipcode, i) => 
-          <ZipcodeRow id={"row-" + zipcode.listing_id + zipcode.zipcode} listing_id={zipcode.listing_id} zipcode={zipcode.zipcode}
+          <ListingRow id={"row-" + zipcode.listing_id + zipcode.zipcode} listing_id={zipcode.listing_id} zipcode={zipcode.zipcode}
           neighbor={zipcode.neighbor + "--------."}
           />
 
