@@ -20,6 +20,7 @@ function getHostInfo(req, res) {
   var query = `
     SELECT *
     FROM Host
+    WHERE id IN (SELECT host_id FROM Listings WHERE id = ${listingId})
   `;
   console.log(query);
   runQuery(query, function(err, rows, fields) {
@@ -150,31 +151,27 @@ function getZipcode(req, res) {
   console.log(beds);
   var currLat = 47.6205;
   var currLong = -122.3493;
-  var miles = 2.5;
+  var miles = 5;
 
   // I have defaulted current location to the Space Needle
-
-  var query = `
-      SELECT listing_id, ACOS(SIN(3.14159265358979*${currLat}/180.0)*SIN(3.14159265358979*latitude/180.0)+COS(3.14159265358979*${currLat}/180.0)*COS(3.14159265358979*latitude/180.0)*COS(3.14159265358979*longitude/180.0-3.14159265358979*${currLong}/180.0))*6371 AS dist
-      FROM Location
-      WHERE street = '${zipcode}'
-  `;
-
-
-
   var query = `
       WITH Distance AS (
-          SELECT street, listing_id, ACOS(SIN(3.14159265358979*${currLat}/180.0)*SIN(3.14159265358979*latitude/180.0)+COS(3.14159265358979*${currLat}/180.0)*COS(3.14159265358979*latitude/180.0)*COS(3.14159265358979*longitude/180.0-3.14159265358979*${currLong}/180.0))*6371 AS dist
+          SELECT zipcode, listing_id, ACOS(SIN(3.14159265358979*${currLat}/180.0)*SIN(3.14159265358979*latitude/180.0)+COS(3.14159265358979*${currLat}/180.0)*COS(3.14159265358979*latitude/180.0)*COS(3.14159265358979*longitude/180.0-3.14159265358979*${currLong}/180.0))*6371 AS dist
           FROM Location
-          WHERE street = '${zipcode}'
+          WHERE zipcode = '${zipcode}'
       ), WithinDistance AS (
-          SELECT listing_id, dist, street
+          SELECT listing_id, dist
           FROM Distance
           WHERE dist < ${miles}
-      )
+      ), AmenityFiltered AS (
           SELECT w.listing_id, a.accommodates AS guests, ROUND(w.dist, 2) AS dist, a.bedrooms
           FROM WithinDistance w JOIN Amenity a ON w.listing_id = a.listing_id
           WHERE a.accommodates >= ${guests} AND a.bedrooms >= ${beds}
+          ORDER BY ROUND(w.dist, 0), a.accommodates
+      )
+      SELECT a.listing_id, a.guests, ROUND(a.dist, 2) AS dist, a.bedrooms, d.name
+      FROM Descriptions d JOIN AmenityFiltered a ON d.listing_id = a.listing_id
+
   `;
 
   console.log(query);
@@ -216,8 +213,9 @@ function getNearby(req, res) {
 function zipcodes(req, res) {
 
   var query = `
-    SELECT DISTINCT street as zipcode
+    SELECT DISTINCT zipcode
     FROM Location
+    WHERE zipcode IS NOT NULL
   `;
   console.log(query);
   runQuery(query, function(err, rows, fields) {

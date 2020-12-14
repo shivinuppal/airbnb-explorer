@@ -75,7 +75,7 @@ export default class Zipcode extends React.Component {
 
         // Map each attribute of a person in this.state.people to an HTML element
         let zipcodeDivs = zipcodeList.map((zipcode, i) =>
-          <ZipcodeRow id={"row-" + zipcode[0]} listing_id={zipcode[0]} guests={zipcode[1]} distance={zipcode[2] + " miles"} bedrooms={zipcode[3]}
+          <ZipcodeRow id={"row-" + zipcode[0]} listing_id={zipcode[0]} guests={zipcode[1]} distance={("" + zipcode[2]).substring(0,4) + " miles"} bedrooms={zipcode[3]} name={zipcode[4]}
 		  />
 
         );
@@ -163,6 +163,7 @@ export default class Zipcode extends React.Component {
 			        <div className="movies-container">
 			          <div className="movie">
 			            <div className="header"><strong>Listing ID</strong></div>
+						<div className="header"><strong>Name</strong></div>
 			            <div className="header"><strong>Guests</strong></div>
 						<div className="header"><strong>Distance from Space Needle</strong></div>
 						<div className="header"><strong>Bedrooms</strong></div>
