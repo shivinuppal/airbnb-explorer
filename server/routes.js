@@ -10,9 +10,9 @@ var connection = mysql.createPool(config);
 
 
 function getHostInfo(req, res) {
-  var listingId = req.params.listingId; 
+  var listingId = req.params.listingId;
   var query = `
-    SELECT id, host_about, host_response_time, host_response_rate, host_acceptance_rate, host_is_superhost, host_neighborhood, 
+    SELECT id, host_about, host_response_time, host_response_rate, host_acceptance_rate, host_is_superhost, host_neighborhood,
     host_total_listings_count, host_identity_verified
     FROM Host
     WHERE id = (SELECT host_id FROM Listing WHERE listing_id = '${listingId}')
@@ -23,13 +23,13 @@ function getHostInfo(req, res) {
     if (err) console.log(err);
     else {
       res.json(rows);
-      
+
     }
   });
 };
 
 function getAmenityInfo(req, res) {
-  var listingId = req.params.listingId; 
+  var listingId = req.params.listingId;
   var query = `
     SELECT *
     FROM Amenity
@@ -41,13 +41,13 @@ function getAmenityInfo(req, res) {
     if (err) console.log(err);
     else {
       res.json(rows);
-      
+
     }
   });
 };
 
 function getPolicyInfo(req, res) {
-  var listingId = req.params.listingId; 
+  var listingId = req.params.listingId;
   var query = `
     SELECT cancellation_policy, price, weekly_price, monthly_price, security_deposit, cleaning_fee, extra_people,
     min_nights, max_nights
@@ -60,13 +60,13 @@ function getPolicyInfo(req, res) {
     if (err) console.log(err);
     else {
       res.json(rows);
-      
+
     }
   });
 };
 
 function getListingReviewInfo(req, res) {
-  var listingId = req.params.listingId; 
+  var listingId = req.params.listingId;
   var query = `
     SELECT l.number_of_reviews, l.reviews_per_month, r.comments
     FROM ListingReview l JOIN Reviews r ON l.listing_id = r.listing_id
@@ -80,13 +80,13 @@ function getListingReviewInfo(req, res) {
     else {
       console.log(rows);
       res.json(rows);
-      
+
     }
   });
 };
 
 function getURLInfo(req, res) {
-  var listingId = req.params.listingId; 
+  var listingId = req.params.listingId;
   var query = `
     SELECT listing_url, picture_url
     FROM Url
@@ -98,13 +98,13 @@ function getURLInfo(req, res) {
     if (err) console.log(err);
     else {
       res.json(rows);
-      
+
     }
   });
 };
 
 function getLocationInfo(req, res) {
-  var listingId = req.params.listingId; 
+  var listingId = req.params.listingId;
   var query = `
     SELECT *
     FROM Locations
@@ -116,13 +116,13 @@ function getLocationInfo(req, res) {
     if (err) console.log(err);
     else {
       res.json(rows);
-      
+
     }
   });
 };
 
 function getDescriptionInfo(req, res) {
-  var listingId = req.params.listingId; 
+  var listingId = req.params.listingId;
   var query = `
     SELECT *
     FROM Descriptions
@@ -134,30 +134,48 @@ function getDescriptionInfo(req, res) {
     if (err) console.log(err);
     else {
       res.json(rows);
-      
+
     }
   });
 };
 
 function getZipcode(req, res) {
   zipcode = req.params.zipcode;
-  
+  guests = req.params.guests;
+
+  // I have defaulted current location to the Space Needle
   var query = `
-    Select listing_id, street as zipcode, neighborhood_group_cleansed as neighbor
-     from Locations where street = "${zipcode}"
+      WITH Distance AS (
+          SELECT street, listing_id, SQRT((47.6205 - latitude) * (47.6205 - latitude) * 4761 + (122.3493 - longitude) * (122.3493 - longitude) * 2981.16) AS dist
+          FROM Locations
+          WHERE street = "${zipcode}"
+      ), WithinDistance AS (
+          SELECT listing_id
+          FROM Distance
+          WHERE dist < 500
+      ), AmenityFiltered AS (
+          SELECT w.listing_id, a.accommodates AS guests
+          FROM WithinDistance w JOIN Amenity a ON w.listing_id = a.listing_id
+          WHERE a.accommodates >= ${guests};
+      )
+      SELECT w.listing_id, d.name, d.summary, d.neighborhood_overview
+      FROM WithinDistance w JOIN Descriptions d ON w.listing_id = d.listing_id;
   `;
+
   console.log(query);
   connection.query(query, function(err, rows, fields) {
     if (err) console.log(err);
     else {
+
       res.json(rows);
+      console.log(rows)
     }
   });
 };
 
 function getNearby(req, res) {
   zipcode = req.params.zipcode;
-  
+
   var query = `
   WITH CloseByListings AS (
     SELECT listing_id
@@ -181,7 +199,7 @@ function getNearby(req, res) {
 };
 
 function zipcodes(req, res) {
-  
+
   var query = `
     SELECT DISTINCT street as zipcode
     FROM Locations
@@ -199,7 +217,7 @@ function zipcodes(req, res) {
 
 function getHostListings(req, res) {
   hostId = req.params.hostId;
-  
+
   var query = `
   WITH HostsListing AS (SELECT listing_id
     FROM Listing
@@ -207,7 +225,7 @@ function getHostListings(req, res) {
     SELECT p.listing_id as listing_id, p.price as price, d.summary as summary
     FROM listing_policy p JOIN Descriptions d ON p.listing_id = d.listing_id
     WHERE p.listing_id IN (SELECT * FROM HostsListing);
-    
+
   `;
   console.log(query);
   connection.query(query, function(err, rows, fields) {
@@ -220,7 +238,7 @@ function getHostListings(req, res) {
 };
 
 function hosts(req, res) {
-  
+
   var query = `
     SELECT DISTINCT id
     FROM Host

@@ -11,12 +11,14 @@ export default class Zipcode extends React.Component {
 		this.state = {
 			selectedZipcode: "0",
 			zipcodeList: [<option value={2}>"l"</option>],
-			guests: 0
+			guests: 1,
+			beds: 1
 		};
 
 		this.submitZipcode = this.submitZipcode.bind(this);
 		this.handleChange = this.handleChange.bind(this);
 		this.handleGuestsChange = this.handleGuestsChange.bind(this);
+		this.handleBedsChange = this.handleBedsChange.bind(this);
 	}
 
 	componentDidMount() {
@@ -45,18 +47,24 @@ export default class Zipcode extends React.Component {
 
 	handleChange(e) {
 		this.setState({
-			selectedZipcode: e.target.value,
+			selectedZipcode: e.target.value
 		});
 	}
 
 	handleGuestsChange(e) {
 		this.setState({
-			guests: e.target.value;
+			guests: e.target.value
+		});
+	}
+
+	handleBedsChange(e) {
+		this.setState({
+			beds: e.target.value
 		});
 	}
 
 	submitZipcode() {
-		fetch("http://localhost:8081/getZipcodes/"+this.state.selectedZipcode, {
+		fetch("http://localhost:8081/getZipcodes/?zipcode="+this.state.selectedZipcode + "&guests=" + "this.state.guests" + "&beds="{this.state.beds}, {
       method: 'GET' // The type of HTTP request.
     })
       .then(res => res.json()) // Convert the response data to a JSON.
@@ -92,7 +100,7 @@ export default class Zipcode extends React.Component {
 
 				<div className="container bestgenres-container">
 			      <div className="jumbotron">
-			        <div className="h5">Zipcode</div>
+			        <div className="h2">Zipcode</div>
 
 			        <div className="zips-container">
 			          <div className="dropdown-container">
@@ -107,7 +115,30 @@ export default class Zipcode extends React.Component {
 					<div className="guests-container">
 						<div className = "dropdown-container">
 							<select value={this.state.guests} onChange={this.handleGuestsChange} className="dropdown" id="guestsDropdown">
-							 	<option select value> -- select number of guests -- </option>
+							 	<option select value> -- Guests -- </option>
+								<option select value> 1 </option>
+								<option select value> 2 </option>
+								<option select value> 3 </option>
+								<option select value> 4 </option>
+								<option select value> 5 </option>
+								<option select value> 6 </option>
+								<option select value> 7 </option>
+								<option select value> 8 </option>
+								<option select value> 9 </option>
+								<option select value> 10 </option>
+								<option select value> 11 </option>
+								<option select value> 12 </option>
+								<option select value> 13 </option>
+								<option select value> 14 </option>
+								<option select value> 15 </option>
+							</select>
+						</div>
+					</div>
+
+					<div className="beds-container">
+						<div className = "dropdown-container">
+							<select value={this.state.beds} onChange={this.handleBedsChange} className="dropdown" id="bedsDropdown">
+							 	<option select value> -- Beds -- </option>
 								<option select value> 1 </option>
 								<option select value> 2 </option>
 								<option select value> 3 </option>
