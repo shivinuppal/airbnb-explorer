@@ -151,7 +151,7 @@ function getZipcode(req, res) {
   console.log(beds);
   var currLat = 47.6205;
   var currLong = -122.3493;
-  var miles = 5;
+  var miles = req.query.radius;
 
   // I have defaulted current location to the Space Needle
   var query = `
@@ -162,15 +162,16 @@ function getZipcode(req, res) {
       ), WithinDistance AS (
           SELECT listing_id, dist
           FROM Distance
-          WHERE dist < ${miles}
+          WHERE dist < ${miles} - 0.1
       ), AmenityFiltered AS (
           SELECT w.listing_id, a.accommodates AS guests, ROUND(w.dist, 2) AS dist, a.bedrooms
           FROM WithinDistance w JOIN Amenity a ON w.listing_id = a.listing_id
           WHERE a.accommodates >= ${guests} AND a.bedrooms >= ${beds}
-          ORDER BY ROUND(w.dist, 0), a.accommodates
+
       )
-      SELECT a.listing_id, a.guests, ROUND(a.dist, 2) AS dist, a.bedrooms, d.name
+      SELECT a.listing_id, a.guests, ROUND(a.dist, 2) AS dist, a.bedrooms, d.name, d.summary, d.description
       FROM Descriptions d JOIN AmenityFiltered a ON d.listing_id = a.listing_id
+      ORDER BY ROUND(a.dist, 1), a.guests
 
   `;
 
