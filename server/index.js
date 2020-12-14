@@ -23,7 +23,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 /* ---- (Get all Information About a Singular Listing) ---- */
 //host information
 app.get('/listing/host/:listingId', routes.getHostInfo);
-//amenity information 
+//amenity information
 app.get('/listing/amenity/:listingId', routes.getAmenityInfo);
 //listing policy
 app.get('/listing/listing_policy/:listingId', routes.getPolicyInfo);
@@ -37,7 +37,7 @@ app.get('/listing/location/:listingId', routes.getLocationInfo);
 app.get('/listing/description/:listingId', routes.getDescriptionInfo);
 
 //Zipcode
-app.get('/getZipcodes/:zipcode', routes.getZipcode);
+app.get('/getZipcodes', routes.getZipcode);
 app.get('/zipcodes', routes.zipcodes);
 
 //Host's Listings
