@@ -30,7 +30,7 @@ export default class Zipcode extends React.Component {
 
         // Map each attribute of a person in this.state.people to an HTML element
         let zipcodeDivs = zipcodeList.map((zipcode, i) => 
-		[<option value={zipcode.zipcode}>{zipcode.zipcode}</option>]
+		[<option value={zipcode[0]}>{zipcode[0]}</option>]
 
         );
         // Set the state of the person list to the value returned by the HTTP response from the server.
