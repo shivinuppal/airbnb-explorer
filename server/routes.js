@@ -13,17 +13,19 @@ var connection = mysql.createPool(config);
 
 function getHostInfo(req, res) {
   var listingId = req.params.listingId;
+  console.log(typeof(listingId)); 
+  //id, host_about, host_response_time, host_response_rate, host_acceptance_rate, host_is_superhost, host_neighbourhoor,
+   // host_listings_total_count, host_identity_verified
+   //WHERE id IN (SELECT host_id FROM Listings WHERE id = ${listingId})
   var query = `
-    SELECT id, host_about, host_response_time, host_response_rate, host_acceptance_rate, host_is_superhost, host_neighborhood,
-    host_total_listings_count, host_identity_verified
+    SELECT *
     FROM Host
-    WHERE id = (SELECT host_id FROM Listing WHERE listing_id = '${listingId}')
-    ;
   `;
-
+  console.log(query); 
   runQuery(query, function(err, rows, fields) {
     if (err) console.log(err);
     else {
+      console.log(rows); 
       res.json(rows);
 
     }
@@ -35,8 +37,7 @@ function getAmenityInfo(req, res) {
   var query = `
     SELECT *
     FROM Amenity
-    WHERE listing_id = '${listingId}'
-    ;
+    WHERE listing_id = ${listingId}
   `;
 
   runQuery(query, function(err, rows, fields) {
@@ -50,12 +51,12 @@ function getAmenityInfo(req, res) {
 
 function getPolicyInfo(req, res) {
   var listingId = req.params.listingId;
+  console.log('policy'); 
   var query = `
-    SELECT cancellation_policy, price, weekly_price, monthly_price, security_deposit, cleaning_fee, extra_people,
-    min_nights, max_nights
-    FROM ListingPolicy
-    WHERE listing_id = '${listingId}'
-    ;
+    SELECT price, weekly_price, monthly_price, cancellation_policy, seurity_deposit AS security_deposit, cleaning_fee, extra_people,
+    minimum_nights AS min_nights, maximum_nights AS max_nights
+    FROM Listing_Policy
+    WHERE listing_id = ${listingId}
   `;
 
   runQuery(query, function(err, rows, fields) {
@@ -71,10 +72,9 @@ function getListingReviewInfo(req, res) {
   var listingId = req.params.listingId;
   var query = `
     SELECT l.number_of_reviews, l.reviews_per_month, r.comments
-    FROM ListingReview l JOIN Reviews r ON l.listing_id = r.listing_id
-    WHERE l.listing_id = '${listingId}'
+    FROM Listing_ReviewS l JOIN Reviews r ON l.listing_id = r.listing_id
+    WHERE l.listing_id = ${listingId}
     LIMIT 5
-    ;
   `;
 
   runQuery(query, function(err, rows, fields) {
@@ -88,12 +88,12 @@ function getListingReviewInfo(req, res) {
 };
 
 function getURLInfo(req, res) {
+  console.log('url'); 
   var listingId = req.params.listingId;
   var query = `
     SELECT listing_url, picture_url
     FROM Url
-    WHERE listing_id = '${listingId}'
-    ;
+    WHERE listing_id = ${listingId}
   `;
 
   runQuery(query, function(err, rows, fields) {
@@ -106,12 +106,12 @@ function getURLInfo(req, res) {
 };
 
 function getLocationInfo(req, res) {
+  console.log('location'); 
   var listingId = req.params.listingId;
   var query = `
     SELECT *
     FROM Location
-    WHERE listing_id = '${listingId}'
-    ;
+    WHERE listing_id = ${listingId}
   `;
 
   runQuery(query, function(err, rows, fields) {
@@ -128,8 +128,7 @@ function getDescriptionInfo(req, res) {
   var query = `
     SELECT *
     FROM Descriptions
-    WHERE listing_id = '${listingId}'
-    ;
+    WHERE listing_id = ${listingId}
   `;
 
   runQuery(query, function(err, rows, fields) {
@@ -229,12 +228,8 @@ function getHostListings(req, res) {
     WHERE p.listing_id IN (SELECT * FROM HostsListing);
 
   `;
-<<<<<<< HEAD
-  connection.query(query, function(err, rows, fields) {
-=======
   console.log(query);
   runQuery(query, function(err, rows, fields) {
->>>>>>> 9b2214f13005e05d468daa204122232437d09c71
     if (err) console.log(err);
     else {
       res.json(rows);

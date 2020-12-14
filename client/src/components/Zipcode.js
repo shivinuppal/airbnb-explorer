@@ -54,15 +54,12 @@ export default class Zipcode extends React.Component {
 	handleGuestsChange(e) {
 		this.setState({
 			guests: e.target.value
-<<<<<<< HEAD
-=======
 		});
 	}
 
 	handleBedsChange(e) {
 		this.setState({
 			beds: e.target.value
->>>>>>> 9b2214f13005e05d468daa204122232437d09c71
 		});
 	}
 
