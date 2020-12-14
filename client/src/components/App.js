@@ -41,7 +41,8 @@ export default class App extends React.Component {
 				
 						<Route
 							exact
-							path="/host"
+							path="/host/:hostId"
+							component={Host} 
 							render={() => (
 								<Host />
 							)}
@@ -54,7 +55,8 @@ export default class App extends React.Component {
 							)}
 						/>
 						<Route
-							path="/listing"
+							path="/listing/:listingId"
+							component={IndividualListing} 
 							render={() => (
 								<IndividualListing />
 							)}
