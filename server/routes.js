@@ -243,8 +243,12 @@ function getHostListings(req, res) {
     WHERE p.listing_id IN (SELECT * FROM HostsListing);
 
   `;
+<<<<<<< HEAD
+  connection.query(query, function(err, rows, fields) {
+=======
   console.log(query);
   runQuery(query, function(err, rows, fields) {
+>>>>>>> 9b2214f13005e05d468daa204122232437d09c71
     if (err) console.log(err);
     else {
       res.json(rows);
