@@ -113,6 +113,8 @@ const address = place.formatted_address,
 Geocode.fromLatLng( newLat , newLng ).then(
    response => {
     const address = response.results[0].formatted_address;
+    this.props.handleLatChange(newLat);
+    this.props.handleLongChange(newLng);
 
 this.setState( {
      address: ( address ) ? address : '',
