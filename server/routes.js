@@ -143,8 +143,6 @@ function getDescriptionInfo(req, res) {
 
 function getZipcode(req, res) {
   console.log("hi");
-  zipcode = req.query.zipcode;
-  console.log(zipcode);
   guests = req.query.guests;
   console.log(guests);
   beds = req.query.beds;
@@ -155,6 +153,7 @@ function getZipcode(req, res) {
   currLong = req.query.longitude;
   console.log("("+currLat+", "+currLong+")");
   var miles = req.query.radius;
+  console.log(miles);
   var date = "2016-"+month+"-"+day;
   console.log(date);
   // I have defaulted current location to the Space Needle
@@ -164,7 +163,7 @@ function getZipcode(req, res) {
           FROM Calendar
           WHERE calendar_date = '${date}'
       ), Distance AS (
-          SELECT zipcode, listing_id, ACOS(SIN(3.14159265358979*${currLat}/180.0)*SIN(3.14159265358979*latitude/180.0)+COS(3.14159265358979*${currLat}/180.0)*COS(3.14159265358979*latitude/180.0)*COS(3.14159265358979*longitude/180.0-3.14159265358979*${currLong}/180.0))*6371 AS dist
+          SELECT listing_id, ACOS(SIN(3.14159265358979*${currLat}/180.0)*SIN(3.14159265358979*latitude/180.0)+COS(3.14159265358979*${currLat}/180.0)*COS(3.14159265358979*latitude/180.0)*COS(3.14159265358979*longitude/180.0-3.14159265358979*${currLong}/180.0))*6371 AS dist
           FROM Location
       ), WithinDistance AS (
           SELECT listing_id, dist
@@ -173,7 +172,7 @@ function getZipcode(req, res) {
       ), AmenityFiltered AS (
           SELECT w.listing_id, a.accommodates AS guests, w.dist AS dist, a.bedrooms
           FROM WithinDistance w JOIN Amenity a ON w.listing_id = a.listing_id
-          WHERE a.accommodates = ${guests} AND a.bedrooms = ${beds}
+          WHERE a.accommodates >= ${guests} AND a.bedrooms >= ${beds}
       ), FilteredAndAvailable AS (
           SELECT a.listing_id, a.price, f.guests, f.dist, f.bedrooms
           FROM Available a JOIN AmenityFiltered f ON a.listing_id = f.listing_id
