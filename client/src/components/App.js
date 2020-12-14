@@ -9,6 +9,7 @@ import IndividualListing from './IndividualListing';
 import Zipcode from './Zipcode';
 import Host from './Host';
 import BestNearby from './BestNearby';
+import MapComponent from './MapComponent';
 
 export default class App extends React.Component {
 
@@ -44,6 +45,13 @@ export default class App extends React.Component {
 							path="/host"
 							render={() => (
 								<Host />
+							)}
+						/>
+						<Route
+							exact
+							path="/map"
+							render={() => (
+								<MapComponent />
 							)}
 						/>
 						<Route

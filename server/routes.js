@@ -203,8 +203,8 @@ function getNearby(req, res) {
 function zipcodes(req, res) {
 
   var query = `
-    SELECT DISTINCT street as zipcode
-    FROM Location
+    SELECT DISTINCT id
+    FROM Host
   `;
   console.log(query);
   runQuery(query, function(err, rows, fields) {
