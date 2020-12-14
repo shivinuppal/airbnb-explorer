@@ -1,7 +1,7 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-export default class ZipcodeRow extends React.Component {
+export default class ListingRow extends React.Component {
 	constructor(props) {
 		super(props);
 	}
@@ -9,10 +9,9 @@ export default class ZipcodeRow extends React.Component {
 	render() {
 		return (
 			<div className="movieResults">
-				
 				<div className="listing_id">{this.props.listing_id}</div>
-				<div className="neighbor">{this.props.neighbor}</div>
-                <div className="zipcode">{this.props.zipcode}</div>
+				<div className="price">{this.props.neighbor}</div>
+                <div className="summary">{this.props.id}</div>
             </div>
 		);
 	}

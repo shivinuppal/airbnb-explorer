@@ -10,6 +10,7 @@ export default class HostRow extends React.Component {
 		return (
 			<div className="hostResults">
                 <div className="id">{"ID: " + this.props.id}</div>
+				<a href={`http://localhost:8081/getHost/${this.props.id}`}>{"HostID: " + this.props.id}</a>
 				<div className="host_about">{"About: " + this.props.host_about}</div>
 				<div className="host_response_time">{"Response Time: " + this.props.host_response_time}</div>
 				<div className="host_response_rate">{"Response Rate: " + this.props.host_response_rate}</div>

@@ -3,7 +3,7 @@
     flex-flow: column wrap;
     margin-top: 10px;
   }
-  
+
   .movies-container .movie, .movies-container .movieResults {
     display: flex;
     flex-flow: row nowrap;
@@ -11,7 +11,7 @@
     height: 40px;
     padding: 0 10px;
   }
-  
+
   .movie .header, .movieResults .listing_id, .movieResults .zipcode, .movieResults .votes, .movieResults .year, .movieResults .rating {
     flex: 1 0 25%;
   }
