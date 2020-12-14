@@ -1,6 +1,6 @@
 import React from 'react';
 import PageNavbar from './PageNavbar';
-import ZipcodeRow from './ListingRow';
+import ZipcodeRow from './ZipcodeRow';
 import '../style/Zipcode.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -12,7 +12,8 @@ export default class Zipcode extends React.Component {
 			selectedZipcode: "0",
 			zipcodeList: [<option value={2}>"l"</option>],
 			guests: 1,
-			beds: 1
+			beds: 1,
+			listings: []
 		};
 
 		this.submitZipcode = this.submitZipcode.bind(this);
@@ -74,15 +75,14 @@ export default class Zipcode extends React.Component {
 
         // Map each attribute of a person in this.state.people to an HTML element
         let zipcodeDivs = zipcodeList.map((zipcode, i) =>
-          <ZipcodeRow id={"row-" + zipcode.listing_id + zipcode.zipcode} listing_id={zipcode.listing_id} zipcode={zipcode.zipcode}
-          neighbor={zipcode.neighbor + "--------."}
+          <ZipcodeRow id={"row-" + zipcode[0]} listing_id={zipcode[0]} guests={zipcode[1]} distance={zipcode[2] + " miles"} bedrooms={zipcode[3]}
 		  />
 
         );
         console.log(zipcodeDivs);
         // Set the state of the person list to the value returned by the HTTP response from the server.
         this.setState({
-          genres: zipcodeDivs
+          listings: zipcodeDivs
         })
 
       })
@@ -116,7 +116,6 @@ export default class Zipcode extends React.Component {
 					<div className="h5"> Guests </div>
 						<div className = "dropdown-container">
 							<select value={this.state.guests} onChange={this.handleGuestsChange} className="dropdown" id="guestsDropdown">
-								<option select value={1}> -- Guests -- </option>
 								<option value={1}> 1 </option>
 								<option value={2}> 2 </option>
 								<option value={3}> 3 </option>
@@ -140,7 +139,6 @@ export default class Zipcode extends React.Component {
 						<div className="h5"> Bedrooms </div>
 						<div className = "dropdown-container">
 							<select value={this.state.beds} onChange={this.handleBedsChange} className="dropdown" id="bedsDropdown">
-							 	<option select value={1}> -- Bedrooms -- </option>
 								<option value={1}> 1 </option>
 								<option value={2}> 2 </option>
 								<option value={3}> 3 </option>
@@ -165,11 +163,12 @@ export default class Zipcode extends React.Component {
 			        <div className="movies-container">
 			          <div className="movie">
 			            <div className="header"><strong>Listing ID</strong></div>
-			            <div className="header"><strong>Neighborhood</strong></div>
-						<div className="header"><strong>Street</strong></div>
+			            <div className="header"><strong>Guests</strong></div>
+						<div className="header"><strong>Distance from Space Needle</strong></div>
+						<div className="header"><strong>Bedrooms</strong></div>
 			          </div>
-			          <div className="movies-container" id="results">
-			            {this.state.genres}
+			          <div className="movies-container" id="movieResults">
+			            {this.state.listings}
 			          </div>
 			        </div>
 			      </div>
