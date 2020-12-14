@@ -1,17 +1,21 @@
 import React from 'react';
 import PageNavbar from './PageNavbar';
 import ZipcodeRow from './ZipcodeRow';
+import SearchBoxMap from './Map'
+
 import '../style/Zipcode.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default class Zipcode extends React.Component {
 	constructor(props) {
 		super(props);
-
+this.handleLatChange = this.handleLatChange;
 		this.state = {
 			selectedZipcode: "0",
 			zipcodeList: [<option value={2}>"l"</option>],
 			guests: 1,
+			latitude: 1,
+			longitude: 1,
 			beds: 1,
 			radius : 1,
 			listings: [],
@@ -25,6 +29,9 @@ export default class Zipcode extends React.Component {
 		this.handleBedsChange = this.handleBedsChange.bind(this);
 		this.handleRadiusChange = this.handleRadiusChange.bind(this);
 		this.handleDayChange = this.handleDayChange.bind(this);
+		this.handleLatChange = this.handleLatChange.bind(this);
+		this.handleLongChange = this.handleLongChange.bind(this);
+		
 		this.handleMonthChange = this.handleMonthChange.bind(this);
 	}
 
@@ -82,6 +89,19 @@ export default class Zipcode extends React.Component {
 		});
 	}
 
+	handleLatChange(lat) {
+		console.log(lat);
+		this.setState({
+			latitude: lat
+		});
+	}
+	handleLongChange(long) {
+		console.log(long);
+		this.setState({
+			longitude: long
+		});
+	}
+
 	handleRadiusChange(e) {
 		this.setState({
 			radius: e.target.value
@@ -125,7 +145,14 @@ export default class Zipcode extends React.Component {
 				<div className="container bestgenres-container">
 			      <div className="jumbotron">
 			        <div className="h2">Find an Airbnb near you!</div>
-
+					<SearchBoxMap
+       google={this.props.google}
+       center={{lat: 47.6204, lng: -122.3367}}
+       height='300px'
+	   zoom={15}
+	   handleLatChange={this.handleLatChange}
+	   handleLongChange={this.handleLongChange}
+      />
 			        <div className="zips-container">
 			          <div className="dropdown-container">
 			            <select value={this.state.selectedZipcode} onChange={this.handleChange} className="dropdown" id="zipcodesDropdown">

@@ -81,8 +81,11 @@ constructor( props ){
 const address = place.formatted_address,
    latValue = place.geometry.location.lat(),
    lngValue = place.geometry.location.lng();
+   this.props.handleLatChange(latValue);
+   this.props.handleLongChange(lngValue);
 // Set these values in the state.
   this.setState({
+    
    address: ( address ) ? address : '',
    markerPosition: {
     lat: latValue,
@@ -147,7 +150,6 @@ const AsyncMap = withScriptjs(
        onPlaceSelected={ this.onPlaceSelected }
        types={[]}
        componentRestrictions={{country: "us"}}
-       bounds={[{lat: 45, lng: -124},{lat:49, lng: -120}]}
       />
 {/*Marker*/}
       <Marker google={this.props.google}
