@@ -1,5 +1,7 @@
 var config = require('./db-config.js');
 var mysql = require('mysql');
+const { runQuery } = require('./oracle-connection.js');
+
 
 config.connectionLimit = 10;
 var connection = mysql.createPool(config);
@@ -19,7 +21,7 @@ function getHostInfo(req, res) {
     ;
   `;
 
-  connection.query(query, function(err, rows, fields) {
+  runQuery(query, function(err, rows, fields) {
     if (err) console.log(err);
     else {
       res.json(rows);
@@ -37,7 +39,7 @@ function getAmenityInfo(req, res) {
     ;
   `;
 
-  connection.query(query, function(err, rows, fields) {
+  runQuery(query, function(err, rows, fields) {
     if (err) console.log(err);
     else {
       res.json(rows);
@@ -56,7 +58,7 @@ function getPolicyInfo(req, res) {
     ;
   `;
 
-  connection.query(query, function(err, rows, fields) {
+  runQuery(query, function(err, rows, fields) {
     if (err) console.log(err);
     else {
       res.json(rows);
@@ -75,7 +77,7 @@ function getListingReviewInfo(req, res) {
     ;
   `;
 
-  connection.query(query, function(err, rows, fields) {
+  runQuery(query, function(err, rows, fields) {
     if (err) console.log(err);
     else {
       console.log(rows);
@@ -94,7 +96,7 @@ function getURLInfo(req, res) {
     ;
   `;
 
-  connection.query(query, function(err, rows, fields) {
+  runQuery(query, function(err, rows, fields) {
     if (err) console.log(err);
     else {
       res.json(rows);
@@ -107,12 +109,12 @@ function getLocationInfo(req, res) {
   var listingId = req.params.listingId;
   var query = `
     SELECT *
-    FROM Locations
+    FROM Location
     WHERE listing_id = '${listingId}'
     ;
   `;
 
-  connection.query(query, function(err, rows, fields) {
+  runQuery(query, function(err, rows, fields) {
     if (err) console.log(err);
     else {
       res.json(rows);
@@ -130,7 +132,7 @@ function getDescriptionInfo(req, res) {
     ;
   `;
 
-  connection.query(query, function(err, rows, fields) {
+  runQuery(query, function(err, rows, fields) {
     if (err) console.log(err);
     else {
       res.json(rows);
@@ -147,7 +149,7 @@ function getZipcode(req, res) {
   var query = `
       WITH Distance AS (
           SELECT street, listing_id, SQRT((47.6205 - latitude) * (47.6205 - latitude) * 4761 + (122.3493 - longitude) * (122.3493 - longitude) * 2981.16) AS dist
-          FROM Locations
+          FROM Location
           WHERE street = "${zipcode}"
       ), WithinDistance AS (
           SELECT listing_id
@@ -163,7 +165,7 @@ function getZipcode(req, res) {
   `;
 
   console.log(query);
-  connection.query(query, function(err, rows, fields) {
+  runQuery(query, function(err, rows, fields) {
     if (err) console.log(err);
     else {
 
@@ -190,7 +192,7 @@ function getNearby(req, res) {
     LIMIT 10;
   `;
   console.log(query);
-  connection.query(query, function(err, rows, fields) {
+  runQuery(query, function(err, rows, fields) {
     if (err) console.log(err);
     else {
       res.json(rows);
@@ -202,10 +204,10 @@ function zipcodes(req, res) {
 
   var query = `
     SELECT DISTINCT street as zipcode
-    FROM Locations
+    FROM Location
   `;
   console.log(query);
-  connection.query(query, function(err, rows, fields) {
+  runQuery(query, function(err, rows, fields) {
     if (err) console.log(err);
     else {
       console.log(rows);
@@ -228,7 +230,7 @@ function getHostListings(req, res) {
 
   `;
   console.log(query);
-  connection.query(query, function(err, rows, fields) {
+  runQuery(query, function(err, rows, fields) {
     if (err) console.log(err);
     else {
       res.json(rows);
@@ -244,7 +246,7 @@ function hosts(req, res) {
     FROM Host
   `;
   console.log(query);
-  connection.query(query, function(err, rows, fields) {
+  runQuery(query, function(err, rows, fields) {
     if (err) console.log(err);
     else {
       console.log(rows);

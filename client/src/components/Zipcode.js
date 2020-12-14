@@ -32,7 +32,7 @@ export default class Zipcode extends React.Component {
 
         // Map each attribute of a person in this.state.people to an HTML element
         let zipcodeDivs = zipcodeList.map((zipcode, i) =>
-		[<option value={zipcode.zipcode}>{zipcode.zipcode}</option>]
+		[<option value={zipcode[0]}>{zipcode[0]}</option>]
 
         );
         // Set the state of the person list to the value returned by the HTTP response from the server.
@@ -64,7 +64,7 @@ export default class Zipcode extends React.Component {
 	}
 
 	submitZipcode() {
-		fetch("http://localhost:8081/getZipcodes/?zipcode="+this.state.selectedZipcode + "&guests=" + "this.state.guests" + "&beds="{this.state.beds}, {
+		fetch("http://localhost:8081/getZipcodes/?zipcode="+this.state.selectedZipcode + "&guests=" + "this.state.guests" + "&beds="+this.state.beds, {
       method: 'GET' // The type of HTTP request.
     })
       .then(res => res.json()) // Convert the response data to a JSON.
