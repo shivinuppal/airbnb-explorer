@@ -142,26 +142,40 @@ function getDescriptionInfo(req, res) {
 };
 
 function getZipcode(req, res) {
-  zipcode = req.params.zipcode;
-  guests = req.params.guests;
+  console.log("hi");
+  zipcode = req.query.zipcode;
+  console.log(zipcode);
+  guests = req.query.guests;
+  console.log(guests);
+  beds = req.query.beds;
+  console.log(beds);
+  var currLat = 47.6205;
+  var currLong = -122.3493;
+  var miles = 2.5;
 
   // I have defaulted current location to the Space Needle
+
+  var query = `
+      SELECT listing_id, ACOS(SIN(3.14159265358979*${currLat}/180.0)*SIN(3.14159265358979*latitude/180.0)+COS(3.14159265358979*${currLat}/180.0)*COS(3.14159265358979*latitude/180.0)*COS(3.14159265358979*longitude/180.0-3.14159265358979*${currLong}/180.0))*6371 AS dist
+      FROM Location
+      WHERE street = '${zipcode}'
+  `;
+
+
+
   var query = `
       WITH Distance AS (
-          SELECT street, listing_id, SQRT((47.6205 - latitude) * (47.6205 - latitude) * 4761 + (122.3493 - longitude) * (122.3493 - longitude) * 2981.16) AS dist
+          SELECT street, listing_id, ACOS(SIN(3.14159265358979*${currLat}/180.0)*SIN(3.14159265358979*latitude/180.0)+COS(3.14159265358979*${currLat}/180.0)*COS(3.14159265358979*latitude/180.0)*COS(3.14159265358979*longitude/180.0-3.14159265358979*${currLong}/180.0))*6371 AS dist
           FROM Location
-          WHERE street = "${zipcode}"
+          WHERE street = '${zipcode}'
       ), WithinDistance AS (
-          SELECT listing_id
+          SELECT listing_id, dist
           FROM Distance
-          WHERE dist < 500
-      ), AmenityFiltered AS (
-          SELECT w.listing_id, a.accommodates AS guests
-          FROM WithinDistance w JOIN Amenity a ON w.listing_id = a.listing_id
-          WHERE a.accommodates >= ${guests};
+          WHERE dist < ${miles}
       )
-      SELECT w.listing_id, d.name, d.summary, d.neighborhood_overview
-      FROM WithinDistance w JOIN Descriptions d ON w.listing_id = d.listing_id;
+          SELECT w.listing_id, a.accommodates AS guests, ROUND(w.dist, 2) AS dist, a.bedrooms
+          FROM WithinDistance w JOIN Amenity a ON w.listing_id = a.listing_id
+          WHERE a.accommodates >= ${guests} AND a.bedrooms >= ${beds}
   `;
 
   console.log(query);
