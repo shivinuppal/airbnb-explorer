@@ -13,6 +13,7 @@ export default class Zipcode extends React.Component {
 			zipcodeList: [<option value={2}>"l"</option>],
 			guests: 1,
 			beds: 1,
+			radius : 1,
 			listings: []
 		};
 
@@ -20,6 +21,7 @@ export default class Zipcode extends React.Component {
 		this.handleChange = this.handleChange.bind(this);
 		this.handleGuestsChange = this.handleGuestsChange.bind(this);
 		this.handleBedsChange = this.handleBedsChange.bind(this);
+		this.handleRadiusChange = this.handleRadiusChange.bind(this);
 	}
 
 	componentDidMount() {
@@ -64,8 +66,14 @@ export default class Zipcode extends React.Component {
 		});
 	}
 
+	handleRadiusChange(e) {
+		this.setState({
+			radius: e.target.value
+		});
+	}
+
 	submitZipcode() {
-		fetch("http://localhost:8081/getZipcodes?zipcode="+this.state.selectedZipcode+"&guests="+this.state.guests+"&beds="+this.state.beds, {
+		fetch("http://localhost:8081/getZipcodes?zipcode="+this.state.selectedZipcode+"&guests="+this.state.guests+"&beds="+this.state.beds+"&radius="+this.state.radius, {
       method: 'GET' // The type of HTTP request.
     })
       .then(res => res.json()) // Convert the response data to a JSON.
@@ -111,6 +119,25 @@ export default class Zipcode extends React.Component {
 			            <button className="submit-btn" id="zipcodesSubmitBtn" onClick={this.submitZipcode}>Submit</button>
 			          </div>
 			        </div>
+
+
+					<div className="radius-container">
+						<div className="h5"> Radius </div>
+						<div className = "dropdown-container">
+							<select value={this.state.radius} onChange={this.handleRadiusChange} className="dropdown" id="radiusDropdown">
+								<option value={1}> 1 mile </option>
+								<option value={2}> 2 miles </option>
+								<option value={3}> 3 miles </option>
+								<option value={4}> 4 miles </option>
+								<option value={5}> 5 miles </option>
+								<option value={6}> 6 miles </option>
+								<option value={7}> 7 miles </option>
+								<option value={8}> 8 miles </option>
+								<option value={9}> 9 miles </option>
+								<option value={10}> 10 miles </option>
+							</select>
+						</div>
+					</div>
 
 					<div className="guests-container">
 					<div className="h5"> Guests </div>
