@@ -45,13 +45,13 @@ export default class Zipcode extends React.Component {
 
 	handleChange(e) {
 		this.setState({
-			selectedZipcode: e.target.value,
+			selectedZipcode: e.target.value
 		});
 	}
 
 	handleGuestsChange(e) {
 		this.setState({
-			guests: e.target.value;
+			guests: e.target.value
 		});
 	}
 

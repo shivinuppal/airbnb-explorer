@@ -1,5 +1,6 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import IndividualListing from './IndividualListing';
 
 export default class PageNavbar extends React.Component {
 	constructor(props) {
