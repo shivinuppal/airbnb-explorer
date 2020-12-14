@@ -151,8 +151,9 @@ function getZipcode(req, res) {
   console.log(beds);
   month = req.query.month;
   day = req.query.day;
-  var currLat = 47.6205;
-  var currLong = -122.3493;
+  currLat = req.query.latitude;
+  currLong = req.query.longitude;
+  console.log("("+currLat+", "+currLong+")");
   var miles = req.query.radius;
   var date = "2016-"+month+"-"+day;
   console.log(date);
@@ -165,7 +166,6 @@ function getZipcode(req, res) {
       ), Distance AS (
           SELECT zipcode, listing_id, ACOS(SIN(3.14159265358979*${currLat}/180.0)*SIN(3.14159265358979*latitude/180.0)+COS(3.14159265358979*${currLat}/180.0)*COS(3.14159265358979*latitude/180.0)*COS(3.14159265358979*longitude/180.0-3.14159265358979*${currLong}/180.0))*6371 AS dist
           FROM Location
-          WHERE zipcode = '${zipcode}'
       ), WithinDistance AS (
           SELECT listing_id, dist
           FROM Distance
@@ -173,15 +173,14 @@ function getZipcode(req, res) {
       ), AmenityFiltered AS (
           SELECT w.listing_id, a.accommodates AS guests, w.dist AS dist, a.bedrooms
           FROM WithinDistance w JOIN Amenity a ON w.listing_id = a.listing_id
-          WHERE a.accommodates >= ${guests} AND a.bedrooms >= ${beds}
+          WHERE a.accommodates = ${guests} AND a.bedrooms = ${beds}
       ), FilteredAndAvailable AS (
           SELECT a.listing_id, a.price, f.guests, f.dist, f.bedrooms
           FROM Available a JOIN AmenityFiltered f ON a.listing_id = f.listing_id
       )
       SELECT a.listing_id, a.guests, ROUND(a.dist, 2) AS dist, a.bedrooms, d.name, d.summary, d.description, a.price
       FROM Descriptions d JOIN FilteredAndAvailable a ON d.listing_id = a.listing_id
-      ORDER BY ROUND(a.dist, 1), a.guests
-
+      ORDER BY ROUND(a.dist, 1)
   `;
 
   console.log(query);

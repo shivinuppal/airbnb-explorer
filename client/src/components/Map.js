@@ -7,12 +7,14 @@ import Autocomplete from 'react-google-autocomplete';
 import Geocode from "react-geocode";
 Geocode.setApiKey("AIzaSyAEQxbsOaMUqLssMg8VydzIrATb6Et0dus");
 Geocode.enableDebug();
+
+
 class SearchBoxMap extends React.Component{
 constructor( props ){
   super( props );
   this.state = {
    address: '',
-   
+
    mapPosition: {
     lat: this.props.center.lat,
     lng: this.props.center.lng
@@ -30,8 +32,8 @@ constructor( props ){
   Geocode.fromLatLng( this.state.mapPosition.lat , this.state.mapPosition.lng ).then(
    response => {
     const address = response.results[0].formatted_address;//,
-  
-    
+
+
     this.setState( {
      address: ( address ) ? address : '',
     } )
@@ -51,7 +53,7 @@ constructor( props ){
  shouldComponentUpdate( nextProps, nextState ){
   if (
    this.state.markerPosition.lat !== this.props.center.lat ||
-   this.state.address !== nextState.address 
+   this.state.address !== nextState.address
   ) {
    return true
   } else if ( this.props.center.lat === nextProps.center.lat ){
@@ -108,10 +110,10 @@ const address = place.formatted_address,
 Geocode.fromLatLng( newLat , newLng ).then(
    response => {
     const address = response.results[0].formatted_address;
-    
+
 this.setState( {
      address: ( address ) ? address : '',
-     
+
      markerPosition: {
       lat: newLat,
       lng: newLng
@@ -173,7 +175,7 @@ const AsyncMap = withScriptjs(
 let map;
   if( this.props.center.lat !== undefined ) {
    map = <div>
-     
+
      <AsyncMap
       googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAEQxbsOaMUqLssMg8VydzIrATb6Et0dus&libraries=places"
       loadingElement={
