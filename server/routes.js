@@ -149,13 +149,20 @@ function getZipcode(req, res) {
   console.log(guests);
   beds = req.query.beds;
   console.log(beds);
+  month = req.query.month;
+  day = req.query.day;
   var currLat = 47.6205;
   var currLong = -122.3493;
   var miles = req.query.radius;
-
+  var date = "2016-"+month+"-"+day;
+  console.log(date);
   // I have defaulted current location to the Space Needle
   var query = `
-      WITH Distance AS (
+      WITH Available AS (
+          SELECT listing_id, price
+          FROM Calendar
+          WHERE calendar_date = '${date}'
+      ), Distance AS (
           SELECT zipcode, listing_id, ACOS(SIN(3.14159265358979*${currLat}/180.0)*SIN(3.14159265358979*latitude/180.0)+COS(3.14159265358979*${currLat}/180.0)*COS(3.14159265358979*latitude/180.0)*COS(3.14159265358979*longitude/180.0-3.14159265358979*${currLong}/180.0))*6371 AS dist
           FROM Location
           WHERE zipcode = '${zipcode}'
@@ -164,13 +171,15 @@ function getZipcode(req, res) {
           FROM Distance
           WHERE dist < ${miles} - 0.1
       ), AmenityFiltered AS (
-          SELECT w.listing_id, a.accommodates AS guests, ROUND(w.dist, 2) AS dist, a.bedrooms
+          SELECT w.listing_id, a.accommodates AS guests, w.dist AS dist, a.bedrooms
           FROM WithinDistance w JOIN Amenity a ON w.listing_id = a.listing_id
           WHERE a.accommodates >= ${guests} AND a.bedrooms >= ${beds}
-
+      ), FilteredAndAvailable AS (
+          SELECT a.listing_id, a.price, f.guests, f.dist, f.bedrooms
+          FROM Available a JOIN AmenityFiltered f ON a.listing_id = f.listing_id
       )
-      SELECT a.listing_id, a.guests, ROUND(a.dist, 2) AS dist, a.bedrooms, d.name, d.summary, d.description
-      FROM Descriptions d JOIN AmenityFiltered a ON d.listing_id = a.listing_id
+      SELECT a.listing_id, a.guests, ROUND(a.dist, 2) AS dist, a.bedrooms, d.name, d.summary, d.description, a.price
+      FROM Descriptions d JOIN FilteredAndAvailable a ON d.listing_id = a.listing_id
       ORDER BY ROUND(a.dist, 1), a.guests
 
   `;
