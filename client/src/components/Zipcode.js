@@ -6,6 +6,7 @@ import SearchBoxMap from './Map'
 import '../style/Zipcode.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+
 export default class Zipcode extends React.Component {
 	constructor(props) {
 		super(props);
@@ -19,8 +20,8 @@ this.handleLatChange = this.handleLatChange;
 			beds: 1,
 			radius : 1,
 			listings: [],
-			day: 1,
-			month: 1
+			day: "01",
+			month: "01"
 		};
 
 		this.submitZipcode = this.submitZipcode.bind(this);
@@ -33,6 +34,7 @@ this.handleLatChange = this.handleLatChange;
 		this.handleLongChange = this.handleLongChange.bind(this);
 		
 		this.handleMonthChange = this.handleMonthChange.bind(this);
+
 	}
 
 	componentDidMount() {
@@ -108,8 +110,11 @@ this.handleLatChange = this.handleLatChange;
 		});
 	}
 
+	
+
 	submitZipcode() {
-		fetch("http://localhost:8081/getZipcodes?zipcode="+this.state.selectedZipcode+"&guests="+this.state.guests+"&beds="+this.state.beds+"&radius="+this.state.radius+"&month="+this.state.month+"&day="+this.state.day, {
+		fetch("http://localhost:8081/getZipcodes?zipcode="+this.state.selectedZipcode+"&guests="+this.state.guests+"&beds="+this.state.beds+"&radius="+this.state.radius+"&month="+this.state.month+"&day="+this.state.day+
+						"&latitude=" + this.state.latitude + "&longitude="+this.state.longitude, {
       method: 'GET' // The type of HTTP request.
     })
       .then(res => res.json()) // Convert the response data to a JSON.
@@ -134,7 +139,15 @@ this.handleLatChange = this.handleLatChange;
 
 	}
 
-
+	// <div className="zips-container">
+	//   <div className="dropdown-container">
+	// 	<select value={this.state.selectedZipcode} onChange={this.handleChange} className="dropdown" id="zipcodesDropdown">
+	// 		<option select value> -- select an option -- </option>
+	// 		{this.state.zipcodeList}
+	// 	</select>
+	//
+	//   </div>
+	// </div>
 
 	render() {
 
