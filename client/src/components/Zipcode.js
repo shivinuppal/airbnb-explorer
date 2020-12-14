@@ -15,8 +15,8 @@ this.handleLatChange = this.handleLatChange;
 			selectedZipcode: "0",
 			zipcodeList: [<option value={2}>"l"</option>],
 			guests: 1,
-			latitude: 1,
-			longitude: 1,
+			latitude: 44.1,
+			longitude: -133.2,
 			beds: 1,
 			radius : 1,
 			listings: [],
@@ -32,7 +32,7 @@ this.handleLatChange = this.handleLatChange;
 		this.handleDayChange = this.handleDayChange.bind(this);
 		this.handleLatChange = this.handleLatChange.bind(this);
 		this.handleLongChange = this.handleLongChange.bind(this);
-		
+
 		this.handleMonthChange = this.handleMonthChange.bind(this);
 
 	}
@@ -110,7 +110,7 @@ this.handleLatChange = this.handleLatChange;
 		});
 	}
 
-	
+
 
 	submitZipcode() {
 		fetch("http://localhost:8081/getZipcodes?zipcode="+this.state.selectedZipcode+"&guests="+this.state.guests+"&beds="+this.state.beds+"&radius="+this.state.radius+"&month="+this.state.month+"&day="+this.state.day+
@@ -166,15 +166,7 @@ this.handleLatChange = this.handleLatChange;
 	   handleLatChange={this.handleLatChange}
 	   handleLongChange={this.handleLongChange}
       />
-			        <div className="zips-container">
-			          <div className="dropdown-container">
-			            <select value={this.state.selectedZipcode} onChange={this.handleChange} className="dropdown" id="zipcodesDropdown">
-			            	<option select value> -- select an option -- </option>
-			            	{this.state.zipcodeList}
-			            </select>
-
-			          </div>
-			        </div>
+			        
 
 
 					<div className="radius-container">
