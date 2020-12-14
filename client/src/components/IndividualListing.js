@@ -5,6 +5,7 @@ import AmenityRow from './AmenityRow';
 import DescriptionRow from './DescriptionRow';
 import ReviewRow from './ReviewRow';
 import Host from './Host';
+import PolicyRow from './PolicyRow';
 import '../style/IndividualListing.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -21,6 +22,7 @@ export default class IndividualListing extends React.Component {
 			urlInfo: "",
 			descriptionInfo: "", 
 			reviewInfo: "", 
+			policyInfo: "", 
 			reviewComments: []
 		}
 
@@ -50,11 +52,11 @@ export default class IndividualListing extends React.Component {
 	*/	Promise.all([
 			fetch("http://localhost:8081/listing/host/" + this.state.listingId),
 			fetch("http://localhost:8081/listing/amenity/" + this.state.listingId),
-			fetch("http://localhost:8081/listing/listing_review/" + this.state.listingId),
+			fetch("http://localhost:8081/listing/listing_policy/" + this.state.listingId),
 			fetch("http://localhost:8081/listing/url/" + this.state.listingId),
 			fetch("http://localhost:8081/listing/location/" + this.state.listingId),
-			fetch("http://localhost:8081/listing/description/" + this.state.listingId)
-		//	fetch("http://localhost:8081/listing/listing_policy/" + this.state.listingId),
+		//	fetch("http://localhost:8081/listing/description/" + this.state.listingId)
+		//  fetch("http://localhost:8081/listing/listing_review/" + this.state.listingId)
 		]) 
 			.then(res => Promise.all(res.map(response => response.json())))
 			.then(infoList => {
@@ -63,25 +65,25 @@ export default class IndividualListing extends React.Component {
 				if (infoList[3].length !== 0) {
 					urlDiv = infoList[3][0].picture_url;
 				}
-				let hostDiv =
+		/*		let hostDiv =
 					<HostRow id={infoList[0][0].id} host_about={infoList[0][0].host_about}
 						host_response_time={infoList[0][0].host_response_time} host_response_rate={infoList[0][0].host_response_rate}
 						host_acceptance_rate={infoList[0][0].host_acceptance_rate} host_is_superhost={infoList[0][0].host_is_superhost}
 						host_neighborhood={infoList[0][0].host_neighborhood} host_total_listings_count={infoList[0][0].host_total_listings_count}
 						host_identity_verified={infoList[0][0].host_identity_verified}
-					/>
-				let descriptionDiv = <DescriptionRow name={infoList[5][0].name} description={infoList[5][0].description}
+					/> */
+	/*			let descriptionDiv = <DescriptionRow name={infoList[5][0].name} description={infoList[5][0].description}
 					neighbourhood_cleansed={infoList[4][0].neighbourhood_cleansed} neighborhood_overview={infoList[4][0].neighborhood_overview}
 					zipcode={infoList[4][0].zipcode} transit={infoList[5][0].transit}
-				/>
+				/> */
 				let amenityDiv =
-					<AmenityRow property_type={infoList[1][0].property_type} room_type={infoList[1][0].room_type}
-						accommodates={infoList[1][0].accommodates} bathrooms={infoList[1][0].bathrooms}
-						bedrooms={infoList[1][0].bedrooms} beds={infoList[1][0].beds} 
-						bed_type={infoList[1][0].bed_type} amenities={infoList[1][0].amenities} 
-						square_feet={infoList[1][0].square_feet} guests_included={infoList[1][0].guests_included} 
+					<AmenityRow property_type={infoList[1][0][2]} room_type={infoList[1][0][3]}
+						accommodates={infoList[1][0][3]} bathrooms={infoList[1][0][4]}
+						bedrooms={infoList[1][0][5]} beds={infoList[1][0][6]} 
+						bed_type={infoList[1][0][7]} amenities={infoList[1][0][8]} 
+						square_feet={infoList[1][0][9]} guests_included={infoList[1][0][10]} 
 						/>
-				let reviewDivComments = ""; 
+		/*		let reviewDivComments = ""; 
 				let reviewDiv = ""; 
 				if (infoList[2].length !== 0) {
 					console.log(infoList[2][2].comments);
@@ -91,15 +93,21 @@ export default class IndividualListing extends React.Component {
 					reviewDiv = <ReviewRow number_of_reviews={infoList[2][0].number_of_reviews} 
 					reviews_per_month={infoList[2][0].reviews_per_month}/>
 					
-				}
+				} */
 				
+				let policyDiv = 
+				<PolicyRow price={infoList[1][0][0]} weekly_price={infoList[1][0][3]}
+				monthly_price={infoList[1][0][3]} cancellation_policy={infoList[1][0][4]}
+				security_deposit={infoList[1][0][5]} cleaning_fee={infoList[1][0][6]} 
+				min_nights={infoList[1][0][7]} max_nights={infoList[1][0][8]} />
 				this.setState({
-					hostInfo: hostDiv,
+				//	hostInfo: hostDiv,
 					amenityInfo: amenityDiv,
 					urlInfo: urlDiv,
-					descriptionInfo: descriptionDiv, 
-					reviewInfo: reviewDiv,
-					reviewComments: reviewDivComments
+				//	descriptionInfo: descriptionDiv, 
+				//	reviewInfo: reviewDiv,
+				//	reviewComments: reviewDivComments,
+					policyInfo: policyDiv
 				});
 
 			});
@@ -139,9 +147,9 @@ export default class IndividualListing extends React.Component {
 									</div>
 								</div>
 								<div className="column">
-									<div className="header"><strong>Price</strong></div>
+									<div className="header"><strong>Policies</strong></div>
 									<div className="descriptionResults" id="results">
-										PLACE HOLDER UNTIL LISTING POLICY GETS UPLOADED
+										{this.state.policyInfo}
 									</div>
 									<div className="header"><strong>Reviews</strong></div>
 									<div className="reviewResults" id="results">
