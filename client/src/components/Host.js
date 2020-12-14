@@ -47,7 +47,7 @@ export default class Host extends React.Component {
 		});
 	}
 
-	export submitHostId(host_id) {
+	submitHostId(host_id) {
 		//console.log(this.state.hostId);
 		fetch("http://localhost:8081/getHost/" + host_id, {
       method: 'GET' // The type of HTTP request.
