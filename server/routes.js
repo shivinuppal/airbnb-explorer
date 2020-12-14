@@ -14,13 +14,13 @@ var connection = mysql.createPool(config);
 function getHostInfo(req, res) {
   var listingId = req.params.listingId;
   console.log(typeof(listingId));
-  //id, host_about, host_response_time, host_response_rate, host_acceptance_rate, host_is_superhost, host_neighbourhoor,
-   // host_listings_total_count, host_identity_verified
-   //WHERE id IN (SELECT host_id FROM Listings WHERE id = ${listingId})
+  //
+   //
   var query = `
-    SELECT *
+    SELECT DISTINCT id, host_about, host_response_time, host_response_rate, host_acceptance_rate, host_is_superhost, host_neighbourhood,
+    host_total_listings_count, host_identity_verified
     FROM Host
-    WHERE id IN (SELECT host_id FROM Listings WHERE id = ${listingId})
+    WHERE id IN (SELECT host_id FROM Listings WHERE listing_id = ${listingId})
   `;
   console.log(query);
   runQuery(query, function(err, rows, fields) {
@@ -70,12 +70,12 @@ function getPolicyInfo(req, res) {
 };
 
 function getListingReviewInfo(req, res) {
+  console.log('review');
   var listingId = req.params.listingId;
   var query = `
     SELECT l.number_of_reviews, l.reviews_per_month, r.comments
     FROM Listing_ReviewS l JOIN Reviews r ON l.listing_id = r.listing_id
-    WHERE l.listing_id = ${listingId}
-    LIMIT 5
+    WHERE l.listing_id = ${listingId} AND ROWNUM <= 5 
   `;
 
   runQuery(query, function(err, rows, fields) {
@@ -125,6 +125,7 @@ function getLocationInfo(req, res) {
 };
 
 function getDescriptionInfo(req, res) {
+  console.log('description');
   var listingId = req.params.listingId;
   var query = `
     SELECT *
@@ -232,12 +233,17 @@ function getHostListings(req, res) {
   hostId = req.params.hostId;
 
   var query = `
-  WITH HostsListing AS (SELECT listing_id
-    FROM Listing
+  WITH HostsListing AS (SELECT listing_id, host_id
+    FROM Listings
+    WHERE host_id = ${hostId}), 
+  WITH HostInfo AS ( SELECT id, host_about, host_response_time, host_response_rate, host_acceptance_rate, host_is_superhost, host_neighbourhood,
+    host_total_listings_count, host_identity_verified
+    FROM Host
     WHERE host_id = ${hostId})
-    SELECT p.listing_id as listing_id, p.price as price, d.summary as summary
-    FROM listing_policy p JOIN Descriptions d ON p.listing_id = d.listing_id
-    WHERE p.listing_id IN (SELECT * FROM HostsListing);
+    SELECT p.listing_id as listing_id, p.price as price, d.name as name, h.id, h.host_about, h.host_response_time, h.host_response_rate, h.host_acceptance_rate, h.host_is_superhost, h.host_neighbourhood,
+    h.host_total_listings_count, h.host_identity_verified
+    FROM listing_policy p JOIN Descriptions d ON p.listing_id = d.listing_id JOIN HostInfo h
+    WHERE p.listing_id IN (SELECT * FROM HostsListing)
 
   `;
   console.log(query);

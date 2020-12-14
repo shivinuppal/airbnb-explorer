@@ -16,7 +16,7 @@ export default class IndividualListing extends React.Component {
 		// State maintained by this React component is the selected movie name,
 		// and the list of recommended movies.
 		this.state = {
-			listingId: "",
+			listingId: this.props.match.params.listingId,
 			hostInfo: "",
 			amenityInfo: "",
 			urlInfo: "",
@@ -37,45 +37,35 @@ export default class IndividualListing extends React.Component {
 	}
 
 	/* ---- Getting all Information about a ListingID ---- */
-	submitListingId(listing_id) {
-		console.log(this.state.listingId);
-		console.log(listing_id); 
-	/*	Promise.all([
-			fetch("http://localhost:8081/listing/host/" + listing_id),
-			fetch("http://localhost:8081/listing/amenity/" + listing_id),
-			fetch("http://localhost:8081/listing/listing_review/" + listing_id),
-			fetch("http://localhost:8081/listing/url/" + listing_id),
-			fetch("http://localhost:8081/listing/location/" + listing_id),
-			fetch("http://localhost:8081/listing/description/" + listing_id)
-		//	fetch("http://localhost:8081/listing/listing_policy/" + this.state.listingId),
-		])
-	*/	Promise.all([
+	componentDidMount() {
+		Promise.all([
 			fetch("http://localhost:8081/listing/host/" + this.state.listingId),
 			fetch("http://localhost:8081/listing/amenity/" + this.state.listingId),
 			fetch("http://localhost:8081/listing/listing_policy/" + this.state.listingId),
 			fetch("http://localhost:8081/listing/url/" + this.state.listingId),
 			fetch("http://localhost:8081/listing/location/" + this.state.listingId),
-		//	fetch("http://localhost:8081/listing/description/" + this.state.listingId)
-		//  fetch("http://localhost:8081/listing/listing_review/" + this.state.listingId)
+			fetch("http://localhost:8081/listing/description/" + this.state.listingId),
+		    fetch("http://localhost:8081/listing/listing_review/" + this.state.listingId)
 		]) 
 			.then(res => Promise.all(res.map(response => response.json())))
 			.then(infoList => {
 				console.log(infoList);
 				let urlDiv = ""; 
+				console.log(infoList[3]);
 				if (infoList[3].length !== 0) {
-					urlDiv = infoList[3][0].picture_url;
+					urlDiv = infoList[3][0][1];
 				}
-		/*		let hostDiv =
-					<HostRow id={infoList[0][0].id} host_about={infoList[0][0].host_about}
-						host_response_time={infoList[0][0].host_response_time} host_response_rate={infoList[0][0].host_response_rate}
-						host_acceptance_rate={infoList[0][0].host_acceptance_rate} host_is_superhost={infoList[0][0].host_is_superhost}
-						host_neighborhood={infoList[0][0].host_neighborhood} host_total_listings_count={infoList[0][0].host_total_listings_count}
-						host_identity_verified={infoList[0][0].host_identity_verified}
-					/> */
-	/*			let descriptionDiv = <DescriptionRow name={infoList[5][0].name} description={infoList[5][0].description}
-					neighbourhood_cleansed={infoList[4][0].neighbourhood_cleansed} neighborhood_overview={infoList[4][0].neighborhood_overview}
-					zipcode={infoList[4][0].zipcode} transit={infoList[5][0].transit}
-				/> */
+				let hostDiv =
+					<HostRow id={infoList[0][0][0]} host_about={infoList[0][0][1]}
+						host_response_time={infoList[0][0][2]} host_response_rate={infoList[0][0][3]}
+						host_acceptance_rate={infoList[0][0][4]} host_is_superhost={infoList[0][0][5]}
+						host_neighborhood={infoList[0][0][6]} host_total_listings_count={infoList[0][0][7]}
+						host_identity_verified={infoList[0][0][8]}
+					/> 
+				let descriptionDiv = <DescriptionRow name={infoList[5][0][1]} description={infoList[5][0][2]}
+					neighbourhood_cleansed={infoList[4][0][3]} neighborhood_overview={infoList[4][0][4]}
+					zipcode={infoList[4][0][5]} transit={infoList[5][0].[6]}
+				/> 
 				let amenityDiv =
 					<AmenityRow property_type={infoList[1][0][2]} room_type={infoList[1][0][3]}
 						accommodates={infoList[1][0][3]} bathrooms={infoList[1][0][4]}
@@ -83,30 +73,29 @@ export default class IndividualListing extends React.Component {
 						bed_type={infoList[1][0][7]} amenities={infoList[1][0][8]} 
 						square_feet={infoList[1][0][9]} guests_included={infoList[1][0][10]} 
 						/>
-		/*		let reviewDivComments = ""; 
+				let reviewDivComments = ""; 
 				let reviewDiv = ""; 
-				if (infoList[2].length !== 0) {
-					console.log(infoList[2][2].comments);
-					reviewDivComments = infoList[2].map((review, i) =>
-					<div key={i} className="comment">Comment: {review.comments}</div>
+				if (infoList[6].length !== 0) {
+					reviewDivComments = infoList[6].map((review, i) =>
+					<div key={i} className="comment">Comment: {review[2]}</div>
 					);
-					reviewDiv = <ReviewRow number_of_reviews={infoList[2][0].number_of_reviews} 
-					reviews_per_month={infoList[2][0].reviews_per_month}/>
+					reviewDiv = <ReviewRow number_of_reviews={infoList[2][0][0]} 
+					reviews_per_month={infoList[2][0][1]}/>
 					
-				} */
+				} 
 				
 				let policyDiv = 
-				<PolicyRow price={infoList[1][0][0]} weekly_price={infoList[1][0][3]}
-				monthly_price={infoList[1][0][3]} cancellation_policy={infoList[1][0][4]}
-				security_deposit={infoList[1][0][5]} cleaning_fee={infoList[1][0][6]} 
-				min_nights={infoList[1][0][7]} max_nights={infoList[1][0][8]} />
+				<PolicyRow price={infoList[2][0][0]} weekly_price={infoList[2][0][1]}
+				monthly_price={infoList[2][0][2]} cancellation_policy={infoList[2][0][3]}
+				security_deposit={infoList[2][0][4]} cleaning_fee={infoList[2][0][5]} 
+				min_nights={infoList[2][0][6]} max_nights={infoList[2][0][7]} />
 				this.setState({
-				//	hostInfo: hostDiv,
+					hostInfo: hostDiv,
 					amenityInfo: amenityDiv,
 					urlInfo: urlDiv,
-				//	descriptionInfo: descriptionDiv, 
-				//	reviewInfo: reviewDiv,
-				//	reviewComments: reviewDivComments,
+					descriptionInfo: descriptionDiv, 
+					reviewInfo: reviewDiv,
+					reviewComments: reviewDivComments,
 					policyInfo: policyDiv
 				});
 
@@ -121,12 +110,6 @@ export default class IndividualListing extends React.Component {
 
 				<div className="container listing-container">
 					<div className="jumbotron" id="jumbo">
-						<div className="h5">IndividualListing</div>
-						<br></br>
-						<div className="input-container">
-							<input type='text' placeholder="Enter Listing Id" value={this.state.listingId} onChange={this.handleListingId} id="listingId" className="movie-input" />
-							<button id="submitListingId" className="submit-btn" onClick={this.submitListingId}>Submit</button>
-						</div>
 						<div className="listing-container">
 							<div className="row">
 								<div className="column">
