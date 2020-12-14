@@ -2,6 +2,6 @@
 module.exports = {
   host: "fling.seas.upenn.edu",
   user: "dsri",
-  password: "G@nesh@n2000",
+  password: "",
   database: "dsri"
 };
