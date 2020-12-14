@@ -6,12 +6,17 @@
 
   .movies-container .movie, .movies-container .movieResults {
     display: flex;
-    flex-flow: row nowrap;
+    flex-flow: column wrap;
     align-items: center;
-    height: 40px;
-    padding: 0 10px;
   }
 
-  .movie .header, .movieResults .listing_id, .movieResults .zipcode, .movieResults .votes, .movieResults .year, .movieResults .rating {
+  .movie .header, .movieResults .listing_id, .movieResults .guests, .movieResults .distance, .movieResults .bedrooms {
     flex: 1 0 25%;
+  }
+
+  .th {
+    padding: 50px;
+  }
+  .td {
+    padding: 50px;
   }

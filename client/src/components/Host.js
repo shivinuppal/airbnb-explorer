@@ -10,7 +10,7 @@ export default class Host extends React.Component {
 
 		this.state = {
 			hostId: "",
-			allHosts: [<option value={2}>"l"</option>],
+			allHosts: [],
 			listings: []
 		};
 
@@ -47,19 +47,18 @@ export default class Host extends React.Component {
 		});
 	}
 
-	submitHostId() {
-		fetch("http://localhost:8081/getHost/"+this.state.hostId, {
+	submitHostId(host_id) {
+		//console.log(this.state.hostId);
+		fetch("http://localhost:8081/getHost/" + host_id, {
       method: 'GET' // The type of HTTP request.
     })
       .then(res => res.json()) // Convert the response data to a JSON.
       .then(hostList => {
-        console.log("a");
-
+        console.log(hostList);
 
         // Map each attribute of a person in this.state.people to an HTML element
         let hostDivs = hostList.map((host, i) => 
-          <ListingRow id={"row-" + host.listing_id + host.id} listing_id={host.listing_id} summary={host.id}
-          price={host.price}
+          <ListingRow key={i} listing_id={host.listing_id} price={host.price} summary={host.summary}
           />
 
         );
@@ -86,24 +85,24 @@ export default class Host extends React.Component {
 
 			        <div className="years-container">
 			          <div className="dropdown-container">
-			            <select value={this.state.selectedZipcode} onChange={this.handleChange} className="dropdown" id="zipcodesDropdown">
+			            <select value={this.state.submitHostId} onChange={this.handleChange} className="dropdown" id="zipcodesDropdown">
 			            	<option select value> -- select an option -- </option>
-			            	{this.state.zipcodeList}
+			            	{this.state.allHosts}
 			            </select>
-			            <button className="submit-btn" id="zipcodesSubmitBtn" onClick={this.submitZipcode}>Submit</button>
+			            <button className="submit-btn" id="zipcodesSubmitBtn" onClick={this.submitHostId}>Submit</button>
 			          </div>
 			        </div>
 			      </div>
 			      <div className="jumbotron">
-			        <div className="movies-container">
-			          <div className="movie">
-                      <div className="header"><strong>Listing_ID</strong></div>
-                        <div className="header"><strong>Price</strong></div>
-			            <div className="header"><strong>Summary</strong></div>
-			          </div>
-			          <div className="movies-container" id="results">
-			            {this.state.listings}
-			          </div>
+			        <div className="hosts-container">
+						  <table>
+							  <tr>
+							  <th className="header"><strong>Listing_ID</strong></th>
+                        	<th className="header"><strong>Price</strong></th>
+			            	<th className="header"><strong>Summary</strong></th>
+							  </tr>
+							  {this.state.listings}
+						  </table>
 			        </div>
 			      </div>
 			    </div>

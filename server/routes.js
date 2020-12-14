@@ -13,17 +13,20 @@ var connection = mysql.createPool(config);
 
 function getHostInfo(req, res) {
   var listingId = req.params.listingId;
+  console.log(typeof(listingId));
+  //id, host_about, host_response_time, host_response_rate, host_acceptance_rate, host_is_superhost, host_neighbourhoor,
+   // host_listings_total_count, host_identity_verified
+   //WHERE id IN (SELECT host_id FROM Listings WHERE id = ${listingId})
   var query = `
-    SELECT id, host_about, host_response_time, host_response_rate, host_acceptance_rate, host_is_superhost, host_neighborhood,
-    host_total_listings_count, host_identity_verified
+    SELECT *
     FROM Host
-    WHERE id = (SELECT host_id FROM Listing WHERE listing_id = '${listingId}')
-    ;
+    WHERE id IN (SELECT host_id FROM Listings WHERE id = ${listingId})
   `;
-
+  console.log(query);
   runQuery(query, function(err, rows, fields) {
     if (err) console.log(err);
     else {
+      console.log(rows);
       res.json(rows);
 
     }
@@ -35,8 +38,7 @@ function getAmenityInfo(req, res) {
   var query = `
     SELECT *
     FROM Amenity
-    WHERE listing_id = '${listingId}'
-    ;
+    WHERE listing_id = ${listingId}
   `;
 
   runQuery(query, function(err, rows, fields) {
@@ -50,12 +52,12 @@ function getAmenityInfo(req, res) {
 
 function getPolicyInfo(req, res) {
   var listingId = req.params.listingId;
+  console.log('policy');
   var query = `
-    SELECT cancellation_policy, price, weekly_price, monthly_price, security_deposit, cleaning_fee, extra_people,
-    min_nights, max_nights
-    FROM ListingPolicy
-    WHERE listing_id = '${listingId}'
-    ;
+    SELECT price, weekly_price, monthly_price, cancellation_policy, seurity_deposit AS security_deposit, cleaning_fee, extra_people,
+    minimum_nights AS min_nights, maximum_nights AS max_nights
+    FROM Listing_Policy
+    WHERE listing_id = ${listingId}
   `;
 
   runQuery(query, function(err, rows, fields) {
@@ -71,10 +73,9 @@ function getListingReviewInfo(req, res) {
   var listingId = req.params.listingId;
   var query = `
     SELECT l.number_of_reviews, l.reviews_per_month, r.comments
-    FROM ListingReview l JOIN Reviews r ON l.listing_id = r.listing_id
-    WHERE l.listing_id = '${listingId}'
+    FROM Listing_ReviewS l JOIN Reviews r ON l.listing_id = r.listing_id
+    WHERE l.listing_id = ${listingId}
     LIMIT 5
-    ;
   `;
 
   runQuery(query, function(err, rows, fields) {
@@ -88,12 +89,12 @@ function getListingReviewInfo(req, res) {
 };
 
 function getURLInfo(req, res) {
+  console.log('url');
   var listingId = req.params.listingId;
   var query = `
     SELECT listing_url, picture_url
     FROM Url
-    WHERE listing_id = '${listingId}'
-    ;
+    WHERE listing_id = ${listingId}
   `;
 
   runQuery(query, function(err, rows, fields) {
@@ -106,12 +107,12 @@ function getURLInfo(req, res) {
 };
 
 function getLocationInfo(req, res) {
+  console.log('location');
   var listingId = req.params.listingId;
   var query = `
     SELECT *
     FROM Location
-    WHERE listing_id = '${listingId}'
-    ;
+    WHERE listing_id = ${listingId}
   `;
 
   runQuery(query, function(err, rows, fields) {
@@ -128,8 +129,7 @@ function getDescriptionInfo(req, res) {
   var query = `
     SELECT *
     FROM Descriptions
-    WHERE listing_id = '${listingId}'
-    ;
+    WHERE listing_id = ${listingId}
   `;
 
   runQuery(query, function(err, rows, fields) {
@@ -142,26 +142,46 @@ function getDescriptionInfo(req, res) {
 };
 
 function getZipcode(req, res) {
-  zipcode = req.params.zipcode;
-  guests = req.params.guests;
-
+  console.log("hi");
+  zipcode = req.query.zipcode;
+  console.log(zipcode);
+  guests = req.query.guests;
+  console.log(guests);
+  beds = req.query.beds;
+  console.log(beds);
+  month = req.query.month;
+  day = req.query.day;
+  var currLat = 47.6205;
+  var currLong = -122.3493;
+  var miles = req.query.radius;
+  var date = "2016-"+month+"-"+day;
+  console.log(date);
   // I have defaulted current location to the Space Needle
   var query = `
-      WITH Distance AS (
-          SELECT street, listing_id, SQRT((47.6205 - latitude) * (47.6205 - latitude) * 4761 + (122.3493 - longitude) * (122.3493 - longitude) * 2981.16) AS dist
+      WITH Available AS (
+          SELECT listing_id, price
+          FROM Calendar
+          WHERE calendar_date = '${date}'
+      ), Distance AS (
+          SELECT zipcode, listing_id, ACOS(SIN(3.14159265358979*${currLat}/180.0)*SIN(3.14159265358979*latitude/180.0)+COS(3.14159265358979*${currLat}/180.0)*COS(3.14159265358979*latitude/180.0)*COS(3.14159265358979*longitude/180.0-3.14159265358979*${currLong}/180.0))*6371 AS dist
           FROM Location
-          WHERE street = "${zipcode}"
+          WHERE zipcode = '${zipcode}'
       ), WithinDistance AS (
-          SELECT listing_id
+          SELECT listing_id, dist
           FROM Distance
-          WHERE dist < 500
+          WHERE dist < ${miles} - 0.1
       ), AmenityFiltered AS (
-          SELECT w.listing_id, a.accommodates AS guests
+          SELECT w.listing_id, a.accommodates AS guests, w.dist AS dist, a.bedrooms
           FROM WithinDistance w JOIN Amenity a ON w.listing_id = a.listing_id
-          WHERE a.accommodates >= ${guests};
+          WHERE a.accommodates >= ${guests} AND a.bedrooms >= ${beds}
+      ), FilteredAndAvailable AS (
+          SELECT a.listing_id, a.price, f.guests, f.dist, f.bedrooms
+          FROM Available a JOIN AmenityFiltered f ON a.listing_id = f.listing_id
       )
-      SELECT w.listing_id, d.name, d.summary, d.neighborhood_overview
-      FROM WithinDistance w JOIN Descriptions d ON w.listing_id = d.listing_id;
+      SELECT a.listing_id, a.guests, ROUND(a.dist, 2) AS dist, a.bedrooms, d.name, d.summary, d.description, a.price
+      FROM Descriptions d JOIN FilteredAndAvailable a ON d.listing_id = a.listing_id
+      ORDER BY ROUND(a.dist, 1), a.guests
+
   `;
 
   console.log(query);
@@ -203,8 +223,9 @@ function getNearby(req, res) {
 function zipcodes(req, res) {
 
   var query = `
-    SELECT DISTINCT id
-    FROM Host
+    SELECT DISTINCT zipcode
+    FROM Location
+    WHERE zipcode IS NOT NULL
   `;
   console.log(query);
   runQuery(query, function(err, rows, fields) {
