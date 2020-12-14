@@ -27,7 +27,7 @@ export default class IndividualListing extends React.Component {
 		}
 
 		this.handleListingId = this.handleListingId.bind(this);
-		this.submitListingId = this.submitListingId.bind(this);
+	//	this.submitListingId = this.submitListingId.bind(this);
 	}
 
 	handleListingId(e) {
@@ -51,7 +51,6 @@ export default class IndividualListing extends React.Component {
 			.then(infoList => {
 				console.log(infoList);
 				let urlDiv = ""; 
-				console.log(infoList[3]);
 				if (infoList[3].length !== 0) {
 					urlDiv = infoList[3][0][1];
 				}
