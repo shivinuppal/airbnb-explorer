@@ -4,6 +4,7 @@ import HostRow from './HostRow';
 import AmenityRow from './AmenityRow';
 import DescriptionRow from './DescriptionRow';
 import ReviewRow from './ReviewRow';
+import Host from './Host';
 import '../style/IndividualListing.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -34,9 +35,19 @@ export default class IndividualListing extends React.Component {
 	}
 
 	/* ---- Getting all Information about a ListingID ---- */
-	submitListingId() {
+	submitListingId(listing_id) {
 		console.log(this.state.listingId);
-		Promise.all([
+		console.log(listing_id); 
+	/*	Promise.all([
+			fetch("http://localhost:8081/listing/host/" + listing_id),
+			fetch("http://localhost:8081/listing/amenity/" + listing_id),
+			fetch("http://localhost:8081/listing/listing_review/" + listing_id),
+			fetch("http://localhost:8081/listing/url/" + listing_id),
+			fetch("http://localhost:8081/listing/location/" + listing_id),
+			fetch("http://localhost:8081/listing/description/" + listing_id)
+		//	fetch("http://localhost:8081/listing/listing_policy/" + this.state.listingId),
+		])
+	*/	Promise.all([
 			fetch("http://localhost:8081/listing/host/" + this.state.listingId),
 			fetch("http://localhost:8081/listing/amenity/" + this.state.listingId),
 			fetch("http://localhost:8081/listing/listing_review/" + this.state.listingId),
@@ -44,7 +55,7 @@ export default class IndividualListing extends React.Component {
 			fetch("http://localhost:8081/listing/location/" + this.state.listingId),
 			fetch("http://localhost:8081/listing/description/" + this.state.listingId)
 		//	fetch("http://localhost:8081/listing/listing_policy/" + this.state.listingId),
-		])
+		]) 
 			.then(res => Promise.all(res.map(response => response.json())))
 			.then(infoList => {
 				console.log(infoList);
@@ -93,7 +104,6 @@ export default class IndividualListing extends React.Component {
 
 			});
 	}
-
 
 	render() {
 
