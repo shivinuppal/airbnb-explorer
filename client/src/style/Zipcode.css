@@ -10,7 +10,7 @@
     align-items: center;
   }
 
-  .movie .header, .movieResults .listing_id, .movieResults .zipcode, .movieResults .votes, .movieResults .year, .movieResults .rating {
+  .movie .header, .movieResults .listing_id, .movieResults .guests, .movieResults .distance, .movieResults .bedrooms {
     flex: 1 0 25%;
   }
 
