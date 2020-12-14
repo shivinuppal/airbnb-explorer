@@ -12,6 +12,9 @@
     "react-bootstrap": "^1.0.0-beta.16",
     "react-dom": "^16.12.0",
     "react-dropdown": "^1.6.4",
+    "react-geocode": "^0.2.2",
+    "react-google-autocomplete": "^1.2.6",
+    "react-google-maps": "^9.4.5",
     "react-router-dom": "^5.1.2",
     "react-scripts": "^3.4.0",
     "selenium-webdriver": "^4.0.0-alpha.5"
