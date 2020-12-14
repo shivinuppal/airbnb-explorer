@@ -3,6 +3,7 @@ import PageNavbar from './PageNavbar';
 import ZipcodeRow from './ZipcodeRow';
 import '../style/Zipcode.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import SearchBoxMap from './Map'
 
 export default class Zipcode extends React.Component {
 	constructor(props) {
@@ -15,8 +16,10 @@ export default class Zipcode extends React.Component {
 			beds: 1,
 			radius : 1,
 			listings: [],
-			day: 1,
-			month: 1
+			day: "01",
+			month: "01",
+			latitude: 47.6204,
+			longitude: -122.3367
 		};
 
 		this.submitZipcode = this.submitZipcode.bind(this);
@@ -26,6 +29,8 @@ export default class Zipcode extends React.Component {
 		this.handleRadiusChange = this.handleRadiusChange.bind(this);
 		this.handleDayChange = this.handleDayChange.bind(this);
 		this.handleMonthChange = this.handleMonthChange.bind(this);
+		this.handleLatChange = this.handleLatChange.bind(this);
+		this.handleLongChange = this.handleLongChange.bind(this);
 	}
 
 	componentDidMount() {
@@ -88,8 +93,21 @@ export default class Zipcode extends React.Component {
 		});
 	}
 
+	handleLatChange(e) {
+		this.setState({
+			latitude: e.target.value
+		})
+	}
+
+	handleLongChange(e) {
+		this.setState({
+			longitude: e.target.value
+		})
+	}
+
 	submitZipcode() {
-		fetch("http://localhost:8081/getZipcodes?zipcode="+this.state.selectedZipcode+"&guests="+this.state.guests+"&beds="+this.state.beds+"&radius="+this.state.radius+"&month="+this.state.month+"&day="+this.state.day, {
+		fetch("http://localhost:8081/getZipcodes?zipcode="+this.state.selectedZipcode+"&guests="+this.state.guests+"&beds="+this.state.beds+"&radius="+this.state.radius+"&month="+this.state.month+"&day="+this.state.day+
+						"&latitude=" + this.state.latitude + "&longitude="+this.state.longitude, {
       method: 'GET' // The type of HTTP request.
     })
       .then(res => res.json()) // Convert the response data to a JSON.
@@ -114,7 +132,15 @@ export default class Zipcode extends React.Component {
 
 	}
 
-
+	// <div className="zips-container">
+	//   <div className="dropdown-container">
+	// 	<select value={this.state.selectedZipcode} onChange={this.handleChange} className="dropdown" id="zipcodesDropdown">
+	// 		<option select value> -- select an option -- </option>
+	// 		{this.state.zipcodeList}
+	// 	</select>
+	//
+	//   </div>
+	// </div>
 
 	render() {
 
@@ -126,16 +152,10 @@ export default class Zipcode extends React.Component {
 			      <div className="jumbotron">
 			        <div className="h2">Find an Airbnb near you!</div>
 
-			        <div className="zips-container">
-			          <div className="dropdown-container">
-			            <select value={this.state.selectedZipcode} onChange={this.handleChange} className="dropdown" id="zipcodesDropdown">
-			            	<option select value> -- select an option -- </option>
-			            	{this.state.zipcodeList}
-			            </select>
-
-			          </div>
-			        </div>
-
+					<SearchBoxMap google={this.props.google}
+					       center={{lat: 47.6204, lng: -122.3367}}
+					       height='300px'
+					       zoom={15}/>
 
 					<div className="radius-container">
 						<div className="h5"> Radius </div>
