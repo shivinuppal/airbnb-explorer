@@ -51,9 +51,9 @@ export default class Zipcode extends React.Component {
 		});
 	}
 
-	handleGuestsChange(e) {
+	handleGuestsChange(f) {
 		this.setState({
-			guests: e.target.value
+			guests: f.target.value
 		});
 	}
 
@@ -64,7 +64,7 @@ export default class Zipcode extends React.Component {
 	}
 
 	submitZipcode() {
-		fetch("http://localhost:8081/getZipcodes/?zipcode="+this.state.selectedZipcode + "&guests=" + "this.state.guests" + "&beds="+this.state.beds, {
+		fetch("http://localhost:8081/getZipcodes?zipcode="+this.state.selectedZipcode+"&guests="+this.state.guests+"&beds="+this.state.beds, {
       method: 'GET' // The type of HTTP request.
     })
       .then(res => res.json()) // Convert the response data to a JSON.
@@ -82,7 +82,7 @@ export default class Zipcode extends React.Component {
         console.log(zipcodeDivs);
         // Set the state of the person list to the value returned by the HTTP response from the server.
         this.setState({
-          genres: zipcodeDivs,
+          genres: zipcodeDivs
         })
 
       })
@@ -113,47 +113,49 @@ export default class Zipcode extends React.Component {
 			        </div>
 
 					<div className="guests-container">
+					<div className="h5"> Guests </div>
 						<div className = "dropdown-container">
 							<select value={this.state.guests} onChange={this.handleGuestsChange} className="dropdown" id="guestsDropdown">
-							 	<option select value> -- Guests -- </option>
-								<option select value> 1 </option>
-								<option select value> 2 </option>
-								<option select value> 3 </option>
-								<option select value> 4 </option>
-								<option select value> 5 </option>
-								<option select value> 6 </option>
-								<option select value> 7 </option>
-								<option select value> 8 </option>
-								<option select value> 9 </option>
-								<option select value> 10 </option>
-								<option select value> 11 </option>
-								<option select value> 12 </option>
-								<option select value> 13 </option>
-								<option select value> 14 </option>
-								<option select value> 15 </option>
+								<option select value={1}> -- Guests -- </option>
+								<option value={1}> 1 </option>
+								<option value={2}> 2 </option>
+								<option value={3}> 3 </option>
+								<option value={4}> 4 </option>
+								<option value={5}> 5 </option>
+								<option value={6}> 6 </option>
+								<option value={7}> 7 </option>
+								<option value={8}> 8 </option>
+								<option value={9}> 9 </option>
+								<option value={10}> 10 </option>
+								<option value={11}> 11 </option>
+								<option value={12}> 12 </option>
+								<option value={13}> 13 </option>
+								<option value={14}> 14 </option>
+								<option value={15}> 15 </option>
 							</select>
 						</div>
 					</div>
 
 					<div className="beds-container">
+						<div className="h5"> Bedrooms </div>
 						<div className = "dropdown-container">
 							<select value={this.state.beds} onChange={this.handleBedsChange} className="dropdown" id="bedsDropdown">
-							 	<option select value> -- Beds -- </option>
-								<option select value> 1 </option>
-								<option select value> 2 </option>
-								<option select value> 3 </option>
-								<option select value> 4 </option>
-								<option select value> 5 </option>
-								<option select value> 6 </option>
-								<option select value> 7 </option>
-								<option select value> 8 </option>
-								<option select value> 9 </option>
-								<option select value> 10 </option>
-								<option select value> 11 </option>
-								<option select value> 12 </option>
-								<option select value> 13 </option>
-								<option select value> 14 </option>
-								<option select value> 15 </option>
+							 	<option select value={1}> -- Bedrooms -- </option>
+								<option value={1}> 1 </option>
+								<option value={2}> 2 </option>
+								<option value={3}> 3 </option>
+								<option value={4}> 4 </option>
+								<option value={5}> 5 </option>
+								<option value={6}> 6 </option>
+								<option value={7}> 7 </option>
+								<option value={8}> 8 </option>
+								<option value={9}> 9 </option>
+								<option value={10}> 10 </option>
+								<option value={11}> 11 </option>
+								<option value={12}> 12 </option>
+								<option value={13}> 13 </option>
+								<option value={14}> 14 </option>
+								<option value={15}> 15 </option>
 							</select>
 						</div>
 					</div>
