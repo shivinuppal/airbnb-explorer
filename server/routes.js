@@ -236,30 +236,30 @@ function zipcodes(req, res) {
   });
 }
 
-
+//, HostInfo h
+//, h.id, h.host_about, h.host_response_time, h.host_response_rate, h.host_acceptance_rate, h.host_is_superhost, h.host_neighbourhood,
+//h.host_total_listings_count, h.host_identity_verified
+//HostInfo AS ( SELECT id, host_about, host_response_time, host_response_rate, host_acceptance_rate, host_is_superhost, host_neighbourhood,
+//host_total_listings_count, host_identity_verified
+////FROM Host
+//WHERE id = ${hostId})
 function getHostListings(req, res) {
   hostId = req.params.hostId;
 
   var query = `
-  WITH HostsListing AS (SELECT listing_id, host_id
+  WITH HostsListing AS (SELECT listing_id
     FROM Listings
-    WHERE host_id = ${hostId}), 
-  WITH HostInfo AS ( SELECT id, host_about, host_response_time, host_response_rate, host_acceptance_rate, host_is_superhost, host_neighbourhood,
-    host_total_listings_count, host_identity_verified
-    FROM Host
     WHERE host_id = ${hostId})
-    SELECT p.listing_id as listing_id, p.price as price, d.name as name, h.id, h.host_about, h.host_response_time, h.host_response_rate, h.host_acceptance_rate, h.host_is_superhost, h.host_neighbourhood,
-    h.host_total_listings_count, h.host_identity_verified
-    FROM listing_policy p JOIN Descriptions d ON p.listing_id = d.listing_id JOIN HostInfo h
+    SELECT p.listing_id as listing_id, p.price as price, d.name as name
+    FROM listing_policy p JOIN Descriptions d ON p.listing_id = d.listing_id
     WHERE p.listing_id IN (SELECT * FROM HostsListing)
-
   `;
   console.log(query);
   runQuery(query, function(err, rows, fields) {
     if (err) console.log(err);
     else {
-      res.json(rows);
       console.log(rows);
+      res.json(rows);
     }
   });
 };

@@ -11,7 +11,7 @@ export default class ListingRow extends React.Component {
 		return (
 			<tr>
 					<td>
-						<Link to={{pathname: `listing/${this.props.listing_id}`}}>{"ListingID: " + this.props.listing_id}</Link>
+						<Link to={{pathname: `/listing/${this.props.listing_id}`}}>{"ListingID: " + this.props.listing_id}</Link>
 					</td>
 					<td className="price">{this.props.price}</td>
 					<td className="summary">{this.props.summary}</td>

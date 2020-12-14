@@ -12,7 +12,7 @@ export default class Host extends React.Component {
 			listings: []
 		};
 
-		this.submitHostId = this.submitHostId.bind(this);
+		//this.submitHostId = this.submitHostId.bind(this);
 		this.handleChange = this.handleChange.bind(this);
 	}
 
@@ -46,13 +46,13 @@ export default class Host extends React.Component {
 	}
 
 	componentDidMount() {
+		console.log(this.state.hostId);
 		fetch("http://localhost:8081/getHost/" + this.state.hostId, {
 	  method: 'GET' // The type of HTTP request.
 	})
 	  .then(res => res.json()) // Convert the response data to a JSON.
 	  .then(hostList => {
 		console.log(hostList);
-	
 		// Map each attribute of a person in this.state.people to an HTML element
 		let listingDivs = hostList.map((host, i) => 
 		  <ListingRow key={i} listing_id={host[0]} price={host[1]} summary={host[2]}
