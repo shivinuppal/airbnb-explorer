@@ -67,3 +67,15 @@
     color: red; 
     font-size: 20px;
   }
+
+  .host-pic {
+    height:auto; 
+    width:20%;
+  }
+
+  .hosts-container {
+    float: center;
+    display: flex; 
+    flex-flow: column wrap;
+    align-items: center;
+  }

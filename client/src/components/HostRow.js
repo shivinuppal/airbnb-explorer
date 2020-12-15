@@ -9,7 +9,7 @@ export default class HostRow extends React.Component {
 	render() {
 		return (
 			<div className="hostResults">
-				<Link to={{pathname: `/host/${this.props.id}`}}><strong>Host: </strong>{this.props.id}</Link>
+				<Link to={{pathname: `/host/${this.props.id}`}}><strong>Host: </strong>{this.props.name}</Link>
 				<div className="host_about"><strong>About: </strong> {this.props.host_about}</div>
 				<div className="host_response_time"><strong>Response Time: </strong>{this.props.host_response_time}</div>
 				<div className="host_response_rate"><strong>Response Rate: </strong>{this.props.host_response_rate}</div>

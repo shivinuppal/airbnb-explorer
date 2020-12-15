@@ -17,9 +17,9 @@ function getHostInfo(req, res) {
   //
    //
   var query = `
-    SELECT DISTINCT id, host_about, host_response_time, host_response_rate, host_acceptance_rate, host_is_superhost, host_neighbourhood,
-    host_total_listings_count, host_identity_verified
-    FROM Host
+    SELECT DISTINCT id, host_about, host_response_time, host_response_rate, host_acceptance_rate, host_is_superjost AS host_is_superhost, host_neighborhood,
+    host_total_listings_count, host_identity_verified, host_name
+    FROM Host2
     WHERE id IN (SELECT host_id FROM Listings WHERE listing_id = ${listingId})
   `;
   console.log(query);
@@ -332,17 +332,17 @@ function getHostListings(req, res) {
   WITH HostsListing AS (SELECT listing_id
     FROM Listings
     WHERE host_id = ${hostId}),
-    HostInfo AS (SELECT id, host_about, host_response_time, host_response_rate, host_acceptance_rate, host_is_superhost, host_neighbourhood,
-    host_total_listings_count, host_identity_verified
-    FROM Host
+    HostInfo AS (SELECT id, host_about, host_response_time, host_response_rate, host_acceptance_rate, host_is_superjost AS host_is_superhost, host_neighborhood,
+    host_total_listings_count, host_identity_verified, host_name, host_picture_url
+    FROM Host2
     WHERE id = ${hostId}),
     AllListings AS (
       SELECT p.listing_id as listing_id, p.price as price, d.name as name, u.picture_url
       FROM listing_policy p JOIN Descriptions d ON p.listing_id = d.listing_id JOIN Url u on p.listing_id = u.listing_id
     WHERE p.listing_id IN (SELECT * FROM HostsListing)
     )
-    SELECT DISTINCT a.listing_id, a.price, a.name, a.picture_url, h.id, h.host_about, h.host_response_time, h.host_response_rate, h.host_acceptance_rate, h.host_is_superhost, h.host_neighbourhood,
-    h.host_total_listings_count, h.host_identity_verified
+    SELECT DISTINCT a.listing_id, a.price, a.name, a.picture_url, h.id, h.host_about, h.host_response_time, h.host_response_rate, h.host_acceptance_rate, h.host_is_superhost, h.host_neighborhood,
+    h.host_total_listings_count, h.host_identity_verified, h.host_name, h.host_picture_url
     FROM HostInfo h, allListings a
   `;
   console.log(query);
