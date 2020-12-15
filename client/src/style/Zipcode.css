@@ -20,3 +20,17 @@
   .td {
     padding: 50px;
   }
+
+  .dropdown-container {
+    float: left; 
+    padding: 10px;
+  }
+  .h4 {
+    float: left; 
+    padding: 10px;
+  }
+  .card {
+    float: left;
+    height: 350px; 
+    width: 350px; 
+  }

@@ -73,7 +73,7 @@ function getListingReviewInfo(req, res) {
   console.log('review');
   var listingId = req.params.listingId;
   var query = `
-    SELECT l.number_of_reviews, l.reviews_per_month, r.comments
+    SELECT l.number_of_reviews, r.comments
     FROM Listing_ReviewS l JOIN Reviews r ON l.listing_id = r.listing_id
     WHERE l.listing_id = ${listingId} AND ROWNUM <= 5 
   `;
@@ -178,8 +178,8 @@ function getZipcode(req, res) {
           SELECT a.listing_id, a.price, f.guests, f.dist, f.bedrooms
           FROM Available a JOIN AmenityFiltered f ON a.listing_id = f.listing_id
       )
-      SELECT a.listing_id, a.guests, ROUND(a.dist, 2) AS dist, a.bedrooms, d.name, d.summary, d.description, a.price
-      FROM Descriptions d JOIN FilteredAndAvailable a ON d.listing_id = a.listing_id
+      SELECT a.listing_id, a.guests, ROUND(a.dist, 2) AS dist, a.bedrooms, d.name, d.summary, d.description, a.price, u.picture_url
+      FROM Descriptions d JOIN FilteredAndAvailable a ON d.listing_id = a.listing_id JOIN Url u ON d.listing_id = u.listing_id
       ORDER BY ROUND(a.dist, 1)
   `;
 
@@ -237,22 +237,27 @@ function zipcodes(req, res) {
 }
 
 //, HostInfo h
-//, h.id, h.host_about, h.host_response_time, h.host_response_rate, h.host_acceptance_rate, h.host_is_superhost, h.host_neighbourhood,
-//h.host_total_listings_count, h.host_identity_verified
-//HostInfo AS ( SELECT id, host_about, host_response_time, host_response_rate, host_acceptance_rate, host_is_superhost, host_neighbourhood,
-//host_total_listings_count, host_identity_verified
-////FROM Host
-//WHERE id = ${hostId})
+//
+//
 function getHostListings(req, res) {
   hostId = req.params.hostId;
 
   var query = `
   WITH HostsListing AS (SELECT listing_id
     FROM Listings
-    WHERE host_id = ${hostId})
-    SELECT p.listing_id as listing_id, p.price as price, d.name as name
-    FROM listing_policy p JOIN Descriptions d ON p.listing_id = d.listing_id
+    WHERE host_id = ${hostId}), 
+    HostInfo AS (SELECT id, host_about, host_response_time, host_response_rate, host_acceptance_rate, host_is_superhost, host_neighbourhood,
+    host_total_listings_count, host_identity_verified
+    FROM Host
+    WHERE id = ${hostId}), 
+    AllListings AS (
+      SELECT p.listing_id as listing_id, p.price as price, d.name as name, u.picture_url
+      FROM listing_policy p JOIN Descriptions d ON p.listing_id = d.listing_id JOIN Url u on p.listing_id = u.listing_id
     WHERE p.listing_id IN (SELECT * FROM HostsListing)
+    )
+    SELECT DISTINCT a.listing_id, a.price, a.name, a.picture_url, h.id, h.host_about, h.host_response_time, h.host_response_rate, h.host_acceptance_rate, h.host_is_superhost, h.host_neighbourhood,
+    h.host_total_listings_count, h.host_identity_verified
+    FROM allListings a, HostInfo h
   `;
   console.log(query);
   runQuery(query, function(err, rows, fields) {
