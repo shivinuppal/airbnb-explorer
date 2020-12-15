@@ -242,6 +242,42 @@ function getDiscover(req, res) {
   });
 };
 
+function getML(req, res) {
+  console.log("hi you've entered ML");
+  currListing = req.query.listingId;
+  console.log(currListing);
+
+
+
+  var query = `
+  With first as (
+    Select topic1 as top1, topic2 as top2 from Machine_learning where listing_id = ${currListing}
+    ),
+    
+    topicD as (
+    Select listing_id, topic1, topic2, abs(TOPIC1 - (Select top1 from first))+abs(Topic2 - (Select top2 from first)) as dist from Machine_learning
+    where listing_id != ${currListing} 
+    ), second as(
+    Select t.listing_id, name, summary from TopicD t join Descriptions d on d.listing_id = t.listing_id order by dist )
+    Select listing_id, name, summary from second where rownum <= 21
+  `;
+
+
+
+  console.log(query);
+  runQuery(query, function(err, rows, fields) {
+    if (err) console.log(err);
+    else {
+
+      res.json(rows);
+      console.log(rows)
+    }
+  });
+};
+
+
+
+
 
 
 // function getNearby(req, res) {
@@ -349,5 +385,6 @@ module.exports = {
   getZipcode: getZipcode,
   getDiscover: getDiscover,
   hosts: hosts,
-  getHostListings: getHostListings
+  getHostListings: getHostListings,
+  getML: getML
 }

@@ -46,6 +46,9 @@ app.get('/getDiscover', routes.getDiscover);
 app.get('/getHost/:hostId', routes.getHostListings);
 app.get('/getHost', routes.hosts);
 
+//ML
+app.get('/getML', routes.getML);
+
 app.get('/getNearby/:zipcode', routes.getHostListings);
 
 
