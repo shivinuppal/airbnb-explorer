@@ -201,31 +201,28 @@ function getDiscover(req, res) {
   console.log("("+currLat+", "+currLong+")");
 
   var query = `
-      WITH Distance AS (
+      WITH CloseBy AS (
           SELECT listing_id, ACOS(SIN(3.14159265358979*${currLat}/180.0)*SIN(3.14159265358979*latitude/180.0)+COS(3.14159265358979*${currLat}/180.0)*COS(3.14159265358979*latitude/180.0)*COS(3.14159265358979*longitude/180.0-3.14159265358979*${currLong}/180.0))*6371 AS dist
           FROM Location
-      ), CloseBy AS (
-          SELECT listing_id, dist
-          FROM Distance
-          WHERE dist < 4
+          WHERE ACOS(SIN(3.14159265358979*${currLat}/180.0)*SIN(3.14159265358979*latitude/180.0)+COS(3.14159265358979*${currLat}/180.0)*COS(3.14159265358979*latitude/180.0)*COS(3.14159265358979*longitude/180.0-3.14159265358979*${currLong}/180.0))*6371 < 4
       ), Ratings AS (
-          SELECT c.listing_id, c.dist, r.review_scores_rating AS rating
-          FROM CloseBy c JOIN Listing_Reviews r ON c.listing_id = r.listing_id
+          SELECT listing_id, c.dist, r.review_scores_rating AS rating
+          FROM CloseBy c NATURAL JOIN Listing_Reviews r
           WHERE r.number_of_reviews > 3 AND r.review_scores_rating > 96
       ), PricePerPerson AS (
-          SELECT a.listing_id, (p.price/a.accommodates) AS price_per_person, a.accommodates AS guests, p.price AS price, a.bedrooms
-          FROM Amenity a JOIN Listing_Policy p ON a.listing_id = p.listing_id
+          SELECT listing_id, (p.price/a.accommodates) AS price_per_person, a.accommodates AS guests, p.price AS price, a.bedrooms
+          FROM Amenity a NATURAL JOIN Listing_Policy p
       ), VFM AS (
-          SELECT r.listing_id, r.rating / (SQRT(p.price_per_person) * (1+r.dist)) AS value_for_money, r.rating, p.guests, p.price, r.dist, p.bedrooms
-          FROM Ratings r JOIN PricePerPerson p ON r.listing_id = p.listing_id
+          SELECT listing_id, r.rating / (SQRT(p.price_per_person) * (1+r.dist)) AS value_for_money, r.rating, p.guests, p.price, r.dist, p.bedrooms
+          FROM Ratings r NATURAL JOIN PricePerPerson p
           ORDER BY r.rating / (SQRT(p.price_per_person) * (1+r.dist)) DESC
       ), Chosen AS (
           SELECT listing_id, guests, dist, bedrooms, price, value_for_money
           FROM VFM
           WHERE ROWNUM <= 21
       )
-      SELECT c.listing_id, c.guests, ROUND(c.dist, 2), c.bedrooms, d.name, d.summary, d.description, c.price, u.picture_url
-      FROM Chosen c JOIN Descriptions d ON c.listing_id = d.listing_id JOIN Url u ON d.listing_id = u.listing_id
+      SELECT listing_id, c.guests, ROUND(c.dist, 2), c.bedrooms, d.name, d.summary, d.description, c.price, u.picture_url
+      FROM Chosen c NATURAL JOIN Descriptions d NATURAL JOIN Url u
       ORDER BY c.value_for_money DESC
   `;
 
@@ -253,10 +250,10 @@ function getML(req, res) {
   With first as (
     Select topic1 as top1, topic2 as top2 from Machine_learning where listing_id = ${currListing}
     ),
-    
+
     topicD as (
     Select listing_id, topic1, topic2, abs(TOPIC1 - (Select top1 from first))+abs(Topic2 - (Select top2 from first)) as dist from Machine_learning
-    where listing_id != ${currListing} 
+    where listing_id != ${currListing}
     ), second as(
     Select t.listing_id, name, summary, description from TopicD t join Descriptions d on d.listing_id = t.listing_id order by dist )
     Select s.listing_id, s.name, s.summary, s.description, u.picture_url from second s JOIN Url u ON s.listing_id = u.listing_id where rownum <= 9
