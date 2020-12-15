@@ -204,11 +204,32 @@ function getDiscover(req, res) {
       WITH Distance AS (
           SELECT listing_id, ACOS(SIN(3.14159265358979*${currLat}/180.0)*SIN(3.14159265358979*latitude/180.0)+COS(3.14159265358979*${currLat}/180.0)*COS(3.14159265358979*latitude/180.0)*COS(3.14159265358979*longitude/180.0-3.14159265358979*${currLong}/180.0))*6371 AS dist
           FROM Location
-      )
+      ), CloseBy AS (
           SELECT listing_id, dist
           FROM Distance
-          WHERE dist < 5
+          WHERE dist < 4
+      ), Ratings AS (
+          SELECT c.listing_id, c.dist, r.review_scores_rating AS rating
+          FROM CloseBy c JOIN Listing_Reviews r ON c.listing_id = r.listing_id
+          WHERE r.number_of_reviews > 3 AND r.review_scores_rating > 96
+      ), PricePerPerson AS (
+          SELECT a.listing_id, (p.price/a.accommodates) AS price_per_person, a.accommodates AS guests, p.price AS price, a.bedrooms
+          FROM Amenity a JOIN Listing_Policy p ON a.listing_id = p.listing_id
+      ), VFM AS (
+          SELECT r.listing_id, r.rating / (SQRT(p.price_per_person) * (1+r.dist)) AS value_for_money, r.rating, p.guests, p.price, r.dist, p.bedrooms
+          FROM Ratings r JOIN PricePerPerson p ON r.listing_id = p.listing_id
+          ORDER BY r.rating / (SQRT(p.price_per_person) * (1+r.dist)) DESC
+      ), Chosen AS (
+          SELECT listing_id, guests, dist, bedrooms, price, value_for_money
+          FROM VFM
+          WHERE ROWNUM <= 21
+      )
+      SELECT c.listing_id, c.guests, ROUND(c.dist, 2), c.bedrooms, d.name, d.summary, d.description, c.price, u.picture_url
+      FROM Chosen c JOIN Descriptions d ON c.listing_id = d.listing_id JOIN Url u ON d.listing_id = u.listing_id
+      ORDER BY c.value_for_money DESC
   `;
+
+
 
   console.log(query);
   runQuery(query, function(err, rows, fields) {
