@@ -64,7 +64,7 @@ export default class IndividualListing extends React.Component {
 				}
 				let descriptionDiv = <DescriptionRow name={infoList[5][0][1]} description={infoList[5][0][2]}
 					neighbourhood_cleansed={infoList[4][0][3]} neighborhood_overview={infoList[4][0][4]}
-					zipcode={infoList[4][0][5]} transit={infoList[5][0][6]}
+					zipcode={infoList[4][0][5]} transit={infoList[5][0][7]}
 				/> 
 				let amenityDiv =
 					<AmenityRow property_type={infoList[1][0][2]} room_type={infoList[1][0][3]}
@@ -89,8 +89,8 @@ export default class IndividualListing extends React.Component {
 				}
 				let policyDiv = 
 				<PolicyRow price={infoList[2][0][0]} cancellation_policy={infoList[2][0][3]}
-				security_deposit={infoList[2][0][4]} cleaning_fee={infoList[2][0][5]} 
-				min_nights={infoList[2][0][6]} max_nights={infoList[2][0][7]} />
+				security_deposit={infoList[2][0][4]} cleaning_fee={infoList[2][0][5]}
+				min_nights={infoList[2][0][7]} max_nights={infoList[2][0][8]} />
 				this.setState({
 					hostInfo: hostDiv,
 					amenityInfo: amenityDiv,

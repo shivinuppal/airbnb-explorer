@@ -1,6 +1,5 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import IndividualListing from './IndividualListing';
 
 export default class PageNavbar extends React.Component {
 	constructor(props) {
@@ -12,7 +11,7 @@ export default class PageNavbar extends React.Component {
 	}
 
 	componentDidMount() {
-		const pageList = ['search', 'dashboard', 'discover'];
+		const pageList = ['search', 'discover'];
 
 		let navbarDivs = pageList.map((page, i) => {
 			if (this.props.active === page) {

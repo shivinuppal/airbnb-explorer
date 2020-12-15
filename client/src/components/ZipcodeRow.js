@@ -10,10 +10,9 @@ export default class ZipcodeRow extends React.Component {
 
 	render() {
 		return (
-			<div className="card">
+			<div className="card center">
 				<img className="pic" src={this.props.pic}></img>
-				<Link to={{ pathname: `listing/${this.props.listing_id}` }}>{"ListingID: " + this.props.listing_id}</Link>
-				<div className="name">Name: {this.props.name}</div>
+				<Link to={{ pathname: `listing/${this.props.listing_id}` }}>{this.props.name}</Link>
 				<div className="guests">Guests: {this.props.guests}</div>
 				<div className="distance">Distance: {this.props.distance}</div>
 				<div className="price">Price: {this.props.price}</div>

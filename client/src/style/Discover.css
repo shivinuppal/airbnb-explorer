@@ -10,17 +10,21 @@
     align-items: center;
   }
 
+  .discover-container {
+    float: center;
+    display: flex; 
+    flex-flow: row wrap;
+    align-items: center;
+  }
+
+  .center {
+    margin: auto;
+  }
+
   .movie .header, .movieResults .listing_id, .movieResults .guests, .movieResults .distance, .movieResults .bedrooms {
     flex: 1 0 25%;
   }
-
-  .th {
-    padding: 50px;
-  }
-  .td {
-    padding: 50px;
-  }
-
+  
   .dropdown-container {
     float: left; 
     padding: 10px;
@@ -28,9 +32,4 @@
   .h4 {
     float: left; 
     padding: 10px;
-  }
-  .card {
-    float: left;
-    height: 350px; 
-    width: 350px; 
   }

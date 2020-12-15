@@ -307,7 +307,7 @@ function getHostListings(req, res) {
     )
     SELECT DISTINCT a.listing_id, a.price, a.name, a.picture_url, h.id, h.host_about, h.host_response_time, h.host_response_rate, h.host_acceptance_rate, h.host_is_superhost, h.host_neighbourhood,
     h.host_total_listings_count, h.host_identity_verified
-    FROM allListings a, HostInfo h
+    FROM HostInfo h, allListings a
   `;
   console.log(query);
   runQuery(query, function(err, rows, fields) {

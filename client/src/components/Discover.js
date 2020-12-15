@@ -45,18 +45,23 @@ export default class Discover extends React.Component {
 			.then(zipcodeList => {
 				console.log("a");
 
+				let zipcodeDivs = []; 
+				let zipcodeInfo = "";
+				if (zipcodeList.length != 0) {
+					// Map each attribute of a person in this.state.people to an HTML element
+					zipcodeDivs = zipcodeList.map((zipcode, i) =>
+						<ZipcodeRow id={i} listing_id={zipcode[0]} guests={zipcode[1]} distance={("" + zipcode[2]).substring(0, 4) + " miles"}
+							bedrooms={zipcode[3]} name={zipcode[4]} price={"$" + zipcode[7]} pic={zipcode[8]}
+						/>
 
-				// Map each attribute of a person in this.state.people to an HTML element
-				let zipcodeDivs = zipcodeList.map((zipcode, i) =>
-					<ZipcodeRow id={i} listing_id={zipcode[0]} guests={zipcode[1]} distance={("" + zipcode[2]).substring(0, 4) + " miles"}
-					bedrooms={zipcode[3]} name={zipcode[4]} price={"$" + zipcode[7]} pic={zipcode[8]}
-					/>
-
-				);
-				console.log(zipcodeDivs);
+					);
+				} else {
+					zipcodeInfo = <div className="header" id="no-info">No matches found. Make sure you are searching in Seattle.</div>
+				}
 				// Set the state of the person list to the value returned by the HTTP response from the server.
 				this.setState({
-					listings: zipcodeDivs
+					listings: zipcodeDivs,
+					noInfo: zipcodeInfo
 				})
 
 			})
@@ -84,19 +89,16 @@ export default class Discover extends React.Component {
 							handleLongChange={this.handleLongChange}
 						/>
 						<br/><br/>
-
 							
 							<button className="submit-btn" id="zipcodesSubmitBtn" onClick={this.submitDiscover}>Submit</button>
+						<br/>
+						{this.state.noInfo}
 						</div>
 
 					</div>
-					{this.state.listings}
-						<div className="movies-container">
-							<div className="movie">
-							</div>
-							<div className="movies-container">
-
-							</div>
+					
+						<div className="discover-container center">
+							{this.state.listings}
 						</div>
 					</div>
 		);

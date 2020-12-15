@@ -23,14 +23,47 @@
 
   .dropdown-container {
     float: left; 
-    padding: 10px;
+    padding: 5px;
   }
-  .h4 {
-    float: left; 
-    padding: 10px;
-  }
+
   .card {
     float: left;
     height: 350px; 
     width: 350px; 
+  }
+
+  .center {
+    margin: auto; 
+    padding-top: 5px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+    padding-left: 5px;
+  }
+
+  .listings-container {
+    float: center;
+    display: flex; 
+    flex-flow: row wrap;
+    align-items: center;
+  }
+
+  .listings-container, .center {
+    margin: auto; 
+  }
+
+  .big-container {
+    float: left;
+    display: flex; 
+    flex-flow: column wrap;
+    align-items: center;
+  }
+
+  .button-container {
+    padding-left: 10px;
+    padding-top: 15px;
+  }
+
+  #no-info {
+    color: red; 
+    font-size: 20px;
   }
