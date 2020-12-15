@@ -259,7 +259,7 @@ function getML(req, res) {
     where listing_id != ${currListing} 
     ), second as(
     Select t.listing_id, name, summary, description from TopicD t join Descriptions d on d.listing_id = t.listing_id order by dist )
-    Select listing_id, name, summary, description from second where rownum <= 21
+    Select s.listing_id, s.name, s.summary, s.description, u.picture_url from second s JOIN Url u ON s.listing_id = u.listing_id where rownum <= 9
   `;
 
 
