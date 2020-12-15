@@ -258,8 +258,8 @@ function getML(req, res) {
     Select listing_id, topic1, topic2, abs(TOPIC1 - (Select top1 from first))+abs(Topic2 - (Select top2 from first)) as dist from Machine_learning
     where listing_id != ${currListing} 
     ), second as(
-    Select t.listing_id, name, summary from TopicD t join Descriptions d on d.listing_id = t.listing_id order by dist )
-    Select listing_id, name, summary from second where rownum <= 21
+    Select t.listing_id, name, summary, description from TopicD t join Descriptions d on d.listing_id = t.listing_id order by dist )
+    Select listing_id, name, summary, description from second where rownum <= 21
   `;
 
 
