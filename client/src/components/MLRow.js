@@ -15,7 +15,7 @@ export default class MLRow extends React.Component {
 				<Link to={{ pathname: `listing/${this.props.listing_id}` }}>{"ListingID: " + this.props.listing_id}</Link>
 				<div className="name">Name: {this.props.name}</div>
 				<div className="summary">Summary: {this.props.summary}</div>
-				
+				<div className="descript">Description: {this.props.description}</div>
 			</div>
 		);
 	}
