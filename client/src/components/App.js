@@ -23,7 +23,7 @@ export default class App extends React.Component {
 							exact
 							path="/"
 							render={() => (
-								<Dashboard />
+								<Zipcode />
 							)}
 						/>
 						<Route

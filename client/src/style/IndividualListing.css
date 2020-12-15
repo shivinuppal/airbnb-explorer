@@ -24,14 +24,26 @@
 
 .card {
   float: left;
-  width: 300px;
-  height: 300px;
+  width: 150px;
+  height: 150px;
 }
 
 .pic {
   height:auto; 
   width:90%;
 }
+
+.listings-container {
+  float: center;
+  display: flex; 
+  flex-flow: row wrap;
+  align-items: center;
+}
+
+.center {
+  margin: auto;
+}
+
 
 #jumbo {
   background: rgba(255, 255, 255, 0.85);

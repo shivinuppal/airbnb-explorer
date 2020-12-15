@@ -18,6 +18,7 @@ export default class Zipcode extends React.Component {
 			beds: 1,
 			radius: 1,
 			listings: [],
+			noInfo: "",
 			day: "01",
 			month: "01"
 		};
@@ -115,20 +116,27 @@ export default class Zipcode extends React.Component {
 		})
 			.then(res => res.json()) // Convert the response data to a JSON.
 			.then(zipcodeList => {
-				console.log("a");
+				let zipcodeDivs = []; 
+				let zipcodeInfo = "";
+				if (zipcodeList.length != 0) {
+					// Map each attribute of a person in this.state.people to an HTML element
+					zipcodeDivs = zipcodeList.map((zipcode, i) =>
+						<ZipcodeRow id={i} listing_id={zipcode[0]} guests={zipcode[1]} distance={("" + zipcode[2]).substring(0, 4) + " miles"}
+							bedrooms={zipcode[3]} name={zipcode[4]} price={"$" + zipcode[7]} pic={zipcode[8]}
+						/>
+
+					);
+				} else {
+					zipcodeInfo = <div className="header" id="no-info">No matches found. Please expand search parameters.</div>
+				}
 
 
-				// Map each attribute of a person in this.state.people to an HTML element
-				let zipcodeDivs = zipcodeList.map((zipcode, i) =>
-					<ZipcodeRow id={i} listing_id={zipcode[0]} guests={zipcode[1]} distance={("" + zipcode[2]).substring(0, 4) + " miles"}
-					bedrooms={zipcode[3]} name={zipcode[4]} price={"$" + zipcode[7]} pic={zipcode[8]}
-					/>
 
-				);
 				console.log(zipcodeDivs);
 				// Set the state of the person list to the value returned by the HTTP response from the server.
 				this.setState({
-					listings: zipcodeDivs
+					listings: zipcodeDivs, 
+					noInfo: zipcodeInfo
 				})
 
 			})
@@ -163,17 +171,12 @@ export default class Zipcode extends React.Component {
 							handleLatChange={this.handleLatChange}
 							handleLongChange={this.handleLongChange}
 						/>
-						<br/><br/>
-							<div className="h4"> Radius </div>
-							<div className="h4"> Guests </div>
-							<div className="h4"> Day </div>
-							<div className="h4"> Month </div>
-							<div className="h4"> Year </div>
-							<div className="h4"> Bedrooms </div>
-							<br/><br/><br/>
+						<br /><br />
+						<div className="big-container">
+							<div className="h5"> Radius </div>
 							<div className="dropdown-container">
 								<select value={this.state.radius} onChange={this.handleRadiusChange} className="dropdown" id="radiusDropdown">
-								<option value> Max Distance </option>
+
 									<option value={1}> 1 mile </option>
 									<option value={2}> 2 miles </option>
 									<option value={3}> 3 miles </option>
@@ -186,9 +189,11 @@ export default class Zipcode extends React.Component {
 									<option value={10}> 10 miles </option>
 								</select>
 							</div>
+						</div>
+						<div className="big-container">
+							<div className="h5"> Guests </div>
 							<div className="dropdown-container">
 								<select value={this.state.guests} onChange={this.handleGuestsChange} className="dropdown" id="guestsDropdown">
-								<option value> Number of Guests </option>
 									<option value={1}> 1 </option>
 									<option value={2}> 2 </option>
 									<option value={3}> 3 </option>
@@ -206,9 +211,13 @@ export default class Zipcode extends React.Component {
 									<option value={15}> 15 </option>
 								</select>
 							</div>
+						</div>
+						<div className="big-container">
+							<div className="h5"> Day </div>
+
 							<div className="dropdown-container">
 								<select value={this.state.day} onChange={this.handleDayChange} className="dropdown" id="dayDropdown">
-								<option value> Day </option>
+
 									<option value={"01"}> 1 </option>
 									<option value={"02"}> 2 </option>
 									<option value={"03"}> 3 </option>
@@ -242,9 +251,12 @@ export default class Zipcode extends React.Component {
 									<option value={"31"}> 31 </option>
 								</select>
 							</div>
+						</div>
+						<div className="big-container">
+							<div className="h5"> Month </div>
 							<div className="dropdown-container">
 								<select value={this.state.month} onChange={this.handleMonthChange} className="dropdown" id="monthDropdown">
-								<option value> Month </option>
+
 									<option value={"01"}> January </option>
 									<option value={"02"}> February </option>
 									<option value={"03"}> March </option>
@@ -259,15 +271,21 @@ export default class Zipcode extends React.Component {
 									<option value={"12"}> December </option>
 								</select>
 							</div>
+						</div>
+						<div className="big-container">
+							<div className="h5"> Year </div>
 							<div className="dropdown-container">
 								<select value={2016} className="dropdown" id="yearDropdown">
-								<option value> Max Distance </option>
+
 									<option value={2016}> 2016 </option>
 								</select>
 							</div>
+						</div>
+						<div className="big-container">
+							<div className="h5"> Bedrooms </div>
 							<div className="dropdown-container">
 								<select value={this.state.beds} onChange={this.handleBedsChange} className="dropdown" id="bedsDropdown">
-								<option value> Number of Beds </option>
+
 									<option value={1}> 1 </option>
 									<option value={2}> 2 </option>
 									<option value={3}> 3 </option>
@@ -285,19 +303,21 @@ export default class Zipcode extends React.Component {
 									<option value={15}> 15 </option>
 								</select>
 							</div>
+						</div>
+						<br />
+						<div className="button-container">
 							<button className="submit-btn" id="zipcodesSubmitBtn" onClick={this.submitZipcode}>Submit</button>
 						</div>
-
+						<br/>
+						{this.state.noInfo}
 					</div>
+					
+				</div>
+
+				<div className="listings-container center">
 					{this.state.listings}
-						<div className="movies-container">
-							<div className="movie">
-							</div>
-							<div className="movies-container">
-
-							</div>
-						</div>
-					</div>
+				</div>
+			</div>
 		);
 	}
 }

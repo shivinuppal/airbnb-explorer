@@ -10,12 +10,11 @@ export default class ListingRow extends React.Component {
 
 	render() {
 		return (
-			<div className="card">
+			<div className="card center">
   				<img className="pic" src={this.props.pic}></img>
   				<div className="container">
-				<p><Link to={{pathname: `/listing/${this.props.listing_id}`}}>{"ListingID: " + this.props.listing_id}</Link></p>
-				<p>{this.props.summary}</p>
-    			<p>Price: ${this.props.price}</p>
+				<p><Link to={{pathname: `/listing/${this.props.listing_id}`}}>{this.props.summary}</Link></p>
+    			Price: ${this.props.price}
   				</div>
 			  </div>
 		);

@@ -87,8 +87,11 @@ export default class Host extends React.Component {
 						{this.state.hostInfo}
 			        </div>
 			      </div>
-				  {this.state.listings}
+				  
 			    </div>
+				<div className="listings-container center">
+				  {this.state.listings}
+				  </div>
 			</div>
 		);
 	}
