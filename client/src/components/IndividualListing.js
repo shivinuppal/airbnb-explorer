@@ -122,6 +122,7 @@ export default class IndividualListing extends React.Component {
 				// Map each attribute of a person in this.state.people to an HTML element
 				let zipcodeDivs = zipcodeList.map((zipcode, i) =>
 					<MLRow id={i} listing_id={zipcode[0]} name={zipcode[1]} summary={zipcode[2]} description={zipcode[3]}
+					pic={zipcode[4]}
 					/>
 
 				);
@@ -180,7 +181,10 @@ export default class IndividualListing extends React.Component {
 								</div>
 							</div>
 							
+						
 						</div>
+						</div>
+						<div className="discover-container center">
 						{this.state.ML}
 						</div>
 						
