@@ -173,14 +173,14 @@ function getZipcode(req, res) {
       ), AmenityFiltered AS (
           SELECT w.listing_id, a.accommodates AS guests, w.dist AS dist, a.bedrooms
           FROM WithinDistance w JOIN Amenity a ON w.listing_id = a.listing_id
-          WHERE a.accommodates >= ${guests} AND a.bedrooms >= ${beds}
+          WHERE a.accommodates >= ${guests} AND a.accommodates <= ${guests} + 1 AND a.bedrooms >= ${beds} AND a.bedrooms <= ${beds} + 1
       ), FilteredAndAvailable AS (
           SELECT a.listing_id, a.price, f.guests, f.dist, f.bedrooms
           FROM Available a JOIN AmenityFiltered f ON a.listing_id = f.listing_id
       )
       SELECT a.listing_id, a.guests, ROUND(a.dist, 2) AS dist, a.bedrooms, d.name, d.summary, d.description, a.price, u.picture_url
       FROM Descriptions d JOIN FilteredAndAvailable a ON d.listing_id = a.listing_id JOIN Url u ON d.listing_id = u.listing_id
-      ORDER BY ROUND(a.dist, 1)
+      ORDER BY a.guests, a.bedrooms, a.dist
   `;
 
   console.log(query);
