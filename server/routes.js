@@ -75,7 +75,7 @@ function getListingReviewInfo(req, res) {
   var query = `
     SELECT l.number_of_reviews, r.comments
     FROM Listing_ReviewS l JOIN Reviews r ON l.listing_id = r.listing_id
-    WHERE l.listing_id = ${listingId} AND ROWNUM <= 5 
+    WHERE l.listing_id = ${listingId} AND ROWNUM <= 5
   `;
 
   runQuery(query, function(err, rows, fields) {
@@ -169,7 +169,7 @@ function getZipcode(req, res) {
       ), WithinDistance AS (
           SELECT listing_id, dist
           FROM Distance
-          WHERE dist < ${miles} - 0.1
+          WHERE dist < ${miles}
       ), AmenityFiltered AS (
           SELECT w.listing_id, a.accommodates AS guests, w.dist AS dist, a.bedrooms
           FROM WithinDistance w JOIN Amenity a ON w.listing_id = a.listing_id
@@ -194,47 +194,76 @@ function getZipcode(req, res) {
   });
 };
 
-function getNearby(req, res) {
-  zipcode = req.params.zipcode;
+function getDiscover(req, res) {
+  console.log("hi you've entered getDiscover");
+  currLat = req.query.latitude;
+  currLong = req.query.longitude;
+  console.log("("+currLat+", "+currLong+")");
 
   var query = `
-  WITH CloseByListings AS (
-    SELECT listing_id
-    FROM Location
-    WHERE SQRT((la - latitude) * (la - latitude) * 4761 + (lo - longitude) * (lo - longitude) * 2981.16) < X),
-    VFM AS (
-    SELECT p.listing_id, p.price / r.review_scores_rating AS vfm
-    FROM listing_policy p JOIN ListingReview r ON p.listing_id = r.listing_id)
-    SELECT listing_id
-    FROM CloseByListings c JOIN VFM v ON c.listing_id = v.listing_id
-    ORDER BY v.vfm
-    LIMIT 10;
+      WITH Distance AS (
+          SELECT listing_id, ACOS(SIN(3.14159265358979*${currLat}/180.0)*SIN(3.14159265358979*latitude/180.0)+COS(3.14159265358979*${currLat}/180.0)*COS(3.14159265358979*latitude/180.0)*COS(3.14159265358979*longitude/180.0-3.14159265358979*${currLong}/180.0))*6371 AS dist
+          FROM Location
+      )
+          SELECT listing_id, dist
+          FROM Distance
+          WHERE dist < 5
   `;
+
   console.log(query);
   runQuery(query, function(err, rows, fields) {
     if (err) console.log(err);
     else {
+
       res.json(rows);
+      console.log(rows)
     }
   });
 };
 
-function zipcodes(req, res) {
 
-  var query = `
-    SELECT DISTINCT zipcode
-    FROM Location
-    WHERE zipcode IS NOT NULL
-  `;
-  console.log(query);
-  runQuery(query, function(err, rows, fields) {
-    if (err) console.log(err);
-    else {
-      console.log(rows);
-      res.json(rows);
-    }
-  });
-}
+
+// function getNearby(req, res) {
+//   zipcode = req.params.zipcode;
+//
+//   var query = `
+//   WITH CloseByListings AS (
+//     SELECT listing_id
+//     FROM Location
+//     WHERE SQRT((la - latitude) * (la - latitude) * 4761 + (lo - longitude) * (lo - longitude) * 2981.16) < X),
+//     VFM AS (
+//     SELECT p.listing_id, p.price / r.review_scores_rating AS vfm
+//     FROM listing_policy p JOIN ListingReview r ON p.listing_id = r.listing_id)
+//     SELECT listing_id
+//     FROM CloseByListings c JOIN VFM v ON c.listing_id = v.listing_id
+//     ORDER BY v.vfm
+//     LIMIT 10;
+//   `;
+//   console.log(query);
+//   runQuery(query, function(err, rows, fields) {
+//     if (err) console.log(err);
+//     else {
+//       res.json(rows);
+//     }
+//   });
+// };
+
+// function zipcodes(req, res) {
+//
+//   var query = `
+//     SELECT DISTINCT zipcode
+//     FROM Location
+//     WHERE zipcode IS NOT NULL
+//   `;
+//   console.log(query);
+//   runQuery(query, function(err, rows, fields) {
+//     if (err) console.log(err);
+//     else {
+//       console.log(rows);
+//       res.json(rows);
+//     }
+//   });
+// }
 
 //, HostInfo h
 //
@@ -245,11 +274,11 @@ function getHostListings(req, res) {
   var query = `
   WITH HostsListing AS (SELECT listing_id
     FROM Listings
-    WHERE host_id = ${hostId}), 
+    WHERE host_id = ${hostId}),
     HostInfo AS (SELECT id, host_about, host_response_time, host_response_rate, host_acceptance_rate, host_is_superhost, host_neighbourhood,
     host_total_listings_count, host_identity_verified
     FROM Host
-    WHERE id = ${hostId}), 
+    WHERE id = ${hostId}),
     AllListings AS (
       SELECT p.listing_id as listing_id, p.price as price, d.name as name, u.picture_url
       FROM listing_policy p JOIN Descriptions d ON p.listing_id = d.listing_id JOIN Url u on p.listing_id = u.listing_id
@@ -297,7 +326,7 @@ module.exports = {
   getLocationInfo: getLocationInfo,
   getDescriptionInfo: getDescriptionInfo,
   getZipcode: getZipcode,
-  zipcodes: zipcodes,
+  getDiscover: getDiscover,
   hosts: hosts,
   getHostListings: getHostListings
 }

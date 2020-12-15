@@ -38,7 +38,9 @@ app.get('/listing/description/:listingId', routes.getDescriptionInfo);
 
 //Zipcode
 app.get('/getZipcodes', routes.getZipcode);
-app.get('/zipcodes', routes.zipcodes);
+
+// Discover
+app.get('/getDiscover', routes.getDiscover);
 
 //Host's Listings
 app.get('/getHost/:hostId', routes.getHostListings);

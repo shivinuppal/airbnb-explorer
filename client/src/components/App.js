@@ -10,6 +10,7 @@ import Zipcode from './Zipcode';
 import Host from './Host';
 import BestNearby from './BestNearby';
 import MapComponent from './MapComponent';
+import Discover from './Discover';
 
 export default class App extends React.Component {
 
@@ -39,11 +40,11 @@ export default class App extends React.Component {
 								<BestNearby />
 							)}
 						/>
-				
+
 						<Route
 							exact
 							path="/host/:hostId"
-							component={Host} 
+							component={Host}
 							render={() => (
 								<Host />
 							)}
@@ -63,8 +64,15 @@ export default class App extends React.Component {
 							)}
 						/>
 						<Route
+							exact
+							path="/discover"
+							render={() => (
+								<Discover />
+							)}
+						/>
+						<Route
 							path="/listing/:listingId"
-							component={IndividualListing} 
+							component={IndividualListing}
 							render={() => (
 								<IndividualListing />
 							)}
