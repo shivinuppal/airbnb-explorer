@@ -3,88 +3,23 @@ import PageNavbar from './PageNavbar';
 import ZipcodeRow from './ZipcodeRow';
 import SearchBoxMap from './Map'
 
-import '../style/Zipcode.css';
+import '../style/Discover.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
-export default class Zipcode extends React.Component {
+export default class Discover extends React.Component {
 	constructor(props) {
 		super(props);
 		this.handleLatChange = this.handleLatChange;
 		this.state = {
-			guests: 1,
 			latitude: 47.620265,
 			longitude: -122.348396,
-			beds: 1,
-			radius: 1,
 			listings: [],
-			day: "01",
-			month: "01"
 		};
 
-		this.submitZipcode = this.submitZipcode.bind(this);
-		this.handleGuestsChange = this.handleGuestsChange.bind(this);
-		this.handleBedsChange = this.handleBedsChange.bind(this);
-		this.handleRadiusChange = this.handleRadiusChange.bind(this);
-		this.handleDayChange = this.handleDayChange.bind(this);
+		this.submitDiscover = this.submitDiscover.bind(this);
 		this.handleLatChange = this.handleLatChange.bind(this);
 		this.handleLongChange = this.handleLongChange.bind(this);
-		this.handleMonthChange = this.handleMonthChange.bind(this);
-
-	}
-
-	// componentDidMount() {
-	// 	fetch("http://localhost:8081/zipcodes", {
-	// 		method: 'GET' // The type of HTTP request.
-	// 	})
-	// 		.then(res => res.json()) // Convert the response data to a JSON.
-	// 		.then(zipcodeList => {
-	// 			console.log("a");
-	//
-	//
-	// 			// Map each attribute of a person in this.state.people to an HTML element
-	// 			let zipcodeDivs = zipcodeList.map((zipcode, i) =>
-	// 				[<option value={zipcode[0]}>{zipcode[0]}</option>]
-	//
-	// 			);
-	// 			// Set the state of the person list to the value returned by the HTTP response from the server.
-	// 			this.setState({
-	// 				zipcodeList: zipcodeDivs,
-	// 			})
-	//
-	// 		})
-	// 		.catch(err => console.log(err))
-	//
-	// }
-
-	// handleChange(e) {
-	// 	this.setState({
-	// 		selectedZipcode: e.target.value
-	// 	});
-	// }
-
-	handleGuestsChange(f) {
-		this.setState({
-			guests: f.target.value
-		});
-	}
-
-	handleDayChange(f) {
-		this.setState({
-			day: f.target.value
-		});
-	}
-
-	handleMonthChange(f) {
-		this.setState({
-			month: f.target.value
-		});
-	}
-
-	handleBedsChange(e) {
-		this.setState({
-			beds: e.target.value
-		});
 	}
 
 	handleLatChange(lat) {
@@ -100,17 +35,10 @@ export default class Zipcode extends React.Component {
 		});
 	}
 
-	handleRadiusChange(e) {
-		this.setState({
-			radius: e.target.value
-		});
-	}
 
 
-
-	submitZipcode() {
-		fetch("http://localhost:8081/getZipcodes?zipcode=" + this.state.selectedZipcode + "&guests=" + this.state.guests + "&beds=" + this.state.beds + "&radius=" + this.state.radius + "&month=" + this.state.month + "&day=" + this.state.day +
-			"&latitude=" + this.state.latitude + "&longitude=" + this.state.longitude, {
+	submitDiscover() {
+		fetch("http://localhost:8081/getDiscover?latitude=" + this.state.latitude + "&longitude=" + this.state.longitude, {
 			method: 'GET' // The type of HTTP request.
 		})
 			.then(res => res.json()) // Convert the response data to a JSON.
@@ -136,25 +64,17 @@ export default class Zipcode extends React.Component {
 
 	}
 
-	// <div className="zips-container">
-	//   <div className="dropdown-container">
-	// 	<select value={this.state.selectedZipcode} onChange={this.handleChange} className="dropdown" id="zipcodesDropdown">
-	// 		<option select value> -- select an option -- </option>
-	// 		{this.state.zipcodeList}
-	// 	</select>
-	//
-	//   </div>
-	// </div>
-
 	render() {
 
 		return (
-			<div className="Zipcode">
-				<PageNavbar active="zipcode" />
+			<div className="Discover">
+				<PageNavbar active="discover" />
 
 				<div className="container bestgenres-container">
 					<div className="jumbotron">
-						<div className="h2">Find an Airbnb near you!</div>
+						<div className="h2">Discover the best of Seattle!</div>
+						<div className="h4">Get the most bang for your buck with these Airbnbs these near you</div>
+						<br/><br/><br/>
 						<SearchBoxMap
 							google={this.props.google}
 							center={{ lat: 47.6204, lng: -122.3367 }}
@@ -285,7 +205,7 @@ export default class Zipcode extends React.Component {
 									<option value={15}> 15 </option>
 								</select>
 							</div>
-							<button className="submit-btn" id="zipcodesSubmitBtn" onClick={this.submitZipcode}>Submit</button>
+							<button className="submit-btn" id="zipcodesSubmitBtn" onClick={this.submitDiscover}>Submit</button>
 						</div>
 
 					</div>
