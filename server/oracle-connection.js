@@ -36,6 +36,7 @@ let generateConnectionProps = () => {
       if (connection) {
         try {
           await connection.close();
+          
           callback(false, result.rows, true);
         } catch (err) {
           console.error(err);

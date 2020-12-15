@@ -4,6 +4,7 @@ import HostRow from './HostRow';
 import AmenityRow from './AmenityRow';
 import DescriptionRow from './DescriptionRow';
 import PolicyRow from './PolicyRow';
+import MLRow from './MLRow';
 import '../style/IndividualListing.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -17,6 +18,7 @@ export default class IndividualListing extends React.Component {
 			listingId: this.props.match.params.listingId,
 			hostInfo: "",
 			amenityInfo: "",
+			ML: [],
 			urlInfo: "",
 			descriptionInfo: "", 
 			reviewInfo: "", 
@@ -25,6 +27,7 @@ export default class IndividualListing extends React.Component {
 		}
 
 		this.handleListingId = this.handleListingId.bind(this);
+		this.submitML = this.submitML.bind(this);
 	//	this.submitListingId = this.submitListingId.bind(this);
 	}
 
@@ -101,8 +104,41 @@ export default class IndividualListing extends React.Component {
 					policyInfo: policyDiv
 				});
 
-			});
+			})
+			.then(
+				this.submitML()
+			);
 	}
+
+	submitML() {
+		fetch("http://localhost:8081/getML?listingId=" + this.state.listingId, {
+			method: 'GET' // The type of HTTP request.
+		})
+			.then(res => res.json()) // Convert the response data to a JSON.
+			.then(zipcodeList => {
+				console.log("i reached");
+
+
+				// Map each attribute of a person in this.state.people to an HTML element
+				let zipcodeDivs = zipcodeList.map((zipcode, i) =>
+					<MLRow id={i} listing_id={zipcode[0]} name={zipcode[1]} summary={zipcode[2]} description={zipcode[3]}
+					/>
+
+				);
+				console.log(zipcodeDivs);
+				// Set the state of the person list to the value returned by the HTTP response from the server.
+				this.setState({
+					ML: zipcodeDivs
+				})
+
+			})
+			.catch(err => console.log(err))
+
+	}
+
+
+
+
 
 	render() {
 
@@ -143,8 +179,11 @@ export default class IndividualListing extends React.Component {
 									</div>
 								</div>
 							</div>
+							
 						</div>
-					</div>
+						{this.state.ML}
+						</div>
+						
 				</div>
 			</div>
 		);

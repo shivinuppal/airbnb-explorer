@@ -165,7 +165,7 @@ export default class Zipcode extends React.Component {
 						<div className="h2">Find an Airbnb near you!</div>
 						<SearchBoxMap
 							google={this.props.google}
-							center={{ lat: 47.6204, lng: -122.3367 }}
+							center={{ lat: this.state.latitude, lng: this.state.longitude }}
 							height='300px'
 							zoom={15}
 							handleLatChange={this.handleLatChange}
