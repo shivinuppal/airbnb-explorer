@@ -1,6 +1,7 @@
 import React from 'react';
 import PageNavbar from './PageNavbar';
 import ListingRow from './ListingRow';
+import HostRow from './HostRow';
 import '../style/Zipcode.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 export default class Host extends React.Component {
@@ -8,11 +9,10 @@ export default class Host extends React.Component {
 		super(props);
 		this.state = {
 			hostId: this.props.match.params.hostId,
-			allHosts: [],
+			hostInfo: "",
 			listings: []
 		};
 
-		//this.submitHostId = this.submitHostId.bind(this);
 		this.handleChange = this.handleChange.bind(this);
 	}
 
@@ -55,14 +55,21 @@ export default class Host extends React.Component {
 		console.log(hostList);
 		// Map each attribute of a person in this.state.people to an HTML element
 		let listingDivs = hostList.map((host, i) => 
-		  <ListingRow key={i} listing_id={host[0]} price={host[1]} summary={host[2]}
+		  <ListingRow key={i} listing_id={host[0]} price={host[1]} summary={host[2]} pic={host[3]}
 		  />
-	
 		);
+		let hostDiv =
+					<HostRow id={hostList[0][4]} host_about={hostList[0][5]}
+						host_response_time={hostList[0][6]} host_response_rate={hostList[0][7]}
+						host_acceptance_rate={hostList[0][8]} host_is_superhost={hostList[0][9]}
+						host_neighborhood={hostList[0][10]} host_total_listings_count={hostList[0][11]}
+						host_identity_verified={hostList[0][12]}
+					/> 
 		console.log(listingDivs);
 		// Set the state of the person list to the value returned by the HTTP response from the server.
 		this.setState({
-		  listings: listingDivs
+			hostInfo: hostDiv, 
+			listings: listingDivs
 		})
 	  })
 	  .catch(err => console.log(err))
@@ -77,21 +84,10 @@ export default class Host extends React.Component {
 				<div className="container hosts-container">
 			      <div className="jumbotron">
 			        <div className="hosts-container">
-						
-						  <table>
-							  <thead>
-								  <tr>
-								  <th className="header"><strong>Listing_ID</strong></th>
-                        			<th className="header"><strong>Price</strong></th>
-			            			<th className="header"><strong>Summary</strong></th>
-								  </tr>
-							  </thead>
-							  <tbody> 
-							  {this.state.listings}
-							  </tbody>
-						  </table>
+						{this.state.hostInfo}
 			        </div>
 			      </div>
+				  {this.state.listings}
 			    </div>
 			</div>
 		);
