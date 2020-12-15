@@ -39,6 +39,7 @@ export default class IndividualListing extends React.Component {
 
 	/* ---- Getting all Information about a ListingID ---- */
 	componentDidMount() {
+		console.log(this.state.listingId);
 		Promise.all([
 			fetch("http://localhost:8081/listing/host/" + this.state.listingId),
 			fetch("http://localhost:8081/listing/amenity/" + this.state.listingId),
@@ -60,7 +61,7 @@ export default class IndividualListing extends React.Component {
 						host_response_time={infoList[0][0][2]} host_response_rate={infoList[0][0][3]}
 						host_acceptance_rate={infoList[0][0][4]} host_is_superhost={infoList[0][0][5]}
 						host_neighborhood={infoList[0][0][6]} host_total_listings_count={infoList[0][0][7]}
-						host_identity_verified={infoList[0][0][8]}
+						host_identity_verified={infoList[0][0][8]} name={infoList[0][0][9]}
 					/> 
 				if (infoList[5][0][6] === null) {
 					infoList[5][0][6] = "No Information"; 
@@ -116,9 +117,6 @@ export default class IndividualListing extends React.Component {
 		})
 			.then(res => res.json()) // Convert the response data to a JSON.
 			.then(zipcodeList => {
-				console.log("i reached");
-
-
 				// Map each attribute of a person in this.state.people to an HTML element
 				let zipcodeDivs = zipcodeList.map((zipcode, i) =>
 					<MLRow id={i} listing_id={zipcode[0]} name={zipcode[1]} summary={zipcode[2]} description={zipcode[3]}
@@ -146,7 +144,6 @@ export default class IndividualListing extends React.Component {
 		return (
 			<div className="IndividualListing">
 				<PageNavbar active="IndividualListing" />
-
 				<div className="container listing-container">
 					<div className="jumbotron" id="jumbo">
 						<div className="listing-container">

@@ -58,17 +58,19 @@ export default class Host extends React.Component {
 		  <ListingRow key={i} listing_id={host[0]} price={host[1]} summary={host[2]} pic={host[3]}
 		  />
 		);
+		let hostPicDiv = hostList[0][14];
 		let hostDiv =
 					<HostRow id={hostList[0][4]} host_about={hostList[0][5]}
 						host_response_time={hostList[0][6]} host_response_rate={hostList[0][7]}
 						host_acceptance_rate={hostList[0][8]} host_is_superhost={hostList[0][9]}
 						host_neighborhood={hostList[0][10]} host_total_listings_count={hostList[0][11]}
-						host_identity_verified={hostList[0][12]}
+						host_identity_verified={hostList[0][12]} name={hostList[0][13]}
 					/> 
 		console.log(listingDivs);
 		// Set the state of the person list to the value returned by the HTTP response from the server.
 		this.setState({
 			hostInfo: hostDiv, 
+			hostPic: hostPicDiv, 
 			listings: listingDivs
 		})
 	  })
@@ -84,6 +86,7 @@ export default class Host extends React.Component {
 				<div className="container hosts-container">
 			      <div className="jumbotron">
 			        <div className="hosts-container">
+					<img className="host-pic" src={this.state.hostPic}></img>
 						{this.state.hostInfo}
 			        </div>
 			      </div>
