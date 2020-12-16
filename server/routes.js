@@ -272,7 +272,8 @@ function getML(req, res) {
 
     where listing_id != ${currListing}
     ), second as(
-    Select t.listing_id, name, summary, description from TopicD t join Descriptions d on d.listing_id = t.listing_id order by dist )
+    Select t.listing_id, name, summary, description from TopicD t join Descriptions d on d.listing_id = t.listing_id
+     where summary is not null order by dist)
     Select s.listing_id, s.name, s.summary, s.description, u.picture_url from second s JOIN Url u ON s.listing_id = u.listing_id where rownum <= 9
   `;
 
@@ -289,51 +290,11 @@ function getML(req, res) {
   });
 };
 
-// function getNearby(req, res) {
-//   zipcode = req.params.zipcode;
-//
-//   var query = `
-//   WITH CloseByListings AS (
-//     SELECT listing_id
-//     FROM Location
-//     WHERE SQRT((la - latitude) * (la - latitude) * 4761 + (lo - longitude) * (lo - longitude) * 2981.16) < X),
-//     VFM AS (
-//     SELECT p.listing_id, p.price / r.review_scores_rating AS vfm
-//     FROM listing_policy p JOIN ListingReview r ON p.listing_id = r.listing_id)
-//     SELECT listing_id
-//     FROM CloseByListings c JOIN VFM v ON c.listing_id = v.listing_id
-//     ORDER BY v.vfm
-//     LIMIT 10;
-//   `;
-//   console.log(query);
-//   runQuery(query, function(err, rows, fields) {
-//     if (err) console.log(err);
-//     else {
-//       res.json(rows);
-//     }
-//   });
-// };
 
-// function zipcodes(req, res) {
-//
-//   var query = `
-//     SELECT DISTINCT zipcode
-//     FROM Location
-//     WHERE zipcode IS NOT NULL
-//   `;
-//   console.log(query);
-//   runQuery(query, function(err, rows, fields) {
-//     if (err) console.log(err);
-//     else {
-//       console.log(rows);
-//       res.json(rows);
-//     }
-//   });
-// }
 
-//, HostInfo h
-//
-//
+
+
+
 function getHostListings(req, res) {
   hostId = req.params.hostId;
 
