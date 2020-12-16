@@ -11,6 +11,7 @@ import Host from './Host';
 import BestNearby from './BestNearby';
 import MapComponent from './MapComponent';
 import Discover from './Discover';
+import Analytics from './Analytics';
 
 export default class App extends React.Component {
 
@@ -68,6 +69,13 @@ export default class App extends React.Component {
 							path="/discover"
 							render={() => (
 								<Discover />
+							)}
+						/>
+						<Route
+							exact
+							path="/analytics"
+							render={() => (
+								<Analytics />
 							)}
 						/>
 						<Route
