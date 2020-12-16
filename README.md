@@ -28,3 +28,6 @@ Shivin Uppal (shivin@wharton.upenn.edu)
 Durga Srivatsan (dsri@seas.upenn.edu)
 Ali Sulaiman Mohammad (alism@seas.upenn.edu)
 Mirriam Ronoh (mirriam@seas.upenn.edu)
+
+Acknowledgement: Data files were sourced from Kaggle.
+www.kaggle.com/airbnb/seattle
