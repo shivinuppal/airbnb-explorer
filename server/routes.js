@@ -177,10 +177,11 @@ function getZipcode(req, res) {
       ), FilteredAndAvailable AS (
           SELECT a.listing_id, a.price, f.guests, f.dist, f.bedrooms
           FROM Available a JOIN AmenityFiltered f ON a.listing_id = f.listing_id
-      )
+      ), Temp AS (
       SELECT a.listing_id, a.guests, ROUND(a.dist, 2) AS dist, a.bedrooms, d.name, d.summary, d.description, a.price, u.picture_url
       FROM Descriptions d JOIN FilteredAndAvailable a ON d.listing_id = a.listing_id JOIN Url u ON d.listing_id = u.listing_id
-      ORDER BY a.guests, a.bedrooms, a.dist
+      ORDER BY a.guests, a.bedrooms, a.dist)
+      SELECT * FROM Temp WHERE ROWNUM <= 75
   `;
 
   console.log(query);
