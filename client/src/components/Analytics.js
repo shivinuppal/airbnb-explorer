@@ -66,7 +66,7 @@ export default class Analytics extends React.Component {
       .then(revsList => {
         console.log(revsList);
         let revsDivs = revsList.map((rev, i) =>
-          <AnnualRevenuesRow key={i} listing={rev[0]} annualrev={rev[1]}/>
+          <AnnualRevenuesRow key={i} listing={rev[0]} annualrev={rev[1]} name={rev[2]}/>
         );
         this.setState({
           annualRevs: revsDivs
@@ -85,7 +85,7 @@ export default class Analytics extends React.Component {
         console.log(apartmentsList);
         let apartmentsDivs = apartmentsList.map((apartment, i) =>
           <ApartmentsRow key={i} listing={apartment[0]} guests={apartment[1]}
-            price={"$" + apartment[2]} max_nights={apartment[3]} min_nights={apartment[4]} />
+            price={"$" + apartment[2]} max_nights={apartment[3]} min_nights={apartment[4]} name={apartment[5]}/>
         );
         this.setState({
           apartments: apartmentsDivs
@@ -104,7 +104,7 @@ export default class Analytics extends React.Component {
         console.log(maxListingsList);
         let maxListingsDivs = maxListingsList.map((listing, i) =>
           <MaxListingsRow key={i} listing={listing[0]} price={"$" + listing[1]}
-            bathrooms={listing[2]} bedrooms={listing[3]} beds={listing[4]} />
+            bathrooms={listing[2]} bedrooms={listing[3]} beds={listing[4]} name={listing[5]}/>
         );
         this.setState({
           maxListings: maxListingsDivs
@@ -122,7 +122,7 @@ export default class Analytics extends React.Component {
       .then(hostsList => {
         console.log(hostsList);
         let hostsDivs = hostsList.map((host, i) =>
-          <HostsRow key={i} host={host[0]} listings={host[1]}
+          <HostsRow key={i} host={host[0]} listings={host[1]} name={host[3]}
             price={"$" + host[2]} />
         );
         this.setState({
@@ -171,7 +171,7 @@ export default class Analytics extends React.Component {
           <div className="jumbotron">
             <div className="analytics-container">
             <div className= "h2">Find apartments which let you invite tens of people in</div>
-              <div className="analytics-header">
+              <div className="listing-header">
                 <div className="header"><strong>Listing</strong></div>
                 <div className="header"><strong>Guests</strong></div>
                 <div className="header"><strong>Daily Price</strong></div>
@@ -189,7 +189,7 @@ export default class Analytics extends React.Component {
             <div className="analytics-container">
             <div className= "h2">For the average Joe: </div>
             <div className= "h5">These have average prices, average beds, average ... </div>
-              <div className="analytics-header">
+              <div className="listing-header">
                 <div className="header"><strong>Listing</strong></div>
                 <div className="header"><strong>Price</strong></div>
                 <div className="header"><strong>Bathrooms</strong></div>

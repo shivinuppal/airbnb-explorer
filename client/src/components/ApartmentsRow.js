@@ -14,7 +14,7 @@ export default class ApartmentsRow extends React.Component {
 			<div className="apartments">
 				<div className="listing">
 					<Link to={{ pathname: `listing/${this.props.listing}` }}>
-					{this.props.listing}</Link>
+					{this.props.name}</Link>
 				</div>
 				<div className="guests">{this.props.guests}</div>
                 <div className="price">{this.props.price}</div>
