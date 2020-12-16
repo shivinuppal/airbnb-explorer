@@ -63,7 +63,7 @@ function getRecs(req, res) {
     ORDER BY m.rating DESC, m.vote_count DESC LIMIT 5;
     
   `;
-  console.log()
+  //console.log()
   connection.query(query, function(err, rows, fields) {
     if (err) console.log(err);
     else {
@@ -93,7 +93,7 @@ function getDecades(req, res) {
 /* ---- Q3 (Best Genres) ---- */
 function bestGenresPerDecade(req, res) {
   var decade = req.params.selectedDecade; 
-  console.log(decade);
+  //console.log(decade);
   var query = `
     WITH movies_decade AS (
       SELECT id, rating

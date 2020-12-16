@@ -42,5 +42,10 @@ app.get('/getHost', routes.hosts);
 
 
 app.listen(8081, () => {
+<<<<<<< Updated upstream
 	console.log(`Server listening on PORT 8081`);
 });
+=======
+	//console.log(`Server listening on PORT 8081`);
+});
+>>>>>>> Stashed changes

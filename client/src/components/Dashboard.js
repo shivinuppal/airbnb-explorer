@@ -46,13 +46,13 @@ export default class Dashboard extends React.Component {
   /* ---- Q1b (Dashboard) ---- */
   /* Set this.state.movies to a list of <DashboardMovieRow />'s. */
   showMovies(genre) {
-    console.log(genre);
+    //console.log(genre);
     fetch("http://localhost:8081/genres/" + genre, {
 			method: "GET"
 		})
 			.then(res => res.json())
 			.then(movieList => {
-				console.log(movieList);
+				//console.log(movieList);
 				let movieDivs = movieList.map((movie, i) =>
         <DashboardMovieRow key={i} title={movie.title} rating={movie.rating} votes={movie.vote_count}/>
         );

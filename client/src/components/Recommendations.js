@@ -28,13 +28,13 @@ export default class Recommendations extends React.Component {
 	/* ---- Q2 (Recommendations) ---- */
 	// Hint: Name of movie submitted is contained in `this.state.movieName`.
 	submitMovie() {
-		console.log(this.state.movieName);
+		//console.log(this.state.movieName);
     fetch("http://localhost:8081/recommendations/" + this.state.movieName, {
 			method: "GET"
 		})
 			.then(res => res.json())
 			.then(recList => {
-				console.log(recList);  
+				//console.log(recList);  
 				let recDivs = recList.map((movie, i) =>
         <RecommendationsRow key={i} title={movie.title} id={movie.id} rating={movie.rating} votes={movie.vote_count}/>
         );

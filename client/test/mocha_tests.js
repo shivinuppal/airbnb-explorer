@@ -19,12 +19,12 @@ describe('Dashboard page', () => {
       try {
           await driver.get('http://localhost:3000/');
           for (const genre of ALL_GENRES) {
-            // console.log(`------- Q1a: Testing that Button for Genre = ${genre} Exists -------`);
+            // //console.log(`------- Q1a: Testing that Button for Genre = ${genre} Exists -------`);
             await driver.wait(until.elementLocated(By.id(`button-${genre}`)), 3000);
             const randButton = await driver.findElement(By.id(`button-${genre}`));
             const buttonText = await randButton.getText();
             await randButton.click();
-            // console.log(`Test: ${buttonText} == ${genre}`);
+            // //console.log(`Test: ${buttonText} == ${genre}`);
             assert.equal(buttonText, genre);
           }
         } finally {
@@ -54,13 +54,13 @@ describe('Dashboard page', () => {
   );
 
   async function validateTopMovies(genre, result) {
-    // console.log(`------- Q1b: Testing Genre = ${genre} -------`);
+    // //console.log(`------- Q1b: Testing Genre = ${genre} -------`);
     const top10 = JSON.parse(TOP_10[genre]);
     for (const i in result) {
       const title = await result[i].findElement(By.className('title')).getText();
       const rating = await result[i].findElement(By.className('rating')).getText();
       const votes = await result[i].findElement(By.className('votes')).getText();
-      // console.log(`Test: ${title} == ${top10[i]['title']}`);
+      // //console.log(`Test: ${title} == ${top10[i]['title']}`);
       assert.equal(title, top10[i]['title']);
       assert.equal(rating, top10[i]['rating']);
       assert.equal(votes, top10[i]['vote_count']);
@@ -97,11 +97,11 @@ describe('Recommendation page', () => {
   );
 
   async function validateRecommendedMovies(title, results) {
-    // console.log(`------- Q2: Testing Title = ${title} -------`);
+    // //console.log(`------- Q2: Testing Title = ${title} -------`);
     const expectedIds = RECOMMEND[title];
     for (const i in results) {
       const observedId = await results[i].findElement(By.css('.id')).getText();
-      // console.log(`Test: ${observedId} == ${expectedIds[i]}`);
+      // //console.log(`Test: ${observedId} == ${expectedIds[i]}`);
       assert.equal(parseInt(observedId), expectedIds[i]);
     }
   }
@@ -136,12 +136,12 @@ describe('Best Genres page', () => {
   );
 
   async function validateDecadeResults(decade, results) {
-    // console.log(`------- Q3: Testing Decade = ${decade} -------`);
+    // //console.log(`------- Q3: Testing Decade = ${decade} -------`);
     const expectedResults = JSON.parse(BEST_GENRES[decade]);
     for (const i in results) {
       const observedGenre = await results[i].findElement(By.className('genre')).getText();
       const observedRating = await results[i].findElement(By.className('rating')).getText();
-      // console.log(`Test: ${observedTitle} == ${expectedResults[i]['title']}`);
+      // //console.log(`Test: ${observedTitle} == ${expectedResults[i]['title']}`);
       assert.equal(observedGenre, expectedResults[i]['genre']);
       assert.equal(observedRating, expectedResults[i]['rating']);
     }

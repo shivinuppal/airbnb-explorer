@@ -25,11 +25,11 @@ export default class BestGenre extends React.Component {
     })
       .then(res => res.json()) // Convert the response data to a JSON.
       .then(decadeList => {
-		console.log(decadeList);
+		//console.log(decadeList);
         if (!decadeList) return;
         // Map each genreObj in genreList to an HTML element:
 		// A button which triggers the showMovies function for each genre.
-		console.log(decadeList);
+		//console.log(decadeList);
         let decadeDivs = decadeList.map((decade, i) =>
           <option key={i} value={decade.decade}>{decade.decade}</option>
         );
@@ -50,13 +50,13 @@ export default class BestGenre extends React.Component {
 
 	/* ---- Q3b (Best Genres) ---- */
 	submitDecade() {
-		console.log(this.state.selectedDecade);
+		//console.log(this.state.selectedDecade);
 		fetch("http://localhost:8081/decades/" + this.state.selectedDecade, {
 			method: "GET"
 		})
 			.then(res => res.json())
 			.then(bestGenresList => {
-				console.log(bestGenresList);  
+				//console.log(bestGenresList);  
 				let bestGenresDiv = bestGenresList.map((genre, i) =>
         <BestGenreRow key={i} genre={genre.genre} rating={genre.rating} />
         );

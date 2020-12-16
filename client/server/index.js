@@ -61,5 +61,5 @@ app.get('/decades/:selectedDecade', routes.bestGenresPerDecade);
 
 
 app.listen(8081, () => {
-	console.log(`Server listening on PORT 8081`);
+	//console.log(`Server listening on PORT 8081`);
 });
