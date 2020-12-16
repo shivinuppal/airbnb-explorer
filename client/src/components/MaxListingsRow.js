@@ -12,8 +12,10 @@ export default class MaxListingsRow extends React.Component {
 	render() {
 		return (
 			<div className="maxListings">
-				<Link to={{ pathname: `listing/${this.props.listing_id}` }}>
+				<div className="listing">
+					<Link to={{ pathname: `/listing/${this.props.listing_id}` }}>
 					{this.props.listing}</Link>
+				</div>
 				<div className="price">{this.props.price}</div>
                 <div className="bathrooms">{this.props.bathrooms}</div>
                 <div className="bedrooms">{this.props.bedrooms}</div>
