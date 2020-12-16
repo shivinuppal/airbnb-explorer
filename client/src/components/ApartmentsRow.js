@@ -18,7 +18,6 @@ export default class ApartmentsRow extends React.Component {
 				</div>
 				<div className="guests">{this.props.guests}</div>
                 <div className="price">{this.props.price}</div>
-                <div className="max_nights">{this.props.max_nights}</div>
                 <div className="min_nights">{this.props.min_nights}</div>
 			</div>
 		);

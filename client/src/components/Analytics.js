@@ -175,7 +175,6 @@ export default class Analytics extends React.Component {
                 <div className="header"><strong>Listing</strong></div>
                 <div className="header"><strong>Guests</strong></div>
                 <div className="header"><strong>Daily Price</strong></div>
-                <div className="header"><strong>Max Nights</strong></div>
                 <div className="header"><strong>Min Nights</strong></div>
               </div>
               <div className="results-container" id="results">
