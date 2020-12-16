@@ -50,8 +50,6 @@ app.get('/getHost', routes.hosts);
 //ML
 app.get('/getML', routes.getML);
 
-app.get('/getNearby/:zipcode', routes.getHostListings);
-
 app.get('/getAvgPricePerZipcode', routes.getAvgPricePerZipcode);
 
 app.get('/getAnnualRevenues', routes.getAnnualRevenues);
