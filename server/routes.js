@@ -377,7 +377,7 @@ function getAvgPricePerZipcode(req, res) {
   FROM Location l JOIN Listing_policy p
   ON l.listing_id = p.listing_id
   WHERE l.zipcode IS NOT NULL
-  GROUP BY l.zipcode  
+  GROUP BY l.zipcode
   `;
   console.log(query);
   runQuery(query, function(err, rows, fields) {
@@ -399,13 +399,15 @@ function getAnnualRevenues(req, res) {
     ON l.listing_id = c.listing_id
     WHERE c.calendar_date LIKE '2016%'
     GROUP BY l.listing_id
-    ORDER BY SUM(c.price) DESC  
-    )
-    SELECT DISTINCT r.listing AS listing, r.annual_revenue AS annual_revenue,
-    a.square_feet AS listing_area
+    ), Temp AS (
+    SELECT DISTINCT r.listing AS listing, r.annual_revenue / a.square_feet AS annual_revenue_per_square_foot
     FROM Revenues r JOIN Amenity a
     ON r.listing = a.listing_id
-    WHERE a.square_feet IS NOT NULL
+    WHERE a.square_feet IS NOT NULL AND a.square_feet <> 0
+    ORDER BY r.annual_revenue / a.square_feet)
+    SELECT listing, ROUND(annual_revenue_per_square_foot, 2) as annual_revenue_per_square_foot
+    FROM Temp
+    WHERE ROWNUM <=15;
   `;
   console.log(query);
   runQuery(query, function(err, rows, fields) {
@@ -439,7 +441,7 @@ function getApartments(req, res) {
       FROM Cal c JOIN listing_policy l
       ON c.listing_id = l.listing_id
       WHERE l.extra_people >= c.people AND l.extra_people >= 50
-      ORDER BY l.extra_people DESC  
+      ORDER BY l.extra_people DESC
   `;
   console.log(query);
   runQuery(query, function(err, rows, fields) {
@@ -464,8 +466,8 @@ function getMaxListings(req, res) {
     SELECT a.listing_id, a.bathrroms AS bathrooms, a.bedrooms AS bedrooms,
     a.beds AS beds
     FROM amenity a JOIN Max m
-    ON (a.bathrroms >= m.bathrooms - 1) AND (a.bedrooms >= m.bedrooms - 1) AND 
-    (a.beds >= m.beds -1) AND (a.bathrroms <= m.bathrooms + 1) AND 
+    ON (a.bathrroms >= m.bathrooms - 1) AND (a.bedrooms >= m.bedrooms - 1) AND
+    (a.beds >= m.beds -1) AND (a.bathrroms <= m.bathrooms + 1) AND
     (a.bedrooms <= m.bedrooms + 1) AND (a.beds <= m.beds + 1)
     ),
     Prices AS (
@@ -484,7 +486,7 @@ function getMaxListings(req, res) {
     FROM AvgListings a JOIN MaxListings p
     ON a.listing_id = p.listing_id
     WHERE a.price >= 200
-    ORDER BY a.price DESC   
+    ORDER BY a.price DESC
   `;
   console.log(query);
   runQuery(query, function(err, rows, fields) {

@@ -20,9 +20,9 @@ export default class IndividualListing extends React.Component {
 			amenityInfo: "",
 			ML: [],
 			urlInfo: "",
-			descriptionInfo: "", 
-			reviewInfo: "", 
-			policyInfo: "", 
+			descriptionInfo: "",
+			reviewInfo: "",
+			policyInfo: "",
 			reviewComments: []
 		}
 
@@ -48,11 +48,11 @@ export default class IndividualListing extends React.Component {
 			fetch("http://localhost:8081/listing/location/" + this.state.listingId),
 			fetch("http://localhost:8081/listing/description/" + this.state.listingId),
 		    fetch("http://localhost:8081/listing/listing_review/" + this.state.listingId)
-		]) 
+		])
 			.then(res => Promise.all(res.map(response => response.json())))
 			.then(infoList => {
 				console.log(infoList);
-				let urlDiv = ""; 
+				let urlDiv = "";
 				if (infoList[3].length !== 0) {
 					urlDiv = infoList[3][0][1];
 				}
@@ -62,36 +62,36 @@ export default class IndividualListing extends React.Component {
 						host_acceptance_rate={infoList[0][0][4]} host_is_superhost={infoList[0][0][5]}
 						host_neighborhood={infoList[0][0][6]} host_total_listings_count={infoList[0][0][7]}
 						host_identity_verified={infoList[0][0][8]} name={infoList[0][0][9]}
-					/> 
+					/>
 				if (infoList[5][0][6] === null) {
-					infoList[5][0][6] = "No Information"; 
+					infoList[5][0][6] = "No Information";
 				}
 				let descriptionDiv = <DescriptionRow name={infoList[5][0][1]} description={infoList[5][0][2]}
 					neighbourhood_cleansed={infoList[4][0][3]} neighborhood_overview={infoList[4][0][4]}
 					zipcode={infoList[4][0][5]} transit={infoList[5][0][7]}
-				/> 
+				/>
 				let amenityDiv =
 					<AmenityRow property_type={infoList[1][0][2]} room_type={infoList[1][0][3]}
 						accommodates={infoList[1][0][4]} bathrooms={infoList[1][0][5]}
-						bedrooms={infoList[1][0][6]} beds={infoList[1][0][7]} 
-						bed_type={infoList[1][0][8]} amenities={(infoList[1][0][9]).replace('{', '').replace('}', '')} 
-						square_feet={infoList[1][0][10]} guests_included={infoList[1][0][11]} 
+						bedrooms={infoList[1][0][6]} beds={infoList[1][0][7]}
+						bed_type={infoList[1][0][8]} amenities={(infoList[1][0][9]).replace('{', '').replace('}', '')}
+						square_feet={infoList[1][0][10]} guests_included={infoList[1][0][11]}
 						/>
-				let reviewDivComments = ""; 
-				let reviewDiv = ""; 
+				let reviewDivComments = "";
+				let reviewDiv = "";
 				if (infoList[6].length !== 0) {
 					reviewDivComments = infoList[6].map((review, i) =>
 					<div key={i} className="comment"><strong>Comment: </strong> {review[1]}</div>
 					);
-					reviewDiv = <div className="number_of_reviews"><strong>Number of Reviews: </strong>{infoList[2][0][0]}</div> 
-					
-				} 
+					reviewDiv = <div className="number_of_reviews"><strong>Number of Reviews: </strong>{infoList[2][0][0]}</div>
+
+				}
 				for (var i in infoList[2][0]) {
 					if (infoList[2][0][i] === null) {
 						infoList[2][0][i] = "No Information";
 					}
 				}
-				let policyDiv = 
+				let policyDiv =
 				<PolicyRow price={infoList[2][0][0]} cancellation_policy={infoList[2][0][3]}
 				security_deposit={infoList[2][0][4]} cleaning_fee={infoList[2][0][5]}
 				min_nights={infoList[2][0][7]} max_nights={infoList[2][0][8]} />
@@ -99,7 +99,7 @@ export default class IndividualListing extends React.Component {
 					hostInfo: hostDiv,
 					amenityInfo: amenityDiv,
 					urlInfo: urlDiv,
-					descriptionInfo: descriptionDiv, 
+					descriptionInfo: descriptionDiv,
 					reviewInfo: reviewDiv,
 					reviewComments: reviewDivComments,
 					policyInfo: policyDiv
@@ -119,7 +119,7 @@ export default class IndividualListing extends React.Component {
 			.then(zipcodeList => {
 				// Map each attribute of a person in this.state.people to an HTML element
 				let zipcodeDivs = zipcodeList.map((zipcode, i) =>
-					<MLRow id={i} listing_id={zipcode[0]} name={zipcode[1]} summary={zipcode[2]} description={zipcode[3]}
+					<MLRow id={i} listing_id={zipcode[0]} name={zipcode[1]} summary={("" + zipcode[2]).substring(0, 190) + " ..."} description={zipcode[3]}
 					pic={zipcode[4]}
 					/>
 
@@ -177,14 +177,14 @@ export default class IndividualListing extends React.Component {
 									</div>
 								</div>
 							</div>
-							
-						
+
+
 						</div>
 						</div>
 						<div className="discover-container center">
 						{this.state.ML}
 						</div>
-						
+
 				</div>
 			</div>
 		);
