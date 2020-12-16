@@ -120,9 +120,11 @@ export default class Zipcode extends React.Component {
 				let zipcodeInfo = "";
 				if (zipcodeList.length != 0) {
 					// Map each attribute of a person in this.state.people to an HTML element
+					console.log(zipcodeList); 
 					zipcodeDivs = zipcodeList.map((zipcode, i) =>
-						<ZipcodeRow id={i} listing_id={zipcode[0]} guests={zipcode[1]} distance={("Distance: " + zipcode[2]).substring(0, 4) + " miles"}
-							bedrooms={zipcode[3]} name={zipcode[4]} price={"$" + zipcode[7]} pic={zipcode[8]}
+						<ZipcodeRow id={i} listing_id={zipcode[0]} guests={zipcode[1]} 
+						distance={"Distance: " + zipcode[2].toFixed(2) + " miles"}
+						bedrooms={zipcode[3]} name={zipcode[4]} price={"$" + zipcode[7]} pic={zipcode[8]}
 						/>
 
 					);

@@ -23,7 +23,7 @@
   }
 
   .listing-header .header {
-    flex: 1 0 15%;
+    flex: 1 0 20%;
   }
   
  .revenue .listing, .revenue .annualrev, .revenue .area {
@@ -31,11 +31,11 @@
   }
 
   .apartments .listing, .apartments .guests, .apartments .price, .apartments .max_nights, .apartments .min_nights {
-    flex: 1 0 15%;
+    flex: 1 0 20%;
   }
 
   .maxListings .listing, .maxListings .price, .maxListings .bathrooms, .maxListings .bedrooms, .maxListings .beds {
-    flex: 1 0 15%;
+    flex: 1 0 20%;
   }
 
   .hosts .host, .hosts .listings, .hosts .price {
