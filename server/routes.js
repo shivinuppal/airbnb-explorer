@@ -419,7 +419,7 @@ function getAnnualRevenues(req, res) {
     ORDER BY r.annual_revenue / a.square_feet)
     SELECT listing, ROUND(annual_revenue_per_square_foot, 2) as annual_revenue_per_square_foot
     FROM Temp
-    WHERE ROWNUM <=15;
+    WHERE ROWNUM <=15
   `;
   console.log(query);
   runQuery(query, function(err, rows, fields) {
