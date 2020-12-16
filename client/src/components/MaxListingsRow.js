@@ -7,19 +7,17 @@ export default class MaxListingsRow extends React.Component {
 		super(props);
 	}
 
-	/* ---- Q1b (Dashboard) ---- */
-	/* Change the contents (NOT THE STRUCTURE) of the HTML elements to show a movie row. */
 	render() {
 		return (
 			<div className="maxListings">
 				<div className="listing">
 					<Link to={{ pathname: `/listing/${this.props.listing}` }}>
-					{this.props.name}</Link>
+						{this.props.name}</Link>
 				</div>
 				<div className="price">{this.props.price}</div>
-                <div className="bathrooms">{this.props.bathrooms}</div>
-                <div className="bedrooms">{this.props.bedrooms}</div>
-                <div className="beds">{this.props.beds}</div>
+				<div className="bathrooms">{this.props.bathrooms}</div>
+				<div className="bedrooms">{this.props.bedrooms}</div>
+				<div className="beds">{this.props.beds}</div>
 			</div>
 		);
 	}
