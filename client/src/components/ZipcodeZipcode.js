@@ -12,7 +12,7 @@ export default class Zipcode extends React.Component {
 		super(props);
 		this.state = {
 			guests: 1,
-			selectedZipcode: 98199,
+			selectedZipcode: parseInt(this.props.match.params.zipcode),
 			beds: 1,
 			listings: [],
 			noInfo: "",
@@ -87,7 +87,8 @@ export default class Zipcode extends React.Component {
 
 
 	submitZipcode() {
-		fetch("http://localhost:8081/getZipcodesZipcodes?zipcode=" + this.state.selectedZipcode + "&guests=" + this.state.guests + "&beds=" + this.state.beds + "&radius=" + this.state.radius + "&month=" + this.state.month + "&day=" + this.state.day, {
+		console.log(typeof(this.state.selectedZipcode));
+		fetch("http://localhost:8081/getZipcodesZipcodes?zipcode=" + this.state.selectedZipcode + "&guests=" + this.state.guests + "&beds=" + this.state.beds + "&month=" + this.state.month + "&day=" + this.state.day, {
 			method: 'GET' // The type of HTTP request.
 		})
 			.then(res => res.json()) // Convert the response data to a JSON.
@@ -97,7 +98,7 @@ export default class Zipcode extends React.Component {
 				if (zipcodeList.length != 0) {
 					// Map each attribute of a person in this.state.people to an HTML element
 					zipcodeDivs = zipcodeList.map((zipcode, i) =>
-						<ZipcodeRow id={i} listing_id={zipcode[0]} guests={zipcode[1]} distance={("" + zipcode[2]).substring(0, 4) + " miles"}
+						<ZipcodeRow id={i} listing_id={zipcode[0]} guests={zipcode[1]}
 							bedrooms={zipcode[3]} name={zipcode[4]} price={"$" + zipcode[7]} pic={zipcode[8]}
 						/>
 
@@ -138,7 +139,7 @@ export default class Zipcode extends React.Component {
 
 				<div className="container bestgenres-container">
 					<div className="jumbotron">
-						<div className="h2">To find Airbnbs in this Zipcode, enter the following search parameters</div>
+						<div className="h2">To find Airbnbs in this Zipcode, {this.state.selectedZipcode}, enter the following search parameters</div>
 
 
 						<div className="big-container">
