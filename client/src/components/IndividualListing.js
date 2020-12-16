@@ -26,7 +26,6 @@ export default class IndividualListing extends React.Component {
 			reviewComments: []
 		}
 
-		this.handleListingId = this.handleListingId.bind(this);
 		this.submitML = this.submitML.bind(this);
 	}
 
@@ -138,7 +137,7 @@ export default class IndividualListing extends React.Component {
 			<div className="IndividualListing">
 				<PageNavbar active="IndividualListing" />
 				<div className="container listing-container">
-					<div className="jumbotron" id="jumbo">
+					<div className="jumbotron">
 						<div className="listing-container">
 							<div className="row">
 								<div className="column">
