@@ -10,10 +10,12 @@ export default class AnnualRevenuesRow extends React.Component {
 	/* Change the contents (NOT THE STRUCTURE) of the HTML elements to show a movie row. */
 	render() {
 		return (
-			<div className="zip">
-				<Link to={{ pathname: `listing/${this.props.listing_id}` }}>
+			<div className="revenue">
+				<div className="listing">
+				<Link to={{ pathname: `/listing/${this.props.listing}` }}>
 					{this.props.listing}</Link>
-				<div className="annualrev">{this.props.annualrev}</div>
+				</div>
+				<div className="annualrev">${this.props.annualrev}</div>
                 <div className="area">{this.props.area}</div>
 			</div>
 		);

@@ -273,11 +273,6 @@ function getML(req, res) {
   });
 };
 
-
-
-
-
-
 // function getNearby(req, res) {
 //   zipcode = req.params.zipcode;
 //
@@ -376,8 +371,9 @@ function getAvgPricePerZipcode(req, res) {
   SELECT l.zipcode AS zipcode, ROUND(AVG(p.price), 0) AS Average_Price
   FROM Location l JOIN Listing_policy p
   ON l.listing_id = p.listing_id
-  WHERE l.zipcode IS NOT NULL
+  WHERE l.zipcode IS NOT NULL 
   GROUP BY l.zipcode  
+  HAVING COUNT(*) >= 10
   `;
   console.log(query);
   runQuery(query, function(err, rows, fields) {
@@ -399,13 +395,15 @@ function getAnnualRevenues(req, res) {
     ON l.listing_id = c.listing_id
     WHERE c.calendar_date LIKE '2016%'
     GROUP BY l.listing_id
-    ORDER BY SUM(c.price) DESC  
-    )
-    SELECT DISTINCT r.listing AS listing, r.annual_revenue AS annual_revenue,
-    a.square_feet AS listing_area
+    ), Temp AS (
+    SELECT DISTINCT r.listing AS listing, r.annual_revenue / a.square_feet AS annual_revenue_per_square_foot
     FROM Revenues r JOIN Amenity a
     ON r.listing = a.listing_id
-    WHERE a.square_feet IS NOT NULL
+    WHERE a.square_feet IS NOT NULL AND a.square_feet <> 0
+    ORDER BY r.annual_revenue / a.square_feet)
+    SELECT listing, ROUND(annual_revenue_per_square_foot, 2) as annual_revenue_per_square_foot
+    FROM Temp
+    WHERE ROWNUM <=15
   `;
   console.log(query);
   runQuery(query, function(err, rows, fields) {
@@ -433,13 +431,14 @@ function getApartments(req, res) {
       FROM Apartments a JOIN Calendar c
       ON a.listing_id = c.listing_id
       WHERE c.calendar_date LIKE '2016%'
-      )
+      ), Temp AS (
       SELECT DISTINCT c.listing_id AS listing, l.extra_people AS guests, l.price AS Price,
       l.minimum_nights AS max_nights, l.minimum_nights AS min_nights
       FROM Cal c JOIN listing_policy l
       ON c.listing_id = l.listing_id
       WHERE l.extra_people >= c.people AND l.extra_people >= 50
-      ORDER BY l.extra_people DESC  
+      ORDER BY l.extra_people DESC)
+      SELECT * FROM Temp WHERE ROWNUM <=15
   `;
   console.log(query);
   runQuery(query, function(err, rows, fields) {
@@ -478,13 +477,14 @@ function getMaxListings(req, res) {
     SELECT l.listing_id, l.price AS price
     FROM listing_policy l JOIN Prices p
     ON l.price >= (p.average_price - 100) AND l.price <= (p.average_price + 100)
-    )
+    ), Temp AS (
     SELECT DISTINCT p.listing_id AS listing, a.price AS price, p.bathrooms AS bathrooms,
     p.bedrooms AS bedrooms, p.beds AS beds
     FROM AvgListings a JOIN MaxListings p
     ON a.listing_id = p.listing_id
     WHERE a.price >= 200
-    ORDER BY a.price DESC   
+    ORDER BY a.price DESC)
+    SELECT * FROM Temp WHERE ROWNUM <= 15  
   `;
   console.log(query);
   runQuery(query, function(err, rows, fields) {
@@ -509,12 +509,13 @@ function getBestHosts(req, res) {
     SELECT h.host, l.listing_id, h.num AS num_listings
     FROM bestHosts h JOIN Listings l
     ON h.host = l.host_id
-    )
+    ), Temp AS (
     SELECT l.host, l.num_listings, ROUND(AVG(p.price),0) AS mean_price
     FROM Listing_policy p JOIN Listing l
     ON p.listing_id = l.listing_id
     GROUP BY l.host, l.num_listings
-    ORDER BY ROUND(AVG(p.price),0) DESC, l.num_listings DESC
+    ORDER BY ROUND(AVG(p.price),0) DESC, l.num_listings DESC)
+    SELECT * FROM Temp WHERE ROWNUM <=15
   `;
   console.log(query);
   runQuery(query, function(err, rows, fields) {

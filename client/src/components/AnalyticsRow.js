@@ -1,4 +1,5 @@
 import React from 'react';
+import '../style/Analytics.css';
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 export default class AnalyticsRow extends React.Component {
