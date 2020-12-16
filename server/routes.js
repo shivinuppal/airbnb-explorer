@@ -26,7 +26,7 @@ function getHostInfo(req, res) {
   runQuery(query, function(err, rows, fields) {
     if (err) console.log(err);
     else {
-      console.log(rows);
+      //console.log(rows);
       res.json(rows);
 
     }
@@ -81,7 +81,7 @@ function getListingReviewInfo(req, res) {
   runQuery(query, function(err, rows, fields) {
     if (err) console.log(err);
     else {
-      console.log(rows);
+      //console.log(rows);
       res.json(rows);
 
     }
@@ -190,7 +190,7 @@ function getZipcode(req, res) {
     else {
 
       res.json(rows);
-      console.log(rows)
+      //console.log(rows)
     }
   });
 };
@@ -235,7 +235,7 @@ function getDiscover(req, res) {
     else {
 
       res.json(rows);
-      console.log(rows)
+      //console.log(rows)
     }
   });
 };
@@ -285,7 +285,7 @@ function getML(req, res) {
     else {
 
       res.json(rows);
-      console.log(rows)
+      //console.log(rows)
     }
   });
 };
@@ -319,7 +319,7 @@ function getHostListings(req, res) {
   runQuery(query, function(err, rows, fields) {
     if (err) console.log(err);
     else {
-      console.log(rows);
+      //console.log(rows);
       res.json(rows);
     }
   });
@@ -335,7 +335,7 @@ function hosts(req, res) {
   runQuery(query, function(err, rows, fields) {
     if (err) console.log(err);
     else {
-      console.log(rows);
+      //console.log(rows);
       res.json(rows);
     }
   });
@@ -357,7 +357,7 @@ function getAvgPricePerZipcode(req, res) {
   runQuery(query, function(err, rows, fields) {
     if (err) console.log(err);
     else {
-      console.log(rows);
+      //console.log(rows);
       res.json(rows);
     }
   });
@@ -387,7 +387,7 @@ function getAnnualRevenues(req, res) {
   runQuery(query, function(err, rows, fields) {
     if (err) console.log(err);
     else {
-      console.log(rows);
+      //console.log(rows);
       res.json(rows);
     }
   });
@@ -422,7 +422,7 @@ function getApartments(req, res) {
   runQuery(query, function(err, rows, fields) {
     if (err) console.log(err);
     else {
-      console.log(rows);
+      //console.log(rows);
       res.json(rows);
     }
   });
@@ -468,7 +468,7 @@ function getMaxListings(req, res) {
   runQuery(query, function(err, rows, fields) {
     if (err) console.log(err);
     else {
-      console.log(rows);
+      //console.log(rows);
       res.json(rows);
     }
   });
@@ -499,7 +499,7 @@ function getBestHosts(req, res) {
   runQuery(query, function(err, rows, fields) {
     if (err) console.log(err);
     else {
-      console.log(rows);
+      //console.log(rows);
       res.json(rows);
     }
   });
