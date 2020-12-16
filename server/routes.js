@@ -248,11 +248,27 @@ function getML(req, res) {
 
   var query = `
   With first as (
-    Select topic1 as top1, topic2 as top2 from Machine_learning where listing_id = ${currListing}
+    Select topic1 as top1, topic2 as top2,topic3 as top3, topic4 as top4,topic5 as top5, topic6 as top6,topic7 as top7, topic8 as top8,topic9 as top9, topic10 as top10,
+    topic11 as top11, topic12 as top12,topic13 as top13, topic14 as top14,topic15 as top15, topic16 as top16,topic17 as top17, topic18 as top18,topic19 as top19, topic20 as top20
+    
+    from Machine_learning where listing_id = ${currListing}
     ),
 
     topicD as (
-    Select listing_id, topic1, topic2, abs(TOPIC1 - (Select top1 from first))+abs(Topic2 - (Select top2 from first)) as dist from Machine_learning
+    Select listing_id, abs(TOPIC1 - (Select top1 from first))+abs(Topic2 - (Select top2 from first))+ 
+    abs(TOPIC3 - (Select top3 from first))+abs(Topic7 - (Select top7 from first))+
+    abs(TOPIC4 - (Select top4 from first))+abs(Topic8 - (Select top8 from first))+
+    abs(TOPIC5 - (Select top5 from first))+abs(Topic9 - (Select top9 from first))+
+    abs(TOPIC6 - (Select top6 from first))+abs(Topic10 - (Select top10 from first))+
+    abs(TOPIC11 - (Select top11 from first))+abs(Topic12 - (Select top12 from first))+ 
+    abs(TOPIC13 - (Select top13 from first))+abs(Topic17 - (Select top17 from first))+
+    abs(TOPIC14 - (Select top14 from first))+abs(Topic18 - (Select top18 from first))+
+    abs(TOPIC15 - (Select top15 from first))+abs(Topic19 - (Select top19 from first))+
+    abs(TOPIC16 - (Select top16 from first))+abs(Topic20 - (Select top20 from first))
+    
+    
+    as dist from Machine_learning
+    
     where listing_id != ${currListing}
     ), second as(
     Select t.listing_id, name, summary, description from TopicD t join Descriptions d on d.listing_id = t.listing_id order by dist )
