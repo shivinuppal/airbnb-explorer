@@ -13,7 +13,7 @@ export default class HostsRow extends React.Component {
 		return (
 			<div className="hosts">
 				<div className="host">
-				<Link to={{pathname: `/host/${this.props.host}`}}><strong>Host: </strong>{this.props.host}</Link>
+				<Link to={{pathname: `/host/${this.props.host}`}}>{this.props.name}</Link>
 				</div>
 				<div className="listings">{this.props.listings}</div>
                 <div className="price">{this.props.price}</div>

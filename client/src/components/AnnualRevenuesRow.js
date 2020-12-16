@@ -13,7 +13,7 @@ export default class AnnualRevenuesRow extends React.Component {
 			<div className="revenue">
 				<div className="listing">
 				<Link to={{ pathname: `/listing/${this.props.listing}` }}>
-					{this.props.listing}</Link>
+					{this.props.name}</Link>
 				</div>
 				<div className="annualrev">${this.props.annualrev}</div>
 			</div>
