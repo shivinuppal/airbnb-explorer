@@ -249,11 +249,27 @@ function getML(req, res) {
 
   var query = `
   With first as (
-    Select topic1 as top1, topic2 as top2 from Machine_learning where listing_id = ${currListing}
+    Select topic1 as top1, topic2 as top2,topic3 as top3, topic4 as top4,topic5 as top5, topic6 as top6,topic7 as top7, topic8 as top8,topic9 as top9, topic10 as top10,
+    topic11 as top11, topic12 as top12,topic13 as top13, topic14 as top14,topic15 as top15, topic16 as top16,topic17 as top17, topic18 as top18,topic19 as top19, topic20 as top20
+
+    from Machine_learning where listing_id = ${currListing}
     ),
 
     topicD as (
-    Select listing_id, topic1, topic2, abs(TOPIC1 - (Select top1 from first))+abs(Topic2 - (Select top2 from first)) as dist from Machine_learning
+    Select listing_id, abs(TOPIC1 - (Select top1 from first))+abs(Topic2 - (Select top2 from first))+
+    abs(TOPIC3 - (Select top3 from first))+abs(Topic7 - (Select top7 from first))+
+    abs(TOPIC4 - (Select top4 from first))+abs(Topic8 - (Select top8 from first))+
+    abs(TOPIC5 - (Select top5 from first))+abs(Topic9 - (Select top9 from first))+
+    abs(TOPIC6 - (Select top6 from first))+abs(Topic10 - (Select top10 from first))+
+    abs(TOPIC11 - (Select top11 from first))+abs(Topic12 - (Select top12 from first))+
+    abs(TOPIC13 - (Select top13 from first))+abs(Topic17 - (Select top17 from first))+
+    abs(TOPIC14 - (Select top14 from first))+abs(Topic18 - (Select top18 from first))+
+    abs(TOPIC15 - (Select top15 from first))+abs(Topic19 - (Select top19 from first))+
+    abs(TOPIC16 - (Select top16 from first))+abs(Topic20 - (Select top20 from first))
+
+
+    as dist from Machine_learning
+
     where listing_id != ${currListing}
     ), second as(
     Select t.listing_id, name, summary, description from TopicD t join Descriptions d on d.listing_id = t.listing_id order by dist )
@@ -272,11 +288,6 @@ function getML(req, res) {
     }
   });
 };
-
-
-
-
-
 
 // function getNearby(req, res) {
 //   zipcode = req.params.zipcode;
@@ -378,6 +389,7 @@ function getAvgPricePerZipcode(req, res) {
   ON l.listing_id = p.listing_id
   WHERE l.zipcode IS NOT NULL
   GROUP BY l.zipcode
+  HAVING COUNT(*) >= 10
   `;
   console.log(query);
   runQuery(query, function(err, rows, fields) {
@@ -435,13 +447,14 @@ function getApartments(req, res) {
       FROM Apartments a JOIN Calendar c
       ON a.listing_id = c.listing_id
       WHERE c.calendar_date LIKE '2016%'
-      )
+      ), Temp AS (
       SELECT DISTINCT c.listing_id AS listing, l.extra_people AS guests, l.price AS Price,
       l.minimum_nights AS max_nights, l.minimum_nights AS min_nights
       FROM Cal c JOIN listing_policy l
       ON c.listing_id = l.listing_id
       WHERE l.extra_people >= c.people AND l.extra_people >= 50
-      ORDER BY l.extra_people DESC
+      ORDER BY l.extra_people DESC)
+      SELECT * FROM Temp WHERE ROWNUM <=15
   `;
   console.log(query);
   runQuery(query, function(err, rows, fields) {
@@ -480,13 +493,14 @@ function getMaxListings(req, res) {
     SELECT l.listing_id, l.price AS price
     FROM listing_policy l JOIN Prices p
     ON l.price >= (p.average_price - 100) AND l.price <= (p.average_price + 100)
-    )
+    ), Temp AS (
     SELECT DISTINCT p.listing_id AS listing, a.price AS price, p.bathrooms AS bathrooms,
     p.bedrooms AS bedrooms, p.beds AS beds
     FROM AvgListings a JOIN MaxListings p
     ON a.listing_id = p.listing_id
     WHERE a.price >= 200
-    ORDER BY a.price DESC
+    ORDER BY a.price DESC)
+    SELECT * FROM Temp WHERE ROWNUM <= 15
   `;
   console.log(query);
   runQuery(query, function(err, rows, fields) {
@@ -511,12 +525,13 @@ function getBestHosts(req, res) {
     SELECT h.host, l.listing_id, h.num AS num_listings
     FROM bestHosts h JOIN Listings l
     ON h.host = l.host_id
-    )
+    ), Temp AS (
     SELECT l.host, l.num_listings, ROUND(AVG(p.price),0) AS mean_price
     FROM Listing_policy p JOIN Listing l
     ON p.listing_id = l.listing_id
     GROUP BY l.host, l.num_listings
-    ORDER BY ROUND(AVG(p.price),0) DESC, l.num_listings DESC
+    ORDER BY ROUND(AVG(p.price),0) DESC, l.num_listings DESC)
+    SELECT * FROM Temp WHERE ROWNUM <=15
   `;
   console.log(query);
   runQuery(query, function(err, rows, fields) {

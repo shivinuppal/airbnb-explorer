@@ -28,13 +28,6 @@ export default class IndividualListing extends React.Component {
 
 		this.handleListingId = this.handleListingId.bind(this);
 		this.submitML = this.submitML.bind(this);
-	//	this.submitListingId = this.submitListingId.bind(this);
-	}
-
-	handleListingId(e) {
-		this.setState({
-			listingId: e.target.value
-		});
 	}
 
 	/* ---- Getting all Information about a ListingID ---- */

@@ -1,0 +1,32 @@
+.analytics-container .analytics-header, .results-container .zip, 
+.results-container .revenue, .results-container .apartments, .results-container .maxListings,
+.results-container .hosts {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    height: 40px;
+  }
+  
+  .zip .title, .analytics-header {
+    flex: 1 0 50%;
+  }
+  
+  .analytics-header .header, .zip .zipcode, .zip .avgprice {
+    flex: 1 0 25%;
+  }
+  
+ .revenue .listing, .revenue .annualrev, .revenue .area {
+    flex: 1 0 25%;
+  }
+
+  .apartments .listing, .apartments .guests, .apartments .price, .apartments .max_nights, .apartments .min_nights {
+    flex: 1 0 25%;
+  }
+
+  .maxListings .listing, .maxListings .price, .maxListings .bathrooms, .maxListings .bedrooms, .maxListings .beds {
+    flex: 1 0 25%;
+  }
+
+  .hosts .host, .hosts .listings, .hosts .price {
+    flex: 1 0 25%;
+  }
