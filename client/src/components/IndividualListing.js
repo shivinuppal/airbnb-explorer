@@ -48,13 +48,18 @@ export default class IndividualListing extends React.Component {
 				if (infoList[3].length !== 0) {
 					urlDiv = infoList[3][0][1];
 				}
-				let hostDiv =
+				
+				let hostDiv = "No Host Information"; 
+				if (infoList[0].length != 0) {
+					hostDiv =
 					<HostRow id={infoList[0][0][0]} host_about={infoList[0][0][1]}
 						host_response_time={infoList[0][0][2]} host_response_rate={infoList[0][0][3]}
 						host_acceptance_rate={infoList[0][0][4]} host_is_superhost={infoList[0][0][5]}
 						host_neighborhood={infoList[0][0][6]} host_total_listings_count={infoList[0][0][7]}
 						host_identity_verified={infoList[0][0][8]} name={infoList[0][0][9]}
 					/>
+				}
+				
 				if (infoList[5][0][6] === null) {
 					infoList[5][0][6] = "No Information";
 				}
@@ -70,7 +75,7 @@ export default class IndividualListing extends React.Component {
 						square_feet={infoList[1][0][10]} guests_included={infoList[1][0][11]}
 						/>
 				let reviewDivComments = "";
-				let reviewDiv = "";
+				let reviewDiv = "No Review Information";
 				if (infoList[6].length !== 0) {
 					reviewDivComments = infoList[6].map((review, i) =>
 					<div key={i} className="comment"><strong>Comment: </strong> {review[1]}</div>
