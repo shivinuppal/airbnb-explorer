@@ -51,6 +51,11 @@ export default class IndividualListing extends React.Component {
 				
 				let hostDiv = "No Host Information"; 
 				if (infoList[0].length != 0) {
+					for (var i in infoList[0][0]) {
+						if (infoList[0][0][i] === null) {
+							infoList[0][0][i] = "No Information";
+						}
+					}
 					hostDiv =
 					<HostRow id={infoList[0][0][0]} host_about={infoList[0][0][1]}
 						host_response_time={infoList[0][0][2]} host_response_rate={infoList[0][0][3]}
@@ -60,13 +65,20 @@ export default class IndividualListing extends React.Component {
 					/>
 				}
 				
-				if (infoList[5][0][6] === null) {
-					infoList[5][0][6] = "No Information";
+				for (var i in infoList[5][0]) {
+					if (infoList[5][0][i] === null) {
+						infoList[5][0][i] = "No Information";
+					}
 				}
 				let descriptionDiv = <DescriptionRow name={infoList[5][0][1]} description={infoList[5][0][2]}
 					neighbourhood_cleansed={infoList[4][0][3]} neighborhood_overview={infoList[4][0][4]}
 					zipcode={infoList[4][0][5]} transit={infoList[5][0][7]}
 				/>
+				for (var i in infoList[1][0]) {
+					if (infoList[2][0][i] === null) {
+						infoList[2][0][i] = "No Information";
+					}
+				}
 				let amenityDiv =
 					<AmenityRow property_type={infoList[1][0][2]} room_type={infoList[1][0][3]}
 						accommodates={infoList[1][0][4]} bathrooms={infoList[1][0][5]}
