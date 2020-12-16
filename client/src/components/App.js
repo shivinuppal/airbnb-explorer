@@ -4,11 +4,9 @@ import {
 	Route,
 	Switch
 } from 'react-router-dom';
-import Dashboard from './Dashboard';
 import IndividualListing from './IndividualListing';
 import Zipcode from './Zipcode';
 import Host from './Host';
-import BestNearby from './BestNearby';
 import MapComponent from './MapComponent';
 import Discover from './Discover';
 import Analytics from './Analytics';
@@ -26,20 +24,6 @@ export default class App extends React.Component {
 							path="/"
 							render={() => (
 								<Zipcode />
-							)}
-						/>
-						<Route
-							exact
-							path="/dashboard"
-							render={() => (
-								<Dashboard />
-							)}
-						/>
-								<Route
-							exact
-							path="/bestNearby"
-							render={() => (
-								<BestNearby />
 							)}
 						/>
 
