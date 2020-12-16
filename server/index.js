@@ -38,6 +38,7 @@ app.get('/listing/description/:listingId', routes.getDescriptionInfo);
 
 //Zipcode
 app.get('/getZipcodes', routes.getZipcode);
+app.get('/getZipcodesZipcodes', routes.getZipcodesZipcodes);
 
 // Discover
 app.get('/getDiscover', routes.getDiscover);

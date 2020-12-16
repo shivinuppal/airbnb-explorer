@@ -195,6 +195,53 @@ function getZipcode(req, res) {
   });
 };
 
+function getZipcodesZipcodes(req, res) {
+  console.log("hi");
+  guests = req.query.guests;
+  console.log(guests);
+  beds = req.query.beds;
+  console.log(beds);
+  month = req.query.month;
+  day = req.query.day;
+  zipcode = req.query.zipcode;
+  console.log(zipcode);
+  var date = "2016-"+month+"-"+day;
+  console.log(date);
+  // I have defaulted current location to the Space Needle
+  var query = `
+      WITH Available AS (
+          SELECT listing_id, price
+          FROM Calendar
+          WHERE calendar_date = '${date}'
+      ), Distance AS (
+          SELECT listing_id
+          FROM Location
+          WHERE zipcode = ${zipcode}
+      ), AmenityFiltered AS (
+          SELECT w.listing_id, a.accommodates AS guests, a.bedrooms
+          FROM Distance w JOIN Amenity a ON w.listing_id = a.listing_id
+          WHERE a.accommodates >= ${guests} AND a.accommodates <= ${guests} + 1 AND a.bedrooms >= ${beds} AND a.bedrooms <= ${beds} + 1
+      ), FilteredAndAvailable AS (
+          SELECT a.listing_id, a.price, f.guests,f.bedrooms
+          FROM Available a JOIN AmenityFiltered f ON a.listing_id = f.listing_id
+      ), Temp AS (
+      SELECT a.listing_id, a.guests, 0 as dist, a.bedrooms, d.name, d.summary, d.description, a.price, u.picture_url
+      FROM Descriptions d JOIN FilteredAndAvailable a ON d.listing_id = a.listing_id JOIN Url u ON d.listing_id = u.listing_id
+      ORDER BY a.guests, a.bedrooms)
+      SELECT * FROM Temp WHERE ROWNUM <= 75
+  `;
+
+  console.log(query);
+  runQuery(query, function(err, rows, fields) {
+    if (err) console.log(err);
+    else {
+
+      res.json(rows);
+      console.log(rows)
+    }
+  });
+};
+
 function getDiscover(req, res) {
   console.log("hi you've entered getDiscover");
   currLat = req.query.latitude;
@@ -345,13 +392,14 @@ function hosts(req, res) {
 function getAvgPricePerZipcode(req, res) {
 
   var query = `
-  SELECT l.zipcode AS zipcode, ROUND(AVG(p.price), 0) AS Average_Price
+  WITH Temp AS (SELECT l.zipcode AS zipcode, ROUND(AVG(p.price), 0) AS Average_Price
   FROM Location l JOIN Listing_policy p
   ON l.listing_id = p.listing_id
   WHERE l.zipcode IS NOT NULL
   GROUP BY l.zipcode
   HAVING COUNT(*) >= 10
-  ORDER BY AVG(p.price) DESC
+  ORDER BY AVG(p.price) DESC)
+  SELECT * FROM Temp WHERE ROWNUM <= 15
   `;
   console.log(query);
   runQuery(query, function(err, rows, fields) {
@@ -516,6 +564,7 @@ module.exports = {
   getLocationInfo: getLocationInfo,
   getDescriptionInfo: getDescriptionInfo,
   getZipcode: getZipcode,
+  getZipcodesZipcodes: getZipcodesZipcodes,
   getDiscover: getDiscover,
   hosts: hosts,
   getHostListings: getHostListings,

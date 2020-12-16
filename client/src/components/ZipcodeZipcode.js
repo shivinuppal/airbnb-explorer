@@ -10,13 +10,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 export default class Zipcode extends React.Component {
 	constructor(props) {
 		super(props);
-		this.handleLatChange = this.handleLatChange;
 		this.state = {
 			guests: 1,
-			latitude: 47.620265,
-			longitude: -122.348396,
+			selectedZipcode: 98199,
 			beds: 1,
-			radius: 1,
 			listings: [],
 			noInfo: "",
 			day: "21",
@@ -26,10 +23,8 @@ export default class Zipcode extends React.Component {
 		this.submitZipcode = this.submitZipcode.bind(this);
 		this.handleGuestsChange = this.handleGuestsChange.bind(this);
 		this.handleBedsChange = this.handleBedsChange.bind(this);
-		this.handleRadiusChange = this.handleRadiusChange.bind(this);
 		this.handleDayChange = this.handleDayChange.bind(this);
-		this.handleLatChange = this.handleLatChange.bind(this);
-		this.handleLongChange = this.handleLongChange.bind(this);
+		this.handleZipcodeChange = this.handleZipcodeChange.bind(this);
 		this.handleMonthChange = this.handleMonthChange.bind(this);
 
 	}
@@ -58,11 +53,11 @@ export default class Zipcode extends React.Component {
 	//
 	// }
 
-	// handleChange(e) {
-	// 	this.setState({
-	// 		selectedZipcode: e.target.value
-	// 	});
-	// }
+	handleZipcodeChange(e) {
+		this.setState({
+			selectedZipcode: e.target.value
+		});
+	}
 
 	handleGuestsChange(f) {
 		this.setState({
@@ -88,30 +83,11 @@ export default class Zipcode extends React.Component {
 		});
 	}
 
-	handleLatChange(lat) {
-		console.log(lat);
-		this.setState({
-			latitude: lat
-		});
-	}
-	handleLongChange(long) {
-		console.log(long);
-		this.setState({
-			longitude: long
-		});
-	}
-
-	handleRadiusChange(e) {
-		this.setState({
-			radius: e.target.value
-		});
-	}
 
 
 
 	submitZipcode() {
-		fetch("http://localhost:8081/getZipcodes?zipcode=" + this.state.selectedZipcode + "&guests=" + this.state.guests + "&beds=" + this.state.beds + "&radius=" + this.state.radius + "&month=" + this.state.month + "&day=" + this.state.day +
-			"&latitude=" + this.state.latitude + "&longitude=" + this.state.longitude, {
+		fetch("http://localhost:8081/getZipcodesZipcodes?zipcode=" + this.state.selectedZipcode + "&guests=" + this.state.guests + "&beds=" + this.state.beds + "&radius=" + this.state.radius + "&month=" + this.state.month + "&day=" + this.state.day, {
 			method: 'GET' // The type of HTTP request.
 		})
 			.then(res => res.json()) // Convert the response data to a JSON.
@@ -162,34 +138,9 @@ export default class Zipcode extends React.Component {
 
 				<div className="container bestgenres-container">
 					<div className="jumbotron">
-						<div className="h2">Find an Airbnb near you!</div>
-						<SearchBoxMap
-							google={this.props.google}
-							center={{ lat: this.state.latitude, lng: this.state.longitude }}
-							height='300px'
-							zoom={15}
-							handleLatChange={this.handleLatChange}
-							handleLongChange={this.handleLongChange}
-						/>
-						<br /><br />
-						<div className="big-container">
-							<div className="h5"> Radius </div>
-							<div className="dropdown-container">
-								<select value={this.state.radius} onChange={this.handleRadiusChange} className="dropdown" id="radiusDropdown">
+						<div className="h2">To find Airbnbs in this Zipcode, enter the following search parameters</div>
 
-									<option value={1}> 1 mile </option>
-									<option value={2}> 2 miles </option>
-									<option value={3}> 3 miles </option>
-									<option value={4}> 4 miles </option>
-									<option value={5}> 5 miles </option>
-									<option value={6}> 6 miles </option>
-									<option value={7}> 7 miles </option>
-									<option value={8}> 8 miles </option>
-									<option value={9}> 9 miles </option>
-									<option value={10}> 10 miles </option>
-								</select>
-							</div>
-						</div>
+
 						<div className="big-container">
 							<div className="h5"> Guests </div>
 							<div className="dropdown-container">

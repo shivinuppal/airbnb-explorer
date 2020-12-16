@@ -143,7 +143,7 @@ export default class Analytics extends React.Component {
 
           <div className="jumbotron">
             <div className="analytics-container">
-            <div className= "h2">Average Price for each Zipcode</div>
+            <div className= "h2">The most expensive zipcodes $$$ </div>
               <div className="analytics-header">
                 <div className="header"><strong>Zipcode</strong></div>
                 <div className="header"><strong>Average Price</strong></div>
@@ -157,9 +157,9 @@ export default class Analytics extends React.Component {
           <br></br>
           <div className="jumbotron">
             <div className="analytics-container">
-            <div className= "h2">Listings with the top Annual Revenue per square foot</div>
+            <div className= "h2">Airbnbs with the top Annual Revenue per square foot</div>
               <div className="analytics-header">
-                <div className="header"><strong>Listing</strong></div>
+                <div className="header"><strong>Name</strong></div>
                 <div className="header"><strong>Annual Revenue Per Square Foot</strong></div>
               </div>
               <div className="results-container" id="results">
@@ -170,7 +170,7 @@ export default class Analytics extends React.Component {
           <br></br>
           <div className="jumbotron">
             <div className="analytics-container">
-            <div className= "h2">Find apartments which let you invite tens of people in</div>
+            <div className= "h2">Apartments you can throw a party at!</div>
               <div className="listing-header">
                 <div className="header"><strong>Listing</strong></div>
                 <div className="header"><strong>Guests</strong></div>
@@ -188,7 +188,7 @@ export default class Analytics extends React.Component {
           <div className="jumbotron">
             <div className="analytics-container">
             <div className= "h2">For the average Joe: </div>
-            <div className= "h5">These have average prices, average beds, average ... </div>
+            <div className= "h5">These have average prices, average beds, average everything </div>
               <div className="listing-header">
                 <div className="header"><strong>Listing</strong></div>
                 <div className="header"><strong>Price</strong></div>
