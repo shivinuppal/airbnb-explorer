@@ -51,12 +51,15 @@ app.get('/getML', routes.getML);
 
 app.get('/getNearby/:zipcode', routes.getHostListings);
 
+app.get('/getAvgPricePerZipcode', routes.getAvgPricePerZipcode);
 
+app.get('/getAnnualRevenues', routes.getAnnualRevenues);
 
+app.get('/getApartments', routes.getApartments);
 
+app.get('/getMaxListings', routes.getMaxListings);
 
-
-
+app.get('/getBestHosts', routes.getBestHosts);
 
 app.listen(8081, () => {
 	console.log(`Server listening on PORT 8081`);
