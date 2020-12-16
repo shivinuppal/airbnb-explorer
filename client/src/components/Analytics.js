@@ -143,6 +143,7 @@ export default class Analytics extends React.Component {
 
           <div className="jumbotron">
             <div className="analytics-container">
+            <div className= "h2">Average Price for each Zipcode</div>
               <div className="analytics-header">
                 <div className="header"><strong>Zipcode</strong></div>
                 <div className="header"><strong>Average Price</strong></div>
@@ -156,6 +157,7 @@ export default class Analytics extends React.Component {
           <br></br>
           <div className="jumbotron">
             <div className="analytics-container">
+            <div className= "h2">Listings with the top Annual Revenue per square foot</div>
               <div className="analytics-header">
                 <div className="header"><strong>Listing</strong></div>
                 <div className="header"><strong>Annual Revenue Per Square Foot</strong></div>
@@ -168,6 +170,7 @@ export default class Analytics extends React.Component {
           <br></br>
           <div className="jumbotron">
             <div className="analytics-container">
+            <div className= "h2">Find apartments which let you invite tens of people in</div>
               <div className="analytics-header">
                 <div className="header"><strong>Listing</strong></div>
                 <div className="header"><strong>Guests</strong></div>
@@ -184,6 +187,8 @@ export default class Analytics extends React.Component {
           <br></br>
           <div className="jumbotron">
             <div className="analytics-container">
+            <div className= "h2">For the average Joe: </div>
+            <div className= "h5">These have average prices, average beds, average ... </div>
               <div className="analytics-header">
                 <div className="header"><strong>Listing</strong></div>
                 <div className="header"><strong>Price</strong></div>
@@ -200,6 +205,7 @@ export default class Analytics extends React.Component {
           <br></br>
           <div className="jumbotron">
             <div className="analytics-container">
+              <div className= "h2">Check out these great hosts</div>
               <div className="analytics-header">
                 <div className="header"><strong>Host</strong></div>
                 <div className="header"><strong>Total Listings</strong></div>
