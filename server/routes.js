@@ -369,6 +369,162 @@ function hosts(req, res) {
   });
 }
 
+//average price of listings per zipcode
+function getAvgPricePerZipcode(req, res) {
+
+  var query = `
+  SELECT l.zipcode AS zipcode, ROUND(AVG(p.price), 0) AS Average_Price
+  FROM Location l JOIN Listing_policy p
+  ON l.listing_id = p.listing_id
+  WHERE l.zipcode IS NOT NULL
+  GROUP BY l.zipcode  
+  `;
+  console.log(query);
+  runQuery(query, function(err, rows, fields) {
+    if (err) console.log(err);
+    else {
+      console.log(rows);
+      res.json(rows);
+    }
+  });
+}
+
+//annual revenue per listing in order of square feet
+function getAnnualRevenues(req, res) {
+
+  var query = `
+  WITH Revenues AS(
+    SELECT l.listing_id AS listing, SUM(c.price) AS annual_revenue
+    FROM listing_policy l JOIN Calendar c
+    ON l.listing_id = c.listing_id
+    WHERE c.calendar_date LIKE '2016%'
+    GROUP BY l.listing_id
+    ORDER BY SUM(c.price) DESC  
+    )
+    SELECT DISTINCT r.listing AS listing, r.annual_revenue AS annual_revenue,
+    a.square_feet AS listing_area
+    FROM Revenues r JOIN Amenity a
+    ON r.listing = a.listing_id
+    WHERE a.square_feet IS NOT NULL
+  `;
+  console.log(query);
+  runQuery(query, function(err, rows, fields) {
+    if (err) console.log(err);
+    else {
+      console.log(rows);
+      res.json(rows);
+    }
+  });
+}
+
+//find apartment Airbnbs
+function getApartments(req, res) {
+
+  var query = `
+    WITH Apartments AS (
+      SELECT a.listing_id, a.accommodates AS accommodates, a.bathrroms AS bathrooms,
+      a.bedrooms AS bedrooms, a.beds AS beds
+      FROM amenity a
+      WHERE a.property_type LIKE 'Apartment%'
+      ),
+      Cal AS (
+      SELECT a.listing_id, a.accommodates AS people, a.bathrooms AS bathrooms,
+      a.bedrooms AS bedrooms, a.beds AS beds
+      FROM Apartments a JOIN Calendar c
+      ON a.listing_id = c.listing_id
+      WHERE c.calendar_date LIKE '2016%'
+      )
+      SELECT DISTINCT c.listing_id AS listing, l.extra_people AS guests, l.price AS Price,
+      l.minimum_nights AS max_nights, l.minimum_nights AS min_nights
+      FROM Cal c JOIN listing_policy l
+      ON c.listing_id = l.listing_id
+      WHERE l.extra_people >= c.people AND l.extra_people >= 50
+      ORDER BY l.extra_people DESC  
+  `;
+  console.log(query);
+  runQuery(query, function(err, rows, fields) {
+    if (err) console.log(err);
+    else {
+      console.log(rows);
+      res.json(rows);
+    }
+  });
+}
+
+//find AVG, MIN, MAX prices of listings with AVG bathrooms, bedrooms, beds
+function getMaxListings(req, res) {
+
+  var query = `
+  WITH Max AS (
+    SELECT ROUND(AVG(a.bathrroms),0) AS bathrooms,
+    ROUND(AVG(a.bedrooms),0) AS bedrooms, ROUND(AVG(a.beds),0) AS beds
+    FROM amenity a
+    ),
+    MaxListings AS(
+    SELECT a.listing_id, a.bathrroms AS bathrooms, a.bedrooms AS bedrooms,
+    a.beds AS beds
+    FROM amenity a JOIN Max m
+    ON (a.bathrroms >= m.bathrooms - 1) AND (a.bedrooms >= m.bedrooms - 1) AND 
+    (a.beds >= m.beds -1) AND (a.bathrroms <= m.bathrooms + 1) AND 
+    (a.bedrooms <= m.bedrooms + 1) AND (a.beds <= m.beds + 1)
+    ),
+    Prices AS (
+    SELECT ROUND(AVG(l.Price), 0) AS
+    average_price, MAX(l.Price) AS max_price, MIN(l.Price) AS
+    min_price
+    FROM listing_policy l
+    ),
+    AvgListings AS (
+    SELECT l.listing_id, l.price AS price
+    FROM listing_policy l JOIN Prices p
+    ON l.price >= (p.average_price - 100) AND l.price <= (p.average_price + 100)
+    )
+    SELECT DISTINCT p.listing_id AS listing, a.price AS price, p.bathrooms AS bathrooms,
+    p.bedrooms AS bedrooms, p.beds AS beds
+    FROM AvgListings a JOIN MaxListings p
+    ON a.listing_id = p.listing_id
+    WHERE a.price >= 200
+    ORDER BY a.price DESC   
+  `;
+  console.log(query);
+  runQuery(query, function(err, rows, fields) {
+    if (err) console.log(err);
+    else {
+      console.log(rows);
+      res.json(rows);
+    }
+  });
+}
+
+//get best hosts
+function getBestHosts(req, res) {
+
+  var query = `
+  WITH bestHosts AS(
+    SELECT h.id AS host, h.host_total_listings_count AS num
+    FROM Host2 h
+    WHERE h.host_total_listings_count > 4 AND h.host_is_superjost = 'True'
+    ),
+    Listing AS(
+    SELECT h.host, l.listing_id, h.num AS num_listings
+    FROM bestHosts h JOIN Listings l
+    ON h.host = l.host_id
+    )
+    SELECT l.host, l.num_listings, ROUND(AVG(p.price),0) AS mean_price
+    FROM Listing_policy p JOIN Listing l
+    ON p.listing_id = l.listing_id
+    GROUP BY l.host, l.num_listings
+    ORDER BY ROUND(AVG(p.price),0) DESC, l.num_listings DESC
+  `;
+  console.log(query);
+  runQuery(query, function(err, rows, fields) {
+    if (err) console.log(err);
+    else {
+      console.log(rows);
+      res.json(rows);
+    }
+  });
+}
 
 
 // The exported functions, which can be accessed in index.js.
@@ -384,5 +540,10 @@ module.exports = {
   getDiscover: getDiscover,
   hosts: hosts,
   getHostListings: getHostListings,
-  getML: getML
+  getML: getML,
+  getAvgPricePerZipcode: getAvgPricePerZipcode,
+  getAnnualRevenues: getAnnualRevenues,
+  getApartments: getApartments,
+  getMaxListings: getMaxListings,
+  getBestHosts: getBestHosts
 }
