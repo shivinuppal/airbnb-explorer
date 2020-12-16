@@ -4,17 +4,17 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../style/Zipcode.css';
 
 function refreshPage() {
-	setTimeout(function() {
-		window.location.reload();//reload page
-  }, 100);
-  }
+	setTimeout(function () {
+		window.location.reload();
+	}, 100);
+}
 
 export default class MLRow extends React.Component {
 	constructor(props) {
 		super(props);
 	}
 
-	
+
 	render() {
 		return (
 			<div className="card center">

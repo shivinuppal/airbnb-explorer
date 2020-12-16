@@ -13,20 +13,17 @@ var connection = mysql.createPool(config);
 
 function getHostInfo(req, res) {
   var listingId = req.params.listingId;
-  console.log(typeof(listingId));
   //
-   //
+  //
   var query = `
     SELECT DISTINCT id, host_about, host_response_time, host_response_rate, host_acceptance_rate, host_is_superjost AS host_is_superhost, host_neighborhood,
     host_total_listings_count, host_identity_verified, host_name
     FROM Host2
     WHERE id IN (SELECT host_id FROM Listings WHERE listing_id = ${listingId})
   `;
-  console.log(query);
-  runQuery(query, function(err, rows, fields) {
+  runQuery(query, function (err, rows, fields) {
     if (err) console.log(err);
     else {
-      //console.log(rows);
       res.json(rows);
 
     }
@@ -41,7 +38,7 @@ function getAmenityInfo(req, res) {
     WHERE listing_id = ${listingId}
   `;
 
-  runQuery(query, function(err, rows, fields) {
+  runQuery(query, function (err, rows, fields) {
     if (err) console.log(err);
     else {
       res.json(rows);
@@ -52,7 +49,6 @@ function getAmenityInfo(req, res) {
 
 function getPolicyInfo(req, res) {
   var listingId = req.params.listingId;
-  console.log('policy');
   var query = `
     SELECT price, weekly_price, monthly_price, cancellation_policy, seurity_deposit AS security_deposit, cleaning_fee, extra_people,
     minimum_nights AS min_nights, maximum_nights AS max_nights
@@ -60,17 +56,15 @@ function getPolicyInfo(req, res) {
     WHERE listing_id = ${listingId}
   `;
 
-  runQuery(query, function(err, rows, fields) {
+  runQuery(query, function (err, rows, fields) {
     if (err) console.log(err);
     else {
       res.json(rows);
-
     }
   });
 };
 
 function getListingReviewInfo(req, res) {
-  console.log('review');
   var listingId = req.params.listingId;
   var query = `
     SELECT l.number_of_reviews, r.comments
@@ -78,10 +72,9 @@ function getListingReviewInfo(req, res) {
     WHERE l.listing_id = ${listingId} AND ROWNUM <= 5
   `;
 
-  runQuery(query, function(err, rows, fields) {
+  runQuery(query, function (err, rows, fields) {
     if (err) console.log(err);
     else {
-      //console.log(rows);
       res.json(rows);
 
     }
@@ -89,7 +82,6 @@ function getListingReviewInfo(req, res) {
 };
 
 function getURLInfo(req, res) {
-  console.log('url');
   var listingId = req.params.listingId;
   var query = `
     SELECT listing_url, picture_url
@@ -97,17 +89,15 @@ function getURLInfo(req, res) {
     WHERE listing_id = ${listingId}
   `;
 
-  runQuery(query, function(err, rows, fields) {
+  runQuery(query, function (err, rows, fields) {
     if (err) console.log(err);
     else {
       res.json(rows);
-
     }
   });
 };
 
 function getLocationInfo(req, res) {
-  console.log('location');
   var listingId = req.params.listingId;
   var query = `
     SELECT *
@@ -115,17 +105,15 @@ function getLocationInfo(req, res) {
     WHERE listing_id = ${listingId}
   `;
 
-  runQuery(query, function(err, rows, fields) {
+  runQuery(query, function (err, rows, fields) {
     if (err) console.log(err);
     else {
       res.json(rows);
-
     }
   });
 };
 
 function getDescriptionInfo(req, res) {
-  console.log('description');
   var listingId = req.params.listingId;
   var query = `
     SELECT *
@@ -133,31 +121,24 @@ function getDescriptionInfo(req, res) {
     WHERE listing_id = ${listingId}
   `;
 
-  runQuery(query, function(err, rows, fields) {
+  runQuery(query, function (err, rows, fields) {
     if (err) console.log(err);
     else {
       res.json(rows);
-
     }
   });
 };
 
 function getZipcode(req, res) {
-  console.log("hi");
   guests = req.query.guests;
-  console.log(guests);
   beds = req.query.beds;
-  console.log(beds);
   month = req.query.month;
   day = req.query.day;
   currLat = req.query.latitude;
   currLong = req.query.longitude;
-  console.log("("+currLat+", "+currLong+")");
   var miles = req.query.radius;
-  console.log(miles);
-  var date = "2016-"+month+"-"+day;
-  console.log(date);
-  // I have defaulted current location to the Space Needle
+  var date = "2016-" + month + "-" + day;
+
   var query = `
       WITH Available AS (
           SELECT listing_id, price
@@ -183,31 +164,23 @@ function getZipcode(req, res) {
       ORDER BY a.guests, a.bedrooms, a.dist)
       SELECT * FROM Temp WHERE ROWNUM <= 75
   `;
-
-  console.log(query);
-  runQuery(query, function(err, rows, fields) {
+  runQuery(query, function (err, rows, fields) {
     if (err) console.log(err);
     else {
 
       res.json(rows);
-      //console.log(rows)
     }
   });
 };
 
 function getZipcodesZipcodes(req, res) {
-  console.log("hi");
   guests = req.query.guests;
-  console.log(guests);
   beds = req.query.beds;
-  console.log(beds);
   month = req.query.month;
   day = req.query.day;
   zipcode = req.query.zipcode;
-  console.log(zipcode);
-  var date = "2016-"+month+"-"+day;
-  console.log(date);
-  // I have defaulted current location to the Space Needle
+  var date = "2016-" + month + "-" + day;
+
   var query = `
       WITH Available AS (
           SELECT listing_id, price
@@ -230,23 +203,17 @@ function getZipcodesZipcodes(req, res) {
       ORDER BY a.guests, a.bedrooms, a.price DESC)
       SELECT * FROM Temp WHERE ROWNUM <= 75
   `;
-
-  console.log(query);
-  runQuery(query, function(err, rows, fields) {
+  runQuery(query, function (err, rows, fields) {
     if (err) console.log(err);
     else {
-
       res.json(rows);
-      console.log(rows)
     }
   });
 };
 
 function getDiscover(req, res) {
-  console.log("hi you've entered getDiscover");
   currLat = req.query.latitude;
   currLong = req.query.longitude;
-  console.log("("+currLat+", "+currLong+")");
 
   var query = `
       WITH CloseBy AS (
@@ -274,25 +241,16 @@ function getDiscover(req, res) {
       ORDER BY c.value_for_money DESC
   `;
 
-
-
-  console.log(query);
-  runQuery(query, function(err, rows, fields) {
+  runQuery(query, function (err, rows, fields) {
     if (err) console.log(err);
     else {
-
       res.json(rows);
-      //console.log(rows)
     }
   });
 };
 
 function getML(req, res) {
-  console.log("hi you've entered ML");
   currListing = req.query.listingId;
-  console.log(currListing);
-
-
 
   var query = `
   With first as (
@@ -324,23 +282,13 @@ function getML(req, res) {
     Select s.listing_id, s.name, s.summary, s.description, u.picture_url from second s JOIN Url u ON s.listing_id = u.listing_id where rownum <= 9
   `;
 
-
-
-  console.log(query);
-  runQuery(query, function(err, rows, fields) {
+  runQuery(query, function (err, rows, fields) {
     if (err) console.log(err);
     else {
-
       res.json(rows);
-      //console.log(rows)
     }
   });
 };
-
-
-
-
-
 
 function getHostListings(req, res) {
   hostId = req.params.hostId;
@@ -362,27 +310,23 @@ function getHostListings(req, res) {
     h.host_total_listings_count, h.host_identity_verified, h.host_name, h.host_picture_url
     FROM HostInfo h, allListings a
   `;
-  console.log(query);
-  runQuery(query, function(err, rows, fields) {
+  runQuery(query, function (err, rows, fields) {
     if (err) console.log(err);
     else {
-      //console.log(rows);
       res.json(rows);
     }
   });
 };
 
-function hosts(req, res) {
 
+function hosts(req, res) {
   var query = `
     SELECT DISTINCT id
     FROM Host
   `;
-  console.log(query);
-  runQuery(query, function(err, rows, fields) {
+  runQuery(query, function (err, rows, fields) {
     if (err) console.log(err);
     else {
-      //console.log(rows);
       res.json(rows);
     }
   });
@@ -401,11 +345,9 @@ function getAvgPricePerZipcode(req, res) {
   ORDER BY AVG(p.price) DESC)
   SELECT * FROM Temp WHERE ROWNUM <= 15
   `;
-  console.log(query);
-  runQuery(query, function(err, rows, fields) {
+  runQuery(query, function (err, rows, fields) {
     if (err) console.log(err);
     else {
-      //console.log(rows);
       res.json(rows);
     }
   });
@@ -431,11 +373,9 @@ function getAnnualRevenues(req, res) {
     FROM Temp
     WHERE ROWNUM <=15
   `;
-  console.log(query);
-  runQuery(query, function(err, rows, fields) {
+  runQuery(query, function (err, rows, fields) {
     if (err) console.log(err);
     else {
-      //console.log(rows);
       res.json(rows);
     }
   });
@@ -466,11 +406,9 @@ function getApartments(req, res) {
       ORDER BY l.extra_people DESC)
       SELECT * FROM Temp WHERE ROWNUM <=15
   `;
-  console.log(query);
-  runQuery(query, function(err, rows, fields) {
+  runQuery(query, function (err, rows, fields) {
     if (err) console.log(err);
     else {
-      //console.log(rows);
       res.json(rows);
     }
   });
@@ -512,11 +450,9 @@ function getMaxListings(req, res) {
     ORDER BY a.price DESC)
     SELECT * FROM Temp WHERE ROWNUM <= 15
   `;
-  console.log(query);
-  runQuery(query, function(err, rows, fields) {
+  runQuery(query, function (err, rows, fields) {
     if (err) console.log(err);
     else {
-      //console.log(rows);
       res.json(rows);
     }
   });
@@ -543,11 +479,9 @@ function getBestHosts(req, res) {
     ORDER BY ROUND(AVG(p.price),0) DESC, l.num_listings DESC)
     SELECT * FROM Temp WHERE ROWNUM <=15
   `;
-  console.log(query);
-  runQuery(query, function(err, rows, fields) {
+  runQuery(query, function (err, rows, fields) {
     if (err) console.log(err);
     else {
-      //console.log(rows);
       res.json(rows);
     }
   });

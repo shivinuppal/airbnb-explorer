@@ -1,7 +1,6 @@
 import React from 'react';
 import PageNavbar from './PageNavbar';
 import ZipcodeRow from './ZipcodeRow';
-import SearchBoxMap from './Map'
 
 import '../style/Zipcode.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -28,30 +27,6 @@ export default class Zipcode extends React.Component {
 		this.handleMonthChange = this.handleMonthChange.bind(this);
 
 	}
-
-	// componentDidMount() {
-	// 	fetch("http://localhost:8081/zipcodes", {
-	// 		method: 'GET' // The type of HTTP request.
-	// 	})
-	// 		.then(res => res.json()) // Convert the response data to a JSON.
-	// 		.then(zipcodeList => {
-	// 			console.log("a");
-	//
-	//
-	// 			// Map each attribute of a person in this.state.people to an HTML element
-	// 			let zipcodeDivs = zipcodeList.map((zipcode, i) =>
-	// 				[<option value={zipcode[0]}>{zipcode[0]}</option>]
-	//
-	// 			);
-	// 			// Set the state of the person list to the value returned by the HTTP response from the server.
-	// 			this.setState({
-	// 				zipcodeList: zipcodeDivs,
-	// 			})
-	//
-	// 		})
-	// 		.catch(err => console.log(err))
-	//
-	// }
 
 	handleZipcodeChange(e) {
 		this.setState({
@@ -87,16 +62,15 @@ export default class Zipcode extends React.Component {
 
 
 	submitZipcode() {
-		console.log(typeof(this.state.selectedZipcode));
+		console.log(typeof (this.state.selectedZipcode));
 		fetch("http://localhost:8081/getZipcodesZipcodes?zipcode=" + this.state.selectedZipcode + "&guests=" + this.state.guests + "&beds=" + this.state.beds + "&month=" + this.state.month + "&day=" + this.state.day, {
-			method: 'GET' // The type of HTTP request.
+			method: 'GET' 
 		})
-			.then(res => res.json()) // Convert the response data to a JSON.
+			.then(res => res.json()) 
 			.then(zipcodeList => {
 				let zipcodeDivs = [];
 				let zipcodeInfo = "";
 				if (zipcodeList.length != 0) {
-					// Map each attribute of a person in this.state.people to an HTML element
 					zipcodeDivs = zipcodeList.map((zipcode, i) =>
 						<ZipcodeRow id={i} listing_id={zipcode[0]} guests={zipcode[1]}
 							bedrooms={zipcode[3]} name={zipcode[4]} price={"$" + zipcode[7]} pic={zipcode[8]}
@@ -109,8 +83,6 @@ export default class Zipcode extends React.Component {
 
 
 
-				console.log(zipcodeDivs);
-				// Set the state of the person list to the value returned by the HTTP response from the server.
 				this.setState({
 					listings: zipcodeDivs,
 					noInfo: zipcodeInfo
@@ -120,16 +92,6 @@ export default class Zipcode extends React.Component {
 			.catch(err => console.log(err))
 
 	}
-
-	// <div className="zips-container">
-	//   <div className="dropdown-container">
-	// 	<select value={this.state.selectedZipcode} onChange={this.handleChange} className="dropdown" id="zipcodesDropdown">
-	// 		<option select value> -- select an option -- </option>
-	// 		{this.state.zipcodeList}
-	// 	</select>
-	//
-	//   </div>
-	// </div>
 
 	render() {
 
@@ -260,7 +222,7 @@ export default class Zipcode extends React.Component {
 						<div className="button-container">
 							<button className="submit-btn" id="zipcodesSubmitBtn" onClick={this.submitZipcode}>Submit</button>
 						</div>
-						<br/>
+						<br />
 						{this.state.noInfo}
 					</div>
 
