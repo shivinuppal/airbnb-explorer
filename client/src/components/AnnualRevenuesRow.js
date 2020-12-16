@@ -7,7 +7,6 @@ export default class AnnualRevenuesRow extends React.Component {
 		super(props);
 	}
 
-	/* Change the contents (NOT THE STRUCTURE) of the HTML elements to show a movie row. */
 	render() {
 		return (
 			<div className="revenue">
