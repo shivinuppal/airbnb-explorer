@@ -227,7 +227,7 @@ function getZipcodesZipcodes(req, res) {
       ), Temp AS (
       SELECT a.listing_id, a.guests, 0 as dist, a.bedrooms, d.name, d.summary, d.description, a.price, u.picture_url
       FROM Descriptions d JOIN FilteredAndAvailable a ON d.listing_id = a.listing_id JOIN Url u ON d.listing_id = u.listing_id
-      ORDER BY a.guests, a.bedrooms)
+      ORDER BY a.guests, a.bedrooms, a.price DESC)
       SELECT * FROM Temp WHERE ROWNUM <= 75
   `;
 
