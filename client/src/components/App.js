@@ -81,7 +81,8 @@ export default class App extends React.Component {
 						/>
 						<Route
 							exact
-							path="/zipcodes"
+							path="/zipcodes/:zipcode"
+							component={ZipcodeZipcode}
 							render={() => (
 								<ZipcodeZipcode />
 							)}

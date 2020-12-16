@@ -1,5 +1,6 @@
 import React from 'react';
 import '../style/Analytics.css';
+import { Link } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 export default class AnalyticsRow extends React.Component {
@@ -12,7 +13,10 @@ export default class AnalyticsRow extends React.Component {
 	render() {
 		return (
 			<div className="zip">
-				<div className="zipcode">{this.props.zipcode}</div>
+				<div className="zipcode">
+				<Link to={{ pathname: `/zipcodes/${this.props.zipcode}` }}>
+				{this.props.zipcode}</Link>
+					</div>
 				<div className="avgprice">{this.props.avgprice}</div>
 			</div>
 		);
