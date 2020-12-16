@@ -12,6 +12,7 @@ import BestNearby from './BestNearby';
 import MapComponent from './MapComponent';
 import Discover from './Discover';
 import Analytics from './Analytics';
+import ZipcodeZipcode from './ZipcodeZipcode'
 
 export default class App extends React.Component {
 
@@ -76,6 +77,13 @@ export default class App extends React.Component {
 							path="/analytics"
 							render={() => (
 								<Analytics />
+							)}
+						/>
+						<Route
+							exact
+							path="/zipcodes"
+							render={() => (
+								<ZipcodeZipcode />
 							)}
 						/>
 						<Route
