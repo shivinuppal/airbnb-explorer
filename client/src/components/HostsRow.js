@@ -1,5 +1,6 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css'
+import { Link } from "react-router-dom";
 
 export default class HostsRow extends React.Component {
 	constructor(props) {
@@ -11,7 +12,9 @@ export default class HostsRow extends React.Component {
 	render() {
 		return (
 			<div className="hosts">
-				<div className="host">{this.props.host}</div>
+				<div className="host">
+				<Link to={{pathname: `/host/${this.props.host}`}}><strong>Host: </strong>{this.props.host}</Link>
+				</div>
 				<div className="listings">{this.props.listings}</div>
                 <div className="price">{this.props.price}</div>
 			</div>
