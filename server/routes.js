@@ -413,12 +413,12 @@ function getAnnualRevenues(req, res) {
     WHERE c.calendar_date LIKE '2016%'
     GROUP BY l.listing_id
     ), Temp AS (
-    SELECT DISTINCT r.listing AS listing, r.annual_revenue / a.square_feet AS annual_revenue_per_square_foot
+    SELECT DISTINCT r.listing AS listing, r.annual_revenue / a.square_feet AS annual_revenue_per_square_foot, d.name
     FROM Revenues r JOIN Amenity a
-    ON r.listing = a.listing_id
+    ON r.listing = a.listing_id JOIN Descriptions d ON a.listing_id = d.listing_id
     WHERE a.square_feet IS NOT NULL AND a.square_feet > 5
     ORDER BY r.annual_revenue / a.square_feet DESC)
-    SELECT listing, ROUND(annual_revenue_per_square_foot, 2) as annual_revenue_per_square_foot
+    SELECT listing, ROUND(annual_revenue_per_square_foot, 2) as annual_revenue_per_square_foot, name
     FROM Temp
     WHERE ROWNUM <=15
   `;
@@ -450,9 +450,9 @@ function getApartments(req, res) {
       WHERE c.calendar_date LIKE '2016%'
       ), Temp AS (
       SELECT DISTINCT c.listing_id AS listing, l.extra_people AS guests, l.price AS Price,
-      l.minimum_nights AS max_nights, l.minimum_nights AS min_nights
+      l.minimum_nights AS max_nights, l.minimum_nights AS min_nights, d.name
       FROM Cal c JOIN listing_policy l
-      ON c.listing_id = l.listing_id
+      ON c.listing_id = l.listing_id JOIN Descriptions d ON l.listing_id = d.listing_id
       WHERE l.extra_people >= c.people AND l.extra_people >= 50
       ORDER BY l.extra_people DESC)
       SELECT * FROM Temp WHERE ROWNUM <=15
@@ -496,9 +496,9 @@ function getMaxListings(req, res) {
     ON l.price >= (p.average_price - 100) AND l.price <= (p.average_price + 100)
     ), Temp AS (
     SELECT DISTINCT p.listing_id AS listing, a.price AS price, p.bathrooms AS bathrooms,
-    p.bedrooms AS bedrooms, p.beds AS beds
+    p.bedrooms AS bedrooms, p.beds AS beds, d.name
     FROM AvgListings a JOIN MaxListings p
-    ON a.listing_id = p.listing_id
+    ON a.listing_id = p.listing_id JOIN Descriptions d ON p.listing_id = d.listing_id
     WHERE a.price >= 200
     ORDER BY a.price DESC)
     SELECT * FROM Temp WHERE ROWNUM <= 15
