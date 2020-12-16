@@ -31,13 +31,13 @@ export default class Analytics extends React.Component {
   // React function that is called when the page load.
    componentDidMount() {
      // Send an HTTP request to the server.
-     this.showAveragePricePerZipcode(); 
-     this.showAnnualRevenues(); 
+     this.showAveragePricePerZipcode();
+     this.showAnnualRevenues();
      this.showApartments();
      this.showMaxListings();
      this.showBestHosts();
      this.render();
-   } 
+   }
 
 
   showAveragePricePerZipcode() {
@@ -66,8 +66,7 @@ export default class Analytics extends React.Component {
       .then(revsList => {
         console.log(revsList);
         let revsDivs = revsList.map((rev, i) =>
-          <AnnualRevenuesRow key={i} listing={rev[0]} annualrev={rev[1]}
-            area={rev[2]} />
+          <AnnualRevenuesRow key={i} listing={rev[0]} annualrev={rev[1]}/>
         );
         this.setState({
           annualRevs: revsDivs
@@ -159,8 +158,7 @@ export default class Analytics extends React.Component {
             <div className="analytics-container">
               <div className="analytics-header">
                 <div className="header"><strong>Listing</strong></div>
-                <div className="header"><strong>Annual Revenue</strong></div>
-                <div className="header"><strong>Listing Area</strong></div>
+                <div className="header"><strong>Annual Revenue Per Square Foot</strong></div>
               </div>
               <div className="results-container" id="results">
                 {this.state.annualRevs}

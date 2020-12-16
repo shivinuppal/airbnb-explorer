@@ -390,6 +390,7 @@ function getAvgPricePerZipcode(req, res) {
   WHERE l.zipcode IS NOT NULL
   GROUP BY l.zipcode
   HAVING COUNT(*) >= 10
+  ORDER BY AVG(p.price) DESC
   `;
   console.log(query);
   runQuery(query, function(err, rows, fields) {
@@ -415,8 +416,8 @@ function getAnnualRevenues(req, res) {
     SELECT DISTINCT r.listing AS listing, r.annual_revenue / a.square_feet AS annual_revenue_per_square_foot
     FROM Revenues r JOIN Amenity a
     ON r.listing = a.listing_id
-    WHERE a.square_feet IS NOT NULL AND a.square_feet <> 0
-    ORDER BY r.annual_revenue / a.square_feet)
+    WHERE a.square_feet IS NOT NULL AND a.square_feet > 5
+    ORDER BY r.annual_revenue / a.square_feet DESC)
     SELECT listing, ROUND(annual_revenue_per_square_foot, 2) as annual_revenue_per_square_foot
     FROM Temp
     WHERE ROWNUM <=15
@@ -517,19 +518,19 @@ function getBestHosts(req, res) {
 
   var query = `
   WITH bestHosts AS(
-    SELECT h.id AS host, h.host_total_listings_count AS num
+    SELECT h.id AS host, h.host_total_listings_count AS num, h.host_name as name
     FROM Host2 h
     WHERE h.host_total_listings_count > 4 AND h.host_is_superjost = 'True'
     ),
     Listing AS(
-    SELECT h.host, l.listing_id, h.num AS num_listings
+    SELECT h.host, l.listing_id, h.num AS num_listings, h.name
     FROM bestHosts h JOIN Listings l
     ON h.host = l.host_id
     ), Temp AS (
-    SELECT l.host, l.num_listings, ROUND(AVG(p.price),0) AS mean_price
+    SELECT l.host, l.num_listings, ROUND(AVG(p.price),0) AS mean_price, l.name
     FROM Listing_policy p JOIN Listing l
     ON p.listing_id = l.listing_id
-    GROUP BY l.host, l.num_listings
+    GROUP BY l.host, l.name, l.num_listings
     ORDER BY ROUND(AVG(p.price),0) DESC, l.num_listings DESC)
     SELECT * FROM Temp WHERE ROWNUM <=15
   `;

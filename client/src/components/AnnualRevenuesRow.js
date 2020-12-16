@@ -16,7 +16,6 @@ export default class AnnualRevenuesRow extends React.Component {
 					{this.props.listing}</Link>
 				</div>
 				<div className="annualrev">${this.props.annualrev}</div>
-                <div className="area">{this.props.area}</div>
 			</div>
 		);
 	}
