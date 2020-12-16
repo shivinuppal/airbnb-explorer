@@ -1,0 +1,14 @@
+CREATE INDEX CalendarIndex ON Calendar (listing_id);
+CREATE INDEX CalendarDateIndex ON Calendar (calendar_date);
+CREATE INDEX AmenityIndex ON Amenity (listing_id);
+CREATE INDEX PolicyIndex ON Listing_Policy (listing_id);
+CREATE INDEX DescriptionsIndex ON Descriptions (listing_id);
+CREATE INDEX Host2Index ON Host2 (id);
+CREATE INDEX HostIndex ON Host (id);
+CREATE INDEX ListingsIndex ON Listings (listing_id, host_id);
+CREATE INDEX ListingsReviewIndex ON Listing_reviews (listing_id);
+CREATE INDEX LocationIndex ON Location (listing_id);
+CREATE INDEX ReviewsIndex ON Reviews (listing_id);
+CREATE INDEX MLIndex ON MACHINE_LEARNING (listing_id);
+CREATE INDEX URLIndex ON URL (listing_id);
+CREATE INDEX ReviewIndex ON Listing_Reviews (number_of_reviews, review_scores_rating);
