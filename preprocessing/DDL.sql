@@ -16,4 +16,10 @@ CREATE TABLE ListingReview (listing_id INTEGER, number_of_reviews INTEGER, revie
 
 CREATE TABLE Calendar (listing_id INTEGER, calendar_date DATE, available BOOLEAN, price FLOAT(8), PRIMARY KEY (listing_id, calendar_date), FOREIGN KEY (listing_id) REFERENCES Listing (listing_id));
 
-CREATE TABLE Reviews(listing_id INTEGER, id INTEGER, review_date DATE, comments VARCHAR(5000), PRIMARY KEY (id), FOREIGN KEY (listing_id) REFERENCES Listing (listing_id));
+CREATE TABLE Reviews(listing_id INTEGER, id INTEGER, review_date DATE, comments VARCHAR(5000), PRIMARY KEY (listing_id, id), FOREIGN KEY (listing_id) REFERENCES Listing (listing_id));
+
+Create Table ML(listing_id INTEGER, Topic1 FLOAT(8), Topic2 FLOAT(8), TOpic3 FLOAT(8),
+Topic4 FLOAT(8), Topic5 FLOAT(8), TOpic6 FLOAT(8), Topic7 FLOAT(8), Topic8 FLOAT(8), TOpic9 FLOAT(8), Topic10 FLOAT(8),
+Topic11 FLOAT(8), Topic12 FLOAT(8), TOpic13 FLOAT(8),
+Topic14 FLOAT(8), Topic15 FLOAT(8), TOpic16 FLOAT(8), Topic17 FLOAT(8), Topic18 FLOAT(8), TOpic19 FLOAT(8), Topic20 FLOAT(8),
+PRIMARY KEY listing_id, FOREIGN KEY (listing_id) REFERENCES Listing (listing_id));
