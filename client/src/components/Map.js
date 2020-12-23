@@ -5,7 +5,14 @@ import React from 'react'
 import { withGoogleMap, GoogleMap, withScriptjs, InfoWindow, Marker } from "react-google-maps";
 import Autocomplete from 'react-google-autocomplete';
 import Geocode from "react-geocode";
-Geocode.setApiKey("AIzaSyAEQxbsOaMUqLssMg8VydzIrATb6Et0dus");
+
+
+// ENTER API KEY HERE ///////////////
+var apiKey = ""; // enter API key here
+/////////////////////////////////////
+
+
+Geocode.setApiKey(apiKey);
 Geocode.enableDebug();
 
 
@@ -179,9 +186,8 @@ class SearchBoxMap extends React.Component {
     let map;
     if (this.props.center.lat !== undefined) {
       map = <div>
-
         <AsyncMap
-          googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAEQxbsOaMUqLssMg8VydzIrATb6Et0dus&libraries=places"
+          googleMapURL= ("https://maps.googleapis.com/maps/api/js?key=" + apiKey + "&libraries=places")
           loadingElement={
             <div style={{ height: `100%` }} />
           }
@@ -200,6 +206,3 @@ class SearchBoxMap extends React.Component {
   }
 }
 export default SearchBoxMap
-//  export default GoogleApiWrapper({
-//	apiKey: 'AIzaSyAEQxbsOaMUqLssMg8VydzIrATb6Et0dus'
-  //})(MapContainer);
