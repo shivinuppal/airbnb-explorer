@@ -2,6 +2,8 @@
 
 Welcome to our Airbnb Explorer app! You can use this app to explore Airbnbs in Seattle, WA. We have tried to make this app as informative as possible, we hope you enjoy using it!
 
+Please watch a video demo of our app!
+
 To run this application, you need to make sure you have the standard set up done for Node/React apps.
 
 You need to install Oracle locally.
