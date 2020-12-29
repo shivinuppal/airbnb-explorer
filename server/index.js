@@ -13,13 +13,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 /* ------------------- Route handler registration ----------------- */
 /* ---------------------------------------------------------------- */
 
-
-
-
-/* ---- (Dashboard) ---- */
-// The route localhost:8081/genres is registered to the function
-// routes.getAllGenres, specified in routes.js.
-
 /* ---- (Get all Information About a Singular Listing) ---- */
 //host information
 app.get('/listing/host/:listingId', routes.getHostInfo);
@@ -50,6 +43,7 @@ app.get('/getHost', routes.hosts);
 //ML
 app.get('/getML', routes.getML);
 
+//analytics
 app.get('/getAvgPricePerZipcode', routes.getAvgPricePerZipcode);
 
 app.get('/getAnnualRevenues', routes.getAnnualRevenues);
