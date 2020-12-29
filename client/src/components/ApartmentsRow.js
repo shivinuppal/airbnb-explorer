@@ -7,16 +7,19 @@ export default class ApartmentsRow extends React.Component {
 		super(props);
 	}
 
+	/* ---- Q1b (Dashboard) ---- */
+	/* Change the contents (NOT THE STRUCTURE) of the HTML elements to show a movie row. */
 	render() {
 		return (
 			<div className="apartments">
 				<div className="listing">
 					<Link to={{ pathname: `listing/${this.props.listing}` }}>
-						{this.props.name}</Link>
+					{this.props.name}</Link>
 				</div>
 				<div className="guests">{this.props.guests}</div>
-				<div className="price">{this.props.price}</div>
-				<div className="min_nights">{this.props.min_nights}</div>
+                <div className="price">{this.props.price}</div>
+                <div className="max_nights">{this.props.max_nights}</div>
+                <div className="min_nights">{this.props.min_nights}</div>
 			</div>
 		);
 	}

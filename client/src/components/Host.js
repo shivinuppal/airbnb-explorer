@@ -16,6 +16,29 @@ export default class Host extends React.Component {
 		this.handleChange = this.handleChange.bind(this);
 	}
 
+	/* ---- Q3a (Best Genres) ---- 
+	submitHostId() {
+		fetch("http://localhost:8081/getHost", {
+      method: 'GET' // The type of HTTP request.
+    })
+      .then(res => res.json()) // Convert the response data to a JSON.
+      .then(hostList => {
+
+        // Map each attribute of a person in this.state.people to an HTML element
+        let hostDivs = hostList.map((host, i) => 
+		[<option key={i} value={host.id}>{host.id}</option>]
+
+        );
+        // Set the state of the person list to the value returned by the HTTP response from the server.
+        this.setState({
+          allHosts: hostDivs,
+        })
+      
+      })
+      .catch(err => console.log(err))
+    
+	} */
+
 	handleChange(e) {
 		this.setState({
 			hostId: e.target.value
@@ -25,10 +48,12 @@ export default class Host extends React.Component {
 	componentDidMount() {
 		console.log(this.state.hostId);
 		fetch("http://localhost:8081/getHost/" + this.state.hostId, {
-	  method: 'GET' 
+	  method: 'GET' // The type of HTTP request.
 	})
-	  .then(res => res.json())
+	  .then(res => res.json()) // Convert the response data to a JSON.
 	  .then(hostList => {
+		console.log(hostList);
+		// Map each attribute of a person in this.state.people to an HTML element
 		let listingDivs = hostList.map((host, i) => 
 		  <ListingRow key={i} listing_id={host[0]} price={host[1]} summary={host[2]} pic={host[3]}
 		  />
@@ -41,7 +66,8 @@ export default class Host extends React.Component {
 						host_neighborhood={hostList[0][10]} host_total_listings_count={hostList[0][11]}
 						host_identity_verified={hostList[0][12]} name={hostList[0][13]}
 					/> 
-					
+		console.log(listingDivs);
+		// Set the state of the person list to the value returned by the HTTP response from the server.
 		this.setState({
 			hostInfo: hostDiv, 
 			hostPic: hostPicDiv, 
